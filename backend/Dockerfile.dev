@@ -1,0 +1,27 @@
+# Utiliser une image Node.js officielle
+FROM node:18-slim
+
+# Définir le répertoire de travail dans le conteneur
+WORKDIR /app
+
+# Copier les fichiers package.json et package-lock.json dans le conteneur
+COPY package*.json ./
+
+# Installer les dépendances (inclut les devDependencies en mode dev)
+RUN npm install
+
+# Installer le CLI de NestJS globalement
+RUN npm install -g @nestjs/cli
+
+# Copier le reste de l'application
+COPY . .
+
+# Builder l'application NestJS
+# RUN npm run build
+
+# Exposer le port utilisé par NestJS
+EXPOSE 5000
+
+# Commande à exécuter au démarrage pour exécuter les migrations et démarrer en mode dev
+# CMD ["sh", "-c", "npm run start:migrate && npm run start:dev"]
+CMD ["sh", "-c", "npm run start:dev"]

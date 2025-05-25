@@ -1,0 +1,31 @@
+# Utiliser une image Node.js officielle
+FROM node:18-slim
+
+# Définir le répertoire de travail dans le conteneur
+WORKDIR /app
+
+# Copier les fichiers package.json et package-lock.json dans le conteneur
+COPY package*.json ./
+
+# Installer les dépendances
+RUN npm install
+
+# Copier le reste de l'application
+COPY . .
+
+# Copier la configuration ESLint
+COPY .eslintrc.json ./
+# RUN mkdir -p ./eslint_reports
+
+# Builder l'application React
+# RUN npm run build
+
+# Exposer le port utilisé par l'application React
+EXPOSE 3000
+
+# Lancer l'application
+CMD ["sh", "-c", "npm run build:css && npm run dev"]
+# CMD ["npm", "run","dev"]
+# CMD ["npm", "run", "lint:json"]
+# CMD ["sh"]
+# RUN npm run lint:json

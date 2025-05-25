@@ -1,0 +1,89 @@
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { describe, test, vi, expect } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import { LoginForm } from "../../features/auth/components/LoginForm";
+import { useUser } from "../../providers/UserContext";
+
+// Mock du UserContext et UserProvider
+vi.mock("../../providers/UserContext", () => {
+  const mockUpdateUserInfo = vi.fn();
+  return {
+    UserProvider: ({ children }) => <div>{children}</div>,
+    useUser: () => ({
+      connectedUserId: null,
+      userInfo: null,
+      connexionLoading: false, // Empêche le blocage du rendu
+      updateUserInfo: mockUpdateUserInfo, // Simule la mise à jour de localStorage via UserContext
+      logout: vi.fn(),
+    }),
+  };
+});
+
+// Mock du service utilisateur pour éviter les appels API réels
+vi.mock("../../services/userService", () => ({
+  loginUser: vi.fn((email, password) => {
+    if (email === "user@example.com" && password === "password123") {
+      return Promise.resolve("mockAccessToken");
+    } else {
+      return Promise.reject({ response: { status: 401, data: { message: "Invalid credentials" } } });
+    }
+  }),
+  getUserInfo: vi.fn(() => Promise.resolve({ id: "1", role: "teacher" })),
+  getAllUserRelations: vi.fn(() => Promise.resolve([])),
+}));
+
+describe("LoginForm", () => {
+  test("should login with correct credentials", async () => {
+    render(
+      <MemoryRouter>
+        <LoginForm />
+      </MemoryRouter>
+    );
+
+    // Saisir l'email et le mot de passe
+    fireEvent.change(screen.getByLabelText(/adresse e-mail/i), {
+      target: { value: "user@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText(/mot de passe/i), {
+      target: { value: "password123" },
+    });
+
+    // Soumettre le formulaire
+    fireEvent.click(screen.getByRole("button", { name: /se connecter/i }));
+
+    // Update du contexte utilisateur
+    await waitFor(() => {
+      expect(useUser().updateUserInfo).toHaveBeenCalled();
+    });
+
+    // Attendre que l'utilisateur soit redirigé et que les données soient stockées
+    await waitFor(() => {
+      expect(localStorage.getItem("access_token")).toBe("mockAccessToken");
+      expect(localStorage.getItem("user_info")).toBeTruthy();
+    });
+  });
+
+  test("should show error message on invalid credentials", async () => {
+    render(
+      <MemoryRouter>
+        <LoginForm />
+      </MemoryRouter>
+    );
+
+    // Saisir des informations incorrectes
+    fireEvent.change(screen.getByLabelText(/adresse e-mail/i), {
+      target: { value: "wrong@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText(/mot de passe/i), {
+      target: { value: "wrongpassword" },
+    });
+
+    // Soumettre le formulaire
+    fireEvent.click(screen.getByRole("button", { name: /se connecter/i }));
+
+    // Vérifier qu'un message d'erreur est affiché
+    await waitFor(() => {
+      expect(screen.getByText(/L'email ou le mot de passe est incorrect/i)).toBeInTheDocument();
+    });
+  });
+});

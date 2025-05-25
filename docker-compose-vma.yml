@@ -1,0 +1,100 @@
+#version: '3'
+
+services:
+  # Front-end: ReactJS
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    #    volumes :
+    #      - ./frontend/eslint_reports:/app/eslint_reports
+    networks:
+      my-app-network:
+        ipv4_address: 172.20.0.3
+    environment:
+      - ENV_MODE=${ENV_MODE:-development}
+  #      - REACT_APP_API_URL=http://localhost:5000  # URL pour appeler l'API back-end
+  #      - VITE_API_URL=http://nginx/api
+
+  # Back-end: NestJS
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      my-app-network:
+        ipv4_address: 172.20.0.4
+    volumes:
+      - ./datafiles:/app/datafiles
+    environment:
+      - DATABASE_URL=postgres://visiomathuser:visiomathpassword@postgres:5432/visiomathdb
+      - DB_HOST=postgres
+      - REDIS_HOST0=redis
+      - REDIS_PORT=6379
+
+  # PostgreSQL
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: visiomathuser
+      POSTGRES_PASSWORD: visiomathpassword
+      POSTGRES_DB: visiomathdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      my-app-network:
+        ipv4_address: 172.20.0.5
+
+  # Redis
+  redis:
+    image: redis:7
+    volumes:
+      - redis_data:/data
+    networks:
+      my-app-network:
+        ipv4_address: 172.20.0.6
+
+  # Nginx for reverse proxy
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      #- ./nginx/nginx.dev.conf:/etc/nginx/conf.d/nginx.dev.conf
+      #- ./nginx/nginx.prod.conf:/etc/nginx/conf.d/nginx.prod.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      my-app-network:
+        ipv4_address: 172.20.0.2
+    environment:
+      - ENV_MODE=${ENV_MODE:-development}
+
+# Volumes to persist data
+volumes:
+  datafiles:
+  db_data:
+  redis_data:
+
+    # Network for the containers
+networks:
+  my-app-network:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+    driver: bridge
