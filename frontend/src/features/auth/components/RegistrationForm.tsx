@@ -5,7 +5,7 @@ import { RegistrationStepper } from './RegistrationStepper';
 import { useAuth } from '../../../hooks/useAuth';
 import API_URL from '../../../config/api.config';
 import { checkUsernameAvailability } from '../../../services/authService';
-import { createUserRelations } from '../../../services/registrationService';
+//import { createUserRelations } from '../../../services/registrationService';
 
 const roleOptions: UserRole[] = [
   'student',
@@ -38,10 +38,8 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onReset }) =
 
   const handleSubmit = async () => {
     console.log("handleSubmit appelé avec :", user);
-    console.log("Utilisation actuelle de createUserRelations 1 :", createUserRelations);
     try {
       // Étape 1 : Création de l'utilisateurs
-      console.log("Utilisation actuelle de createUserRelations 2 :", createUserRelations);
         const response = await fetch(`${API_URL}/users/`, {
         method: 'POST',
         headers: {
@@ -55,16 +53,14 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onReset }) =
         //const createdUser = await response.json(); // Récupère l'utilisateur créé
 
       // Étape 2 : Créer les relations si le rôle est `pedagogical_manager`
-        console.log("Utilisation actuelle de createUserRelations 3 :", createUserRelations);
-        console.log("Appel de createUserRelations avec :", createdUser.id, user.role, user.pseudo);
-        if (['teacher', 'pedagogical_animator', 'pedagogical_manager'].includes(user.role)) {
+/*         if (['teacher', 'pedagogical_animator', 'pedagogical_manager'].includes(user.role)) {
           const targetRoles =
             user.role === 'pedagogical_manager'
               ? ['teacher', 'pedagogical_animator', 'pedagogical_manager']
               : ['pedagogical_manager']; // L'inverse : si l'utilisateur n'est pas manager
           await createUserRelations(createdUser.id, user.role, user.pseudo, targetRoles, token);
         }
-      
+       */
         onReset(); // Réinitialiser le formulaire
         alert('Utilisateur créé avec succès');
       } catch (error) {

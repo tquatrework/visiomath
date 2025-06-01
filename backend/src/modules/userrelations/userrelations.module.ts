@@ -1,5 +1,5 @@
 // src/user-relations/user-relations.module.ts
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRelation } from '../../shared/entities/userrelation.entity.js';
 import { UserRelationsService } from './userrelations.service.js';
@@ -12,11 +12,12 @@ import { NotificationsModule } from '../notifications/notifications.module.js';
 @Module({
   imports: [
   TypeOrmModule.forFeature([UserRelation, User]),
-    AuthModule,
+    forwardRef(() => AuthModule),
     UsersModule,
     NotificationsModule,
 ],
   providers: [UserRelationsService],
   controllers: [UserRelationsController],
+  exports: [UserRelationsService],
 })
 export class UserRelationsModule {}

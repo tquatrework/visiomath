@@ -23,6 +23,9 @@ export class User {
   @Column({ default: true })
   isActive: boolean = true;
 
+  @Column({ default: false })
+  hasConnectedOnce: boolean = false;
+
   @Column()
   role!: RoleList;
   

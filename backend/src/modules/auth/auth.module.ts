@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@nestjs/config';
@@ -9,9 +9,11 @@ import { UsersController} from '../users/users.controller.js';
 import { JwtStrategy } from './strategies/jwt.strategy.js';
 import { LocalStrategy } from './strategies/local.strategy.js';
 import { UsersModule } from '../users/users.module.js';
+import { UserRelationsModule } from '../userrelations/userrelations.module.js';
 
 @Module({
   imports: [
+    forwardRef(() => UserRelationsModule),
     UsersModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({

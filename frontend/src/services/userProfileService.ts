@@ -36,6 +36,11 @@ export const fetchUserProfiles = async (userId: number) => {
   return data;
 };
 
+// 🔼 Initialisation complète du profil utilisateur
+export const initializeUserProfile = async () => {
+  return apiSec.post("/userprofiles/init");
+};
+
 // 🔼 Update partiel du profil
 export const updateUserProfile = async (userId: number, data: any) => {
   const { data: updated } = await apiSec.patch(`userprofiles`, data, {

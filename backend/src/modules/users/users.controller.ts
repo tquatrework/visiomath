@@ -9,6 +9,7 @@ import { User } from '../../shared/entities/user.entity.js';
 import { CreateUserDto } from '../../shared/dto/create-user.dto.js';
 import { UpdateUserDto } from '../../shared/dto/update-user.dto.js';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { OptionalAuthGuard } from '../auth/guards/optional-auth.guard.js';
 
 @ApiTags('Users')
 @Controller('users')
@@ -68,7 +69,8 @@ export class UsersController {
   /**
    * Retrieve users by roles.
    */
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
+  @UseGuards(OptionalAuthGuard)
   @Get('roles/:roles')
   @ApiOperation({ summary: 'Retrieve users by roles' })
   @ApiParam({ name: 'roles', description: 'Comma-separated list of roles', required: true })

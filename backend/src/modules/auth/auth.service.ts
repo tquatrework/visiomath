@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../../shared/entities/user.entity.js';
 import { UsersService } from '../users/users.service.js';
+import { UserRelationsService } from '../userrelations/userrelations.service.js';
 import { compare } from 'bcrypt';
 import { LoginDto } from '../../shared/dto/login.dto.js';
 
@@ -12,6 +13,7 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private readonly userRelationsService: UserRelationsService, 
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
@@ -23,22 +25,6 @@ export class AuthService {
     return null;
   }
 
-/*   async validateUser(email: string, password: string): Promise<User | null> {
-    const user = await this.usersService.findByEmail(email);
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-
-    const isPasswordValid = await compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    const { password, ...result } = user;  // Exclure le mot de passe des informations retournées
-    return result as User;  // Retourne l'utilisateur sans le mot de passe
-} */
-
-
   //async login(user: any) {
   async login(loginDto: LoginDto) {
     const user = await this.validateUser(loginDto.email, loginDto.password); // Valide l'utilisateur
@@ -46,6 +32,13 @@ export class AuthService {
     // Vérification si l'utilisateur est actif
     if (!user.isActive) {
       throw new BadRequestException('L’utilisateur n’est plus actif.'); // Exception si utilisateur inactif
+    }
+
+    // Première connexion → créer les relations
+    if (!user.hasConnectedOnce) {
+      await this.userRelationsService.createInitialRelations(user);
+      user.hasConnectedOnce = true;
+      await this.usersService.save(user); // ou userRepository.save(user)
     }
 
     const payload = { email: user.email, sub: user.id, role: user.role };

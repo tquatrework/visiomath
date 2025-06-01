@@ -120,23 +120,20 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-    
-  /**
-   * Validate user credentials.
-   */
-/*   async validateUser(email: string, password: string): Promise<User | null> {
-    const user = await this.findByEmail(email);
-    if (user && (await bcrypt.compare(password, user.password))) {
-      return user;
-    }
-    return null;
-  } */
-    
   /**
    * Delete a user by ID.
    */
   async delete(id: number): Promise<void> {
     const user = await this.findById(id);
     await this.userRepository.remove(user);
+  }
+
+
+  /**
+   * NOT USED IN CONTROLLER
+   * Save a user (used for updating or creating).
+   */
+  async save(user: User): Promise<User> {
+  return this.userRepository.save(user);
   }
 }

@@ -1,0 +1,21 @@
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+
+@Injectable()
+export class GuestJwtStrategy extends PassportStrategy(Strategy, 'guest-jwt') {
+  constructor() {
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: process.env.GUEST_JWT_SECRET || 'guest_secret', // à stocker dans .env
+      ignoreExpiration: false,
+    });
+  }
+
+  async validate(payload: any) {
+    if (!payload || payload.scope !== 'preauth') {
+      throw new UnauthorizedException('Invalid or missing scope');
+    }
+    return payload; // retourne l'objet auth (peut être vide ou limité)
+  }
+}

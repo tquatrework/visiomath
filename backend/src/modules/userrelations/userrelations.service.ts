@@ -6,17 +6,17 @@ import { RelationList, RelationState, RoleList } from '../../common/utils/lists.
 import { User } from '../../shared/entities/user.entity.js';
 import { CreateUserRelationDto } from '../../shared/dto/create-userrelation.dto.js';
 import { NotificationsService } from '../notifications/notifications.service.js';
+import { UsersService } from '../users/users.service.js';
 
 @Injectable()
 export class UserRelationsService {
   constructor(
-    @InjectRepository(UserRelation)
-    private readonly userRelationRepository: Repository<UserRelation>,
-
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-
-    private readonly notificationsService: NotificationsService,
+    @InjectRepository(UserRelation)
+    private readonly userRelationRepository: Repository<UserRelation>,
+    private readonly usersService: UsersService,
+    private readonly notificationsService: NotificationsService,  
   ) {}
 
   /**
@@ -108,6 +108,73 @@ export class UserRelationsService {
     return this.userRelationRepository.save(relation);
   }
 
+
+  /**
+   * create first relations for a new user based on their role when they connect for the first time.
+   */
+  async createInitialRelations(user: User): Promise<void> {
+      console.log('\n🔵 [RELATION] Création de relations pour :', user.email);
+  console.log('🎯 Rôle utilisateur :', user.role);
+    const targetRoles = this.getTargetRolesFor(user.role);
+    console.log('🎯 Rôles cibles :', targetRoles);
+    if (targetRoles.length === 0) return;
+
+    const targetUsers = await this.usersService.findByRoles(targetRoles);
+    console.log('📋 Utilisateurs cibles trouvés :', targetUsers.map(u => u.email));
+
+    const relations: Partial<UserRelation>[] = [];
+
+    for (const targetUser of targetUsers) {
+      const directType = await this.determineRelationType(user.role, targetUser.role);
+        console.log(`🔍 ${user.role} → ${targetUser.role} = ${directType}`);
+      const inverseType = await this.determineRelationType(targetUser.role, user.role);
+        console.log(`🔍 ${targetUser.role} → ${user.role} = ${inverseType}`);
+
+      if (directType !== 'impossible') {
+        relations.push({
+          userFrom: user,
+          userTo: targetUser,
+          relationType: directType as RelationList,
+          relationState: 'current',
+        });
+      }
+
+      if (inverseType !== 'impossible') {
+        relations.push({
+          userFrom: targetUser,
+          userTo: user,
+          relationType: inverseType as RelationList,
+          relationState: 'current',
+        });
+      }
+    }
+
+    console.log('📎 Relations générées :', relations);
+
+    if (relations.length > 0) {
+      await this.userRelationRepository.save(relations);
+    }
+
+    if (targetUsers.length > 0) {
+      const message = `Un nouvel utilisateur : ${user.pseudo} de type ${user.role} vient de s'enregistrer`;
+
+      await this.notificationsService.createNotification({
+        userIds: targetUsers.map((u) => u.id),
+        type: 'message',
+        message,
+      });
+    }
+  }
+        
+  private getTargetRolesFor(role: string): string[] {
+    const map: Record<string, string[]> = {
+      pedagogical_manager: ['teacher', 'pedagogical_animator', 'pedagogical_manager'],
+      teacher: ['pedagogical_manager'],
+      pedagogical_animator: ['pedagogical_manager'],
+    };
+    return map[role] ?? [];
+  }
+
   /**
    * Determine the relation type based on roles.
    */
@@ -137,12 +204,14 @@ export class UserRelationsService {
         return userRoleFrom === 'student'
           ? 'is_teacher_of'
           : userRoleFrom === 'pedagogical_animator'
-          ? 'is_animated_by'
+            ? 'is_animated_by'
+          : userRoleFrom === 'pedagogical_manager'
+            ? 'is_managed_by'
           : 'impossible';
       case 'pedagogical_animator':
         return userRoleFrom === 'student' || userRoleFrom === 'teacher' ? 'is_animator_of' : 'impossible';
       case 'pedagogical_manager':
-        return userRoleFrom === 'student' || userRoleFrom === 'parent' ? 'is_manager_of' : 'impossible';
+        return userRoleFrom === 'student' || userRoleFrom === 'parent' || userRoleFrom === 'teacher' ? 'is_manager_of' : 'impossible';
       default:
         return 'impossible';
     }

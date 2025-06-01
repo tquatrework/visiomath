@@ -91,7 +91,7 @@ volumes:
   db_data:
   redis_data:
 
-    # Network for the containers
+# Network for the containers
 networks:
   my-app-network:
     ipam:

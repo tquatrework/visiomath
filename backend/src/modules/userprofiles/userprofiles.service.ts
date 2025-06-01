@@ -22,6 +22,7 @@ export class UserProfileService {
   private readonly logger = new Logger(UserProfileService.name);
 
   constructor(
+
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
 
@@ -114,6 +115,41 @@ export class UserProfileService {
   }
 
   /**
+   * NOT DIRECTLY USED IN CONTROLLER
+   * Create a complete empty profile for a new user (including specific profiles for teachers and students).
+   */
+  async createEmptyProfileFor(user: User): Promise<void> {
+    // Créer UserProfile
+    const userProfile = new UserProfile();
+    const savedUserProfile = await this.userProfileRepository.save(userProfile);
+
+    user.userProfile = savedUserProfile;
+    await this.userRepository.save(user);
+
+    // Profils spécifiques
+    if (user.role === 'teacher') {
+      const teacherProfile = new TeacherProfile();
+      teacherProfile.userProfile = savedUserProfile;
+      await this.teacherProfileRepository.save(teacherProfile);
+
+      const teacherOrdonnance = new TeacherOrdonnance();
+      teacherOrdonnance.userProfile = savedUserProfile;
+      await this.teacherOrdonnanceRepository.save(teacherOrdonnance);
+    }
+
+    if (user.role === 'student') {
+      const studentProfile = new StudentProfile();
+      studentProfile.userProfile = savedUserProfile;
+      await this.studentProfileRepository.save(studentProfile);
+
+      const studentOrdonnance = new StudentOrdonnance();
+      studentOrdonnance.userProfile = savedUserProfile;
+      await this.studentOrdonnanceRepository.save(studentOrdonnance);
+    }
+  }
+
+
+  /**
    * Update user profile by ID.
    */
   async updateProfile(profileId: number, data: Partial<UserProfile>): Promise<UserProfile> {
@@ -125,18 +161,6 @@ export class UserProfileService {
     return this.userProfileRepository.save(profile);
   }
 
-  /**
-   * Update user profile by user ID.
-   */
-/*   async updateUserProfile(userId: number, data: Partial<UserProfile>): Promise<UserProfile> {
-    const userProfile = await this.GetProfileByUserId(userId);
-    if (!userProfile) {
-      throw new NotFoundException(`UserProfile for user ID ${userId} not found`);
-    }
-    Object.assign(userProfile, data);
-    return this.userProfileRepository.save(userProfile);
-  }
- */
   async updateUserProfile(userId: number, data: { user: Partial<User>, profile: Partial<UserProfile> }): Promise<FullUserProfileResponse> {
     const user = await this.userRepository.findOne({
       where: { id: userId },

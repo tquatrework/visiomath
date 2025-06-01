@@ -9,6 +9,7 @@ interface TeacherProfileProps {
 }
 
 const TeacherProfile: React.FC<TeacherProfileProps> = ({ data, readOnly = false }) => {
+  if (!data || !data.profile) return <div>Chargement du profil enseignant...</div>;
   const profileId = data.profile.id;
   const { teacherProfile, loading, error, handleUpdateProfile } = useTeacherProfile(profileId);
 

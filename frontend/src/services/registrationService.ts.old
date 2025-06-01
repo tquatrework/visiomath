@@ -13,7 +13,7 @@ export const createUserRelations = async (
 
   try {
     // Étape 1 : Récupérer tous les utilisateurs correspondant aux rôles cibles
-    const response = await apiSec.get(`${API_URL}/roles/${targetRoles.join(",")}`);
+    const response = await apiSec.get(`${API_URL}/users/roles/${targetRoles.join(",")}`);
     const targetUsers = response.data;
 
     // Étape 2 : Créer des relations pour chaque utilisateur cible

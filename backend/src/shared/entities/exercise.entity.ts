@@ -22,7 +22,7 @@ export class Exercise {
   intendedDifficulty?: number;
 
   @Column('text', { nullable: true })
-  exercise_tags?: string; // Translated from "structure questions"
+  tags?: string;
 
   @Column('text')
   statementText!: string;

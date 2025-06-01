@@ -1,6 +1,7 @@
 // auth.controller.ts
 import { Controller, Post,  Get, UseGuards, Request, Req, Res, Body, Query, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
+import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service.js';
 import { LocalAuthGuard } from './guards/local-auth.guard.js';
 import { JwtAuthGuard } from './guards/jwt-auth.guard.js';
@@ -10,7 +11,9 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly authService: AuthService) { }
 
   @Post('login')
   @UseGuards(LocalAuthGuard)
@@ -36,6 +39,18 @@ export class AuthController {
     return res.status(HttpStatus.OK).json({
       message: 'Logged out successfully',
     });
+  }
+
+  @Post('guest-token')
+  generateGuestToken() {
+    const payload = {
+      scope: 'preauth',
+    };
+    const token = this.jwtService.sign(payload, {
+      secret: process.env.GUEST_JWT_SECRET || 'guest_secret',
+      expiresIn: '2m',
+    });
+    return { token };
   }
 
   @Get('profile')

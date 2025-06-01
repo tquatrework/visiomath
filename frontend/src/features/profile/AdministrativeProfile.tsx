@@ -9,6 +9,7 @@ interface AdministrativeProfileProps {
   role?: string;
   handleFileChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   readOnly?: boolean;
+  refetchUserData?: () => void;
 }
 
 const AdministrativeProfile: React.FC<AdministrativeProfileProps> = ({
@@ -16,6 +17,7 @@ const AdministrativeProfile: React.FC<AdministrativeProfileProps> = ({
   role,
   handleFileChange,
   readOnly = false,
+  refetchUserData,
 }) => {
   if (!data) return <p>Chargement des données...</p>;
 
@@ -34,7 +36,10 @@ const AdministrativeProfile: React.FC<AdministrativeProfileProps> = ({
       await updateUserProfile(data.user.id, {
           user: formData.user,
           profile: formData.profile ?? {}
-        });
+      });
+      
+      if (refetchUserData) await refetchUserData();
+
       alert("Profil administratif mis à jour avec succès !");
     } catch (err) {
       console.error("Erreur lors de la mise à jour du profil administratif :", err);

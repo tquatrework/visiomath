@@ -14,7 +14,7 @@ const UserProfile = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [selectedProfileId, setSelectedProfileId] = useState(connectedUserId);
 
-  const { userData, loadingData, handleFileChange, avatarTempUrl } = useProfileUser(selectedProfileId);
+  const { userData, loadingData, handleFileChange, avatarTempUrl, refetchUserData } = useProfileUser(selectedProfileId);
 
   if (loading) return <p>Chargement en cours...</p>;
   if (!isAuthenticated) return <p>Veuillez vous connecter.</p>;
@@ -48,7 +48,7 @@ const UserProfile = () => {
 
         <TabPanel className="p-4">
           <AdministrativeProfile
-            data={{ ...userData, avatarTempUrl }}
+            data={{ ...userData, avatarTempUrl, refetchUserData }}
             role={userData?.user.role}
             handleFileChange={handleFileChange}
           />

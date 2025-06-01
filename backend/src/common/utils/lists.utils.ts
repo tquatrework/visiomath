@@ -5,7 +5,8 @@ export const roleList = [
   'pedagogical_animator',
   'pedagogical_manager',
   'it_admin',
-  'financial_admin'
+  'financial_admin',
+  'superadmin'
  ] as const;
 
 export type RoleList = typeof roleList[number];
@@ -62,3 +63,11 @@ export const calendarType = [
 ] as const;
 
 export type CalendarType = typeof calendarType[number];
+
+export const quizQuestionType = [
+  'text',
+  'multiple',
+  'order',
+] as const;
+
+export type QuizQuestionType = typeof quizQuestionType[number];

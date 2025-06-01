@@ -3,6 +3,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { AuthModule } from '../auth/auth.module.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from '../users/users.module.js';
 import { UserProfile } from '../../shared/entities/userprofile.entity.js';
 import { UserProfileService } from './userprofiles.service.js';
 import { UserProfileController } from './userprofiles.controller.js';
@@ -21,7 +22,8 @@ import { TeacherOrdonnance } from '../../shared/entities/teacherOrdonnance.entit
             StudentProfile,
             TeacherProfile,
             StudentOrdonnance,
-            TeacherOrdonnance]),
+      TeacherOrdonnance]),
+    UsersModule,
     MulterModule.register({
       dest: './datafiles/vma_images',
     }),

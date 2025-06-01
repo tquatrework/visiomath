@@ -9,6 +9,7 @@ interface Props {
 }
 
 const TeacherOrdonnance: React.FC<Props> = ({ data, readOnly = false }) => {
+  if (!data || !data.profile) return <div>Chargement du profil enseignant...</div>;
   const profileId = data.profile.id;
   const { teacherOrdonnance, loading, error, handleUpdateOrdonnance } = useTeacherOrdonnance(profileId);
   const { register, handleSubmit, reset } = useForm({ defaultValues: teacherOrdonnance });

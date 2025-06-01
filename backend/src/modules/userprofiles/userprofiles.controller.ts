@@ -1,11 +1,12 @@
 import { 
   Controller, Get, Post, Patch, Put, Delete, Param, Query, Body, UseInterceptors, UploadedFile, ParseIntPipe,
-  UseGuards, Res, Request, NotFoundException, UnauthorizedException 
+  UseGuards, Res, Req, NotFoundException, UnauthorizedException 
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiParam, ApiBody } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { UserProfileService } from './userprofiles.service.js';
+import { UsersService } from '../users/users.service.js';
 import { UserProfile } from '../../shared/entities/userprofile.entity.js';
 import { StudentProfile } from '../../shared/entities/studentProfile.entity.js';
 import { StudentOrdonnance } from '../../shared/entities/studentOrdonnance.entity.js';
@@ -23,7 +24,10 @@ import { Logger } from '@nestjs/common';
 export class UserProfileController {
   private readonly logger = new Logger(UserProfileController.name);
 
-  constructor(private readonly userProfileService: UserProfileService) {}
+  constructor(
+  private readonly userProfileService: UserProfileService,
+  private readonly userService: UsersService,
+  ) {}
 
   /**
    * Retrieve user profile by user ID.
@@ -79,6 +83,22 @@ export class UserProfileController {
   @ApiQuery({ name: 'userId', description: 'User ID', required: true })
   async createProfile(@Query('userId') userId: string, @Body() data: Partial<UserProfile>) {
     return this.userProfileService.createProfile(parseInt(userId), data);
+  }
+
+  /**
+   * Initialize full profiles
+   */  
+  @Post('init')
+  @UseGuards(JwtAuthGuard)
+  async initializeProfile(@Req() req: any) {
+    const user = await this.userService.findById(req.user.id );
+
+    if (user.userProfile) {
+      return { message: 'Profil déjà existant' };
+    }
+
+    await this.userProfileService.createEmptyProfileFor(user);
+    return { message: 'Profil initialisé' };
   }
 
   /**
