@@ -1,5 +1,5 @@
 {
-  "type":"module",
+  "type": "module",
   "name": "backend",
   "version": "1.0.0",
   "description": "",
@@ -11,7 +11,8 @@
     "start:prod": "node dist/main.js",
     "start:migrate": "npm run build && node dist/scripts/migrate.js && node dist/main.js",
     "build": "nest build",
-    "lint": "eslint . .ts,.js"
+    "lint": "eslint . .ts,.js",
+    "test:e2e": "vitest run --config vitest.config.e2e.ts"
   },
   "keywords": [],
   "author": "Thierry QUATRE",
@@ -25,6 +26,7 @@
     "@nestjs/mapped-types": "^2.0.0",
     "@nestjs/passport": "^10.0.0",
     "@nestjs/platform-express": "^10.4.5",
+    "@nestjs/platform-socket.io": "^10.4.5",
     "@nestjs/swagger": "^8.0.0",
     "@nestjs/typeorm": "^10.0.0",
     "bcrypt": "^5.0.1",
@@ -41,14 +43,14 @@
     "redis": "^4.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
-    "swagger-ui-express": "^4.0.0",
-    "typeorm": "^0.3.0",
-    "@nestjs/platform-socket.io": "^10.4.5",
     "socket.io": "^4.8.0",
-    "socket.io-client": "^4.8.0"
+    "socket.io-client": "^4.8.0",
+    "swagger-ui-express": "^4.0.0",
+    "typeorm": "^0.3.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
+    "@nestjs/testing": "^10.4.19",
     "@types/bcrypt": "^5.0.0",
     "@types/cache-manager": "^4.0.0",
     "@types/cache-manager-redis-store": "^2.0.0",
@@ -56,14 +58,17 @@
     "@types/multer": "^1.4.12",
     "@types/passport-jwt": "^3.0.0",
     "@types/passport-local": "^1.0.0",
-    "@typescript-eslint/parser": "^8.15.0",
-    "@typescript-eslint/parser": "^8.15.0",
-    "@types/swagger-ui-express" : "^4.1.7",
+    "@types/socket.io": "^3.0.0",
+    "@types/supertest": "^6.0.3",
+    "@types/swagger-ui-express": "^4.1.7",
     "@typescript-eslint/eslint-plugin": "^8.15.0",
     "@typescript-eslint/parser": "^8.15.0",
-    "@types/socket.io": "^3.0.0",
     "eslint": "^9.15.0",
     "eslint-plugin-nestjs": "^1.2.3",
-    "typescript": "^4.9.5"
+    "supertest": "^7.1.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^4.9.5",
+    "unplugin-swc": "^1.5.4",
+    "vitest": "^3.2.3"
   }
 }
