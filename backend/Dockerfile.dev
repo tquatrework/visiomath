@@ -21,9 +21,6 @@ RUN npm install -g @nestjs/cli
 # Copier le reste de l'application
 COPY . .
 
-# Builder l'application NestJS
-# RUN npm run build
-
 # Exposer le port utilisé par NestJS
 EXPOSE 5000
 
