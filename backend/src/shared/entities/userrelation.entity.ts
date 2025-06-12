@@ -15,10 +15,10 @@ export class UserRelation {
   @ManyToOne(() => User, (user : User) => user.receivedRelations)
   userTo!: Relation<User>;
 
-  @Column()
+  @Column({ type: 'varchar', length: 50 })
   relationType!: RelationList;
 
-  @Column()
+  @Column({ type: 'varchar', length: 50 })
   relationState!: RelationState;
 
   //@Column()

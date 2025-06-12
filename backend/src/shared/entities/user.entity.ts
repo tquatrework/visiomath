@@ -23,7 +23,7 @@ export class User {
   @Column({ default: true })
   isActive: boolean = true;
 
-  @Column()
+  @Column({ type: 'varchar', length: 50 })
   role!: RoleList;
   
   @Column()

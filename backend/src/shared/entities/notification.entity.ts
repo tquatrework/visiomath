@@ -14,7 +14,7 @@ export class Notification {
   @Column()
   message: string = ''; // Message de la notification
 
-  @Column()
+  @Column({ type: 'varchar', length: 50 })
   type: NotificationType = 'message';  // Type de notification (par exemple, 'relation_request', 'message', etc.)
 
   @Column({ nullable: true })
