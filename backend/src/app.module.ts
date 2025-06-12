@@ -31,7 +31,7 @@ const __dirname = getDirname(import.meta.url);
     // Configuration
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      envFilePath: ['.env'],
       load: [databaseConfig, jwtConfig, redisConfig],
     }),
     
@@ -47,16 +47,16 @@ const __dirname = getDirname(import.meta.url);
     }),
 
     // Cache Redis
-    CacheModule.registerAsync({
-      isGlobal: true,
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        store: redisStore,
-        host: configService.get<string>('REDIS_HOST', '172.20.0.6'),
-        port: configService.get<number>('REDIS_PORT', 6379),
-        ttl: 60 * 60, // Temps de vie en cache (1 heure par défaut)
-      }),
-    }),
+    // CacheModule.registerAsync({
+    // isGlobal: true,
+    //  inject: [ConfigService],
+    //  useFactory: (configService: ConfigService) => ({
+    //    store: redisStore,
+    //    host: configService.get<string>('REDIS_HOST', '172.20.0.6'),
+    //    port: configService.get<number>('REDIS_PORT', 6379),
+    //    ttl: 60 * 60, // Temps de vie en cache (1 heure par défaut)
+    //  }),
+    // }),
 
     // Modules de l'application
     //RouterModule.register(routes),

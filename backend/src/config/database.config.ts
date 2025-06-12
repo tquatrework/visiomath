@@ -15,7 +15,7 @@ export default registerAs('database', (): TypeOrmModuleOptions => ({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [join(__dirname, '..', 'shared', 'entities', '*.entity{.ts,.js}')],
+  //entities: [join(__dirname, '..', 'shared', 'entities', '*.entity{.ts,.js}')],
   migrations: [join(__dirname, '..', 'migrations', '*{.ts,.js}')],
   autoLoadEntities: true,
   //  synchronize: process.env.NODE_ENV !== 'production', // À désactiver en production
