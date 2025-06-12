@@ -4,6 +4,11 @@ FROM node:18-slim
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
+# Installer les dépendances système nécessaires (ps, prgrep, etc.)
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends procps \
+  && rm -rf /var/lib/apt/lists/*
+
 # Copier les fichiers package.json et package-lock.json dans le conteneur
 COPY package*.json ./
 

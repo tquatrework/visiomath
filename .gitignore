@@ -31,3 +31,6 @@
 #/datafiles
 #/db_data
 /redis_data
+
+.env.local
+.env

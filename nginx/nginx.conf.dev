@@ -17,8 +17,8 @@ http {
             proxy_set_header Host $host;
         }
 
-        location /api {
-            proxy_pass http://backend:5000; # API Backend en HTTP
+        location /api/ {
+            proxy_pass http://backend:5000/; # API Backe # API Backend en HTTP
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
