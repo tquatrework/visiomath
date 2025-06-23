@@ -28,23 +28,22 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@src': path.resolve(__dirname, 'src'),
     },
   },
   css: {
     postcss: {
       plugins: [
-        require('tailwindcss'),
-        require('autoprefixer'),
+        //require('tailwindcss'),
+        //require('autoprefixer'),
       ],
     },
   },
   test: {
-    globals: true,
-    environment: "jsdom",
-    setupFiles: "./src/setupTests.ts",
-    css: true,
-    coverage: {
-      reporter: ["text", "html"],
-    },
+      include: ['src/**/**/*.spec.ts', 'src/**/**/*.spec.tsx'],
+      globals: true,
+      environment: 'jsdom',
+      css: true,
+      setupFiles: './vitest.setup.ts'
   },
 });

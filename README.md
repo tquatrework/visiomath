@@ -11,7 +11,6 @@ RUN :
 
 - `docker compose --env-file .env.local -f docker-compose-vma.override.yml up` pour lancer l'application, accessible sur `http://visioprof.fr` 
 
-TODO : 
+TODO :
 - Déployer
 - Créer une CD
-- Créer la première user story
