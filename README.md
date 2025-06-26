@@ -14,3 +14,15 @@ RUN :
 TODO :
 - Déployer
 - Créer une CD
+- créer variable d'environnement pour le chemin nginx et remplacer dans le docker-compose-vma.override.yml
+
+En prod : 
+
+PIPE CD :
+
+- cloner le dépot
+- créer le fichier `.env.prod` avec les variables d'environnement de production
+- modifier le nginx.conf.prod
+- copier et créer le fichier docer-compose-vma.override.yml en remplaçant le chemin du nginx 
+- docker compose --env-file .env.prod -f docker-compose-vma.override.yml up
+- créer un compte admin en BDD
