@@ -10,7 +10,7 @@ BUILD :
 RUN : 
 
 - `docker compose --env-file .env.local -f docker-compose-vma.dev.yml up` pour lancer l'application en dev, accessible sur `http://visioprof.fr` 
-- `docker compose --env-file .env.local -f docker-compose-vma.prod.yml up` pour lancer l'application en dev, accessible sur `http://visioprof.fr`
+- `docker compose --env-file .env.prod -f docker-compose-vma.prod.yml up` pour lancer l'application en dev, accessible sur `http://visioprof.fr`
 
 
 TODO :
