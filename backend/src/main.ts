@@ -27,12 +27,13 @@ async function bootstrap() {
                 'http://172.20.0.1:8080',
                 'http://visioprof.fr',
                 'http://visioprof.fr:3000',
-                'http://37.59.115.225/:8080'
+                'http://37.59.115.225/:8080',
+                'http://localhost:3000',
             ];
             if (!origin || allowedOrigins.includes(origin)) {
                 callback(null, true);
             } else {
-                console.error('CORS error: Origin not allowed dddby CORS:', origin);
+                console.error('CORS error: Origin not allowed by CORS:', origin);
                 callback(new Error('Origin not allowed by CORS'));
             }
         },
