@@ -13,10 +13,6 @@ async function bootstrap() {
         logger: ['log', 'error', 'warn', 'debug', 'verbose'],
     });
 
-    app.use((req: any, _res: any, next: any) => {
-        console.log(`[${req.method}] ${req.originalUrl}`);
-        next();
-    });
 
     app.setGlobalPrefix('api');
 
@@ -26,7 +22,6 @@ async function bootstrap() {
         origin: (origin, callback) => {
             const allowedOrigins = ['http://193.108.54.226:3000', 'http://193.108.54.226:8080', 'http://172.20.0.3:3000', 'http://172.20.0.1:8080', 'http://visioprof.fr', 'http://visioprof.fr:3000'];
             if (!origin || allowedOrigins.includes(origin)) {
-                console.log('CORS allowed for origin:', origin);
                 callback(null, true);
             } else {
                 console.error('CORS error: Origin not allowed dddby CORS:', origin);
