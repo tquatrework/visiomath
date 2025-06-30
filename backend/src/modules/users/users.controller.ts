@@ -87,6 +87,7 @@ export class UsersController {
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({ status: 201, description: 'User created successfully', type: User })
   async create(@Body() createUserDto: CreateUserDto): Promise<{ user: User; token: string }> {
+    console.log('Creating user with DTO:', createUserDto);
     const user = await this.usersService.create(createUserDto);
     const token = await this.authService.generateToken(user);
     return { user, token };

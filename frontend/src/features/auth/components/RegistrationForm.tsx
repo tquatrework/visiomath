@@ -42,6 +42,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ onReset }) =
     try {
       // Étape 1 : Création de l'utilisateurs
       console.log("Utilisation actuelle de createUserRelations 2 :", createUserRelations);
+      console.log(`${API_URL}/users/`);
         const response = await fetch(`${API_URL}/users/`, {
         method: 'POST',
         headers: {

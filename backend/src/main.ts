@@ -13,6 +13,14 @@ async function bootstrap() {
         logger: ['log', 'error', 'warn', 'debug', 'verbose'],
     });
 
+    app.use((req: any, _res: any, next: any) => {
+        console.log(`[${req.method}] ${req.originalUrl}`);
+        next();
+    });
+
+    app.setGlobalPrefix('api');
+
+
     // Activer CORS avec la liste d'origines autorisées
     app.enableCors({
         origin: (origin, callback) => {
@@ -28,7 +36,6 @@ async function bootstrap() {
         credentials: true,
     });
 
-    //app.enableCors();
 
     // Configuration Swagger
     const config = new DocumentBuilder()
