@@ -1,0 +1,77 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "${FRONTEND_HOST_PORT}:${FRONTEND_CONTAINER_PORT}"
+    depends_on:
+      - backend
+    networks:
+      my-app-network:
+
+    environment:
+      - ENV_MODE=${ENV_MODE:-development}
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "${BACKEND_HOST_PORT}:${BACKEND_CONTAINER_PORT}"
+    depends_on:
+      - postgres
+    networks:
+      my-app-network:
+
+    volumes:
+      - ./datafiles:/app/datafiles
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - APP_PORT=${BACKEND_CONTAINER_PORT}
+
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_HOST_PORT}:${DB_PORT}"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      my-app-network:
+
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "${NGINX_HOST_PORT}:${NGINX_CONTAINER_PORT}"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf.dev:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      my-app-network:
+
+    environment:
+      - ENV_MODE=${ENV_MODE:-development}
+
+volumes:
+  datafiles:
+  db_data:
+
+networks:
+  my-app-network:
+    driver: bridge

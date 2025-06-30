@@ -1,25 +1,26 @@
-server {
-    listen 80;
-    server_name visioprof.fr;
-    return 301 https://$host$request_uri;
-}
+worker_processes auto;
+events { worker_connections 1024; }
 
-server {
-    listen 443 ssl;
-    server_name visioprof.fr;
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    server_tokens off;
 
-    ssl_certificate /etc/letsencrypt/live/visioprof.fr/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/visioprof.fr/privkey.pem;
+    server {
+        listen 80 default_server;      # répond même sans Server-Name
+        server_name _;                 # underscore = catch-all
 
-    location / {
-        proxy_pass http://frontend:3000;
-        proxy_set_header Host $host;
-    }
+        location / {
+            proxy_pass http://frontend:3000;
+            proxy_set_header Host $host;
+        }
 
-    location /api {
-        proxy_pass http://backend:5000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        location /api/ {               # note les deux barres pour couper /api
+            proxy_pass http://backend:5000/;
+            proxy_set_header Host              $host;
+            proxy_set_header X-Real-IP         $remote_addr;
+            proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
     }
 }
