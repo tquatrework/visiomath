@@ -20,7 +20,7 @@ async function bootstrap() {
     // Activer CORS avec la liste d'origines autorisées
     app.enableCors({
         origin: (origin, callback) => {
-            const allowedOrigins = ['http://193.108.54.226:3000', 'http://193.108.54.226:8080', 'http://172.20.0.3:3000', 'http://172.20.0.1:8080', 'http://visioprof.fr', 'http://visioprof.fr:3000'];
+            const allowedOrigins = ['http://193.108.54.226:3000', 'http://193.108.54.226:8080', 'http://172.20.0.3:3000', 'http://172.20.0.1:8080', 'http://visioprof.fr', 'http://visioprof.fr:3000', 'http://37.59.115.225/'];
             if (!origin || allowedOrigins.includes(origin)) {
                 callback(null, true);
             } else {
