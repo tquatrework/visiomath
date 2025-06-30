@@ -1,29 +1,41 @@
-# Utiliser une image Node.js officielle
-FROM node:18-slim
+# ────────────────────────────
+# Étape 1 : build (dev deps)
+# ────────────────────────────
+FROM node:18-slim AS build
 
-# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copier les fichiers package.json et package-lock.json dans le conteneur
+# 1. Déps uniquement – npm ci = réplicabilité
 COPY package*.json ./
+RUN npm ci
 
-# Installer les dépendances
-RUN npm install
-
-# Installer le CLI de NestJS globalement
-RUN npm install -g @nestjs/cli
-
-# Créer un projet NestJS (seulement si ce n'est pas déjà fait)
-# RUN nest new vma-app --skip-install  --package-manager npm
-
-# Copier le reste de l'application
+# 2. Source + compilation
 COPY . .
+RUN npm run build          # => dist/
 
-# Builder l'application NestJS
-RUN npm run build
+# ────────────────────────────
+# Étape 2 : runtime (prod only)
+# ────────────────────────────
+FROM node:18-slim AS prod
 
-# Exposer le port utilisé par NestJS
+# • Réduire la surface d’attaque
+RUN useradd -m -r nodeusr
+
+WORKDIR /app
+
+# 1. Déps prod seulement
+COPY --from=build /app/package*.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+
+# 2. Code compilé + assets
+COPY --from=build /app/dist ./dist
+# (copie éventuelle des fichiers static, .env.example, etc.)
+
+# 3. Variables env et port
+ENV NODE_ENV=production \
+    PORT=5000
 EXPOSE 5000
 
-# Lancer l'application
+USER nodeusr
+
 CMD ["npm", "run", "start:prod"]
