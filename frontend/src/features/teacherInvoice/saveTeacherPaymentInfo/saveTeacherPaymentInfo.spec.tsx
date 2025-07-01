@@ -42,7 +42,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         // Bic : azertyaz
         await userEvent.type(screen.getByLabelText(/BIC/i), 'azertyaz')
 
-        await userEvent.click(screen.getByRole('button', {name: /Enregistrer/i}),)
+        await userEvent.click(screen.getByRole('button', {name: /Sauvegarder/i}),)
 
         // Alors mon enregistrement doit être confirmé
         await waitFor(() => {
@@ -68,7 +68,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         // Bic : azertyaz
         await userEvent.type(screen.getByLabelText(/BIC/i), 'azertyaz')
 
-        await userEvent.click(screen.getByRole('button', {name: /Enregistrer/i}),)
+        await userEvent.click(screen.getByRole('button', {name: /Sauvegarder/i}),)
 
         // Alors mon enregistrement doit être refusé
         await waitFor(() => {
@@ -99,7 +99,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         // Bic : azertyaz
         await userEvent.type(screen.getByLabelText(/BIC/i), 'azertyaz')
 
-        await userEvent.click(screen.getByRole('button', {name: /Enregistrer/i}),)
+        await userEvent.click(screen.getByRole('button', {name: /Sauvegarder/i}),)
 
         // Alors mon enregistrement doit être refusé
         await waitFor(() => {

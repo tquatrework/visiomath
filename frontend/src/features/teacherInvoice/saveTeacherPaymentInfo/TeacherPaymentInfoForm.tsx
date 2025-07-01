@@ -1,14 +1,12 @@
+import React from 'react'
 import {
-    useSaveTeacherPaymentInfos
-} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/useSaveTeacherPaymentInfo.usecase";
+    useSaveTeacherPaymentInfos,
+} from '@src/features/teacherInvoice/saveTeacherPaymentInfo/useSaveTeacherPaymentInfo.usecase'
 import {
-    TeacherPaymentInfosModel
-} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.model";
+    TeacherPaymentInfosModel,
+} from '@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.model'
 
-
-function isTeacherPaymentInfosModel(
-    obj: unknown,
-): obj is TeacherPaymentInfosModel {
+function isTeacherPaymentInfosModel(obj: unknown): obj is TeacherPaymentInfosModel {
     if (typeof obj !== 'object' || obj === null) return false
     const o = obj as Record<string, unknown>
 
@@ -23,92 +21,149 @@ function isTeacherPaymentInfosModel(
     )
 }
 
-
 const TeacherPaymentInfoForm = () => {
-
-    const saveTeacherPaymentInfosUseCase = useSaveTeacherPaymentInfos();
+    const saveTeacherPaymentInfosUseCase = useSaveTeacherPaymentInfos()
 
     const saveTeacherPaymentInfo = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+        event.preventDefault()
 
-        const formData = new FormData(event.currentTarget);
-
-        const saveTeacherPaymentInfos = {
-            companyName: formData.get('companyName'),
-            siret: formData.get('siret'),
-            businessType: formData.get('businessType'),
-            vatExempted: formData.get('vatExempted') === 'on',
-            iban: formData.get('iban'),
-            bic: formData.get('bic'),
+        const fd = new FormData(event.currentTarget)
+        const raw = {
+            companyName: fd.get('companyName'),
+            siret: fd.get('siret'),
+            businessType: fd.get('businessType'),
+            vatExempted: fd.get('vatExempted') === 'on',
+            iban: fd.get('iban'),
+            bic: fd.get('bic'),
         }
 
-        if (!isTeacherPaymentInfosModel(saveTeacherPaymentInfos)) {
-            console.log('hello ?')
-            alert('Les informations de paiement du professeur ne sont pas au bon format');
-            return;
+        if (!isTeacherPaymentInfosModel(raw)) {
+            alert('Les informations de paiement du professeur ne sont pas au bon format')
+            return
         }
 
         try {
-            await saveTeacherPaymentInfosUseCase(saveTeacherPaymentInfos);
-            alert('Enregistrement Ok');
-        } catch (error) {
-
-            if (error instanceof Error) {
-                alert(error.message);
-                return;
-            }
-            alert("Une erreur s'est produite lors de l'enregistrement des informations de paiement du professeur.");
+            await saveTeacherPaymentInfosUseCase(raw)
+            alert('Enregistrement Ok')
+        } catch (err) {
+            alert(err instanceof Error ? err.message
+                : 'Une erreur est survenue')
         }
-
-    };
+    }
 
     return (
         <div>
-            <h2>Teacher Payment Information</h2>
+            <form
+                className="p-6 bg-white shadow-md rounded-lg"
+                onSubmit={saveTeacherPaymentInfo}
+            >
+                <h2 className="text-xl font-semibold mb-4 text-gray-800">
+                    Informations de paiement
+                </h2>
 
-            <form onSubmit={saveTeacherPaymentInfo}>
-                <div>
-                    <label htmlFor="companyName">Nom de l'entreprise</label>
-                    <input type="text" id="companyName" name="companyName" required />
+                <div className="mb-4">
+                    <label
+                        htmlFor="companyName"
+                        className="block text-sm font-medium text-gray-700"
+                    >
+                        Nom de l'entreprise
+                    </label>
+                    <input
+                        id="companyName"
+                        name="companyName"
+                        required
+                        className="w-full mt-1 p-2 border rounded-md"
+                    />
                 </div>
 
-                <div>
-                    <label htmlFor="siret">Siret</label>
-                    <input type="text" id="siret" name="siret" required />
+                <div className="mb-4">
+                    <label
+                        htmlFor="siret"
+                        className="block text-sm font-medium text-gray-700"
+                    >
+                        Siret
+                    </label>
+                    <input
+                        id="siret"
+                        name="siret"
+                        required
+                        className="w-full mt-1 p-2 border rounded-md"
+                    />
                 </div>
 
-                <div>
-                    <label htmlFor="businessType">Type entreprise</label>
-                    <select id="businessType" name="businessType" required>
+                <div className="mb-4">
+                    <label
+                        htmlFor="businessType"
+                        className="block text-sm font-medium text-gray-700"
+                    >
+                        Type entreprise
+                    </label>
+                    <select
+                        id="businessType"
+                        name="businessType"
+                        required
+                        className="w-full mt-1 p-2 border rounded-md"
+                    >
                         <option value="AE">Auto-entrepreneur</option>
                         <option value="SARL">SARL</option>
                         <option value="SA">SA</option>
-                        {/* Add more options as needed */}
                     </select>
                 </div>
 
-                <div>
-                    <label htmlFor="vatExempted">
+                <div className="mb-4">
+                    <label
+                        htmlFor="vatExempted"
+                        className="block text-sm font-medium text-gray-700"
+                    >
+                        <input
+                            type="checkbox"
+                            id="vatExempted"
+                            name="vatExempted"
+                            className="mr-2"
+                        />
                         Assujetti TVA
-                        <input type="checkbox" id="vatExempted" name="vatExempted" />
                     </label>
                 </div>
 
-                <div>
-                    <label htmlFor="iban">IBAN</label>
-                    <input type="text" id="iban" name="iban" required />
+                <div className="mb-4">
+                    <label
+                        htmlFor="iban"
+                        className="block text-sm font-medium text-gray-700"
+                    >
+                        IBAN
+                    </label>
+                    <input
+                        id="iban"
+                        name="iban"
+                        required
+                        className="w-full mt-1 p-2 border rounded-md"
+                    />
                 </div>
 
-                <div>
-                    <label htmlFor="bic">BIC</label>
-                    <input type="text" id="bic" name="bic" required />
+                <div className="mb-6">
+                    <label
+                        htmlFor="bic"
+                        className="block text-sm font-medium text-gray-700"
+                    >
+                        BIC
+                    </label>
+                    <input
+                        id="bic"
+                        name="bic"
+                        required
+                        className="w-full mt-1 p-2 border rounded-md"
+                    />
                 </div>
 
-                <button type="submit">Enregistrer</button>
+                <button
+                    type="submit"
+                    className="mt-6 mx-auto block w-1/3 py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    Sauvegarder
+                </button>
             </form>
-
         </div>
-    );
+    )
 }
 
-export default TeacherPaymentInfoForm;
+export default TeacherPaymentInfoForm
