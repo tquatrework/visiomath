@@ -1,0 +1,38 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - feature/teacher-invoice
+
+jobs:
+  deploy:
+    name: SSH - Build & Up
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run remote deployment commands
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            set -e
+
+            cd apps/visiomath
+
+            echo "🔄  Pulling latest code..."
+            git fetch origin
+            git checkout feature/teacher-invoice
+            git pull origin feature/teacher-invoice
+
+            echo "🐳  Building & starting containers..."
+            docker compose --env-file .env.prod -f docker-compose-vma.prod.yml up --build -d
+
+            echo "✅  Deployment finished!"
