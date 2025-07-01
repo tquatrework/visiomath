@@ -24,7 +24,7 @@ COPY .eslintrc.json ./
 EXPOSE 3000
 
 # Lancer l'application
-CMD ["sh", "-c", "npm run build:css && npm run dev"]
+CMD ["sh", "-c", "npm run dev"]
 # CMD ["npm", "run","dev"]
 # CMD ["npm", "run", "lint:json"]
 # CMD ["sh"]

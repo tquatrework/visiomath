@@ -9,6 +9,9 @@ services:
       - backend
     networks:
       my-app-network:
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
 
     environment:
       - ENV_MODE=${ENV_MODE:-development}
