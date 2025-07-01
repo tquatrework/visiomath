@@ -36,7 +36,7 @@ const UserProfile = () => {
 
       <Tabs selectedIndex={tabIndex} onSelect={setTabIndex}>
         <TabList className="flex border-b border-gray-200">
-          {['Profil Administratif', 'Profil Pédagogique', 'Profil Financier'].map((label, idx) => (
+          {['Profil Administratif', 'Profil Pédagogique', 'Profil Financier, Profil Professeur'].map((label, idx) => (
             <Tab
               key={label}
               className={`cursor-pointer py-2 px-4 ${tabIndex === idx ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500 hover:text-blue-500'}`}
@@ -58,6 +58,9 @@ const UserProfile = () => {
         </TabPanel>
         <TabPanel className="p-4">
           <FinancialProfile data={userData} />
+        </TabPanel>
+        <TabPanel className="p-4">
+            <p className="text-gray-600">Profil Professeur</p>
         </TabPanel>
       </Tabs>
     </div>

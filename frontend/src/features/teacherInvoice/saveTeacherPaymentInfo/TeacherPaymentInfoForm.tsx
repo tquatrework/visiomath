@@ -1,6 +1,28 @@
 import {
     useSaveTeacherPaymentInfos
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/useSaveTeacherPaymentInfo.usecase";
+import {
+    TeacherPaymentInfosModel
+} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.model";
+
+
+function isTeacherPaymentInfosModel(
+    obj: unknown,
+): obj is TeacherPaymentInfosModel {
+    if (typeof obj !== 'object' || obj === null) return false
+    const o = obj as Record<string, unknown>
+
+    return (
+        typeof o.companyName === 'string' &&
+        typeof o.siret === 'string' &&
+        typeof o.businessType === 'string' &&
+        ['AE', 'SARL', 'SA'].includes(o.businessType) &&
+        typeof o.vatExempted === 'boolean' &&
+        typeof o.iban === 'string' &&
+        typeof o.bic === 'string'
+    )
+}
+
 
 const TeacherPaymentInfoForm = () => {
 
@@ -10,20 +32,32 @@ const TeacherPaymentInfoForm = () => {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
-        const teacherPaymentInfos = {
+
+        const saveTeacherPaymentInfos = {
             companyName: formData.get('companyName'),
             siret: formData.get('siret'),
             businessType: formData.get('businessType'),
             vatExempted: formData.get('vatExempted') === 'on',
             iban: formData.get('iban'),
             bic: formData.get('bic'),
-        };
+        }
+
+        if (!isTeacherPaymentInfosModel(saveTeacherPaymentInfos)) {
+            console.log('hello ?')
+            alert('Les informations de paiement du professeur ne sont pas au bon format');
+            return;
+        }
 
         try {
-            await saveTeacherPaymentInfosUseCase(teacherPaymentInfos);
+            await saveTeacherPaymentInfosUseCase(saveTeacherPaymentInfos);
             alert('Enregistrement Ok');
         } catch (error) {
-            alert('Erreur lors de l\'enregistrement des informations de paiement');
+
+            if (error instanceof Error) {
+                alert(error.message);
+                return;
+            }
+            alert("Une erreur s'est produite lors de l'enregistrement des informations de paiement du professeur.");
         }
 
     };
