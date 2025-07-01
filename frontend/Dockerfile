@@ -1,23 +1,25 @@
-# Utiliser une image Node.js officielle
-FROM node:18-slim
+FROM node:18-slim AS build
 
-# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copier les fichiers package.json et package-lock.json dans le conteneur
 COPY package*.json ./
+RUN npm ci
 
-# Installer les dépendances
-RUN npm install
-
-# Copier le reste de l'application
 COPY . .
-
-# Builder l'application React
 RUN npm run build
 
-# Exposer le port utilisé par l'application React
+
+FROM node:18-slim AS prod
+
+RUN useradd -m -r nodeusr
+WORKDIR /app
+
+RUN npm install -g serve && npm cache clean --force
+
+COPY --from=build /app/dist ./dist
+
+USER nodeusr
+ENV PORT=3000
 EXPOSE 3000
 
-# Lancer l'application
-CMD ["npm", "start"]
+CMD ["serve", "-s", "dist", "-l", "3000"]
