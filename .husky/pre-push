@@ -7,7 +7,7 @@ if [ "$BRANCH_NAME" = "feature/teacher-invoice" ]; then
   echo "🧪  Launching frontend tests for $BRANCH_NAME ..."
   cd frontend || exit 1
 
-  npm run test
+  npm run test:ci
 else
   echo "➡️  Skipping tests (branch $BRANCH_NAME)"
 fi
