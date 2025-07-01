@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+
+if [ "$BRANCH_NAME" = "feature/teacher-invoice" ]; then
+  echo "🧪  Launching frontend tests for $BRANCH_NAME ..."
+  cd frontend || exit 1
+
+  npm run test
+else
+  echo "➡️  Skipping tests (branch $BRANCH_NAME)"
+fi
