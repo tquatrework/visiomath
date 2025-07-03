@@ -5,14 +5,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main.js",
     "start:migrate": "npm run build && node dist/scripts/migrate.js && node dist/main.js",
     "build": "nest build",
     "lint": "eslint . .ts,.js",
-    "test:e2e": "vitest run --config vitest.config.e2e.ts"
+    "test": "vitest run --config vitest.config.ts"
   },
   "keywords": [],
   "author": "Thierry QUATRE",
@@ -51,6 +50,7 @@
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
     "@nestjs/testing": "^10.4.19",
+    "@testcontainers/postgresql": "^11.0.3",
     "@types/bcrypt": "^5.0.0",
     "@types/cache-manager": "^4.0.0",
     "@types/cache-manager-redis-store": "^2.0.0",
@@ -66,6 +66,7 @@
     "eslint": "^9.15.0",
     "eslint-plugin-nestjs": "^1.2.3",
     "supertest": "^7.1.1",
+    "testcontainers": "^11.0.3",
     "ts-node": "^10.9.2",
     "typescript": "^4.9.5",
     "unplugin-swc": "^1.5.4",

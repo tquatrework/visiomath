@@ -6,8 +6,7 @@ export default defineConfig(({ mode }) => ({
     test: {
         include: ['src/**/*.e2e-spec.ts'],
         globals: true,
-        env: loadEnv(mode, '../', ''),
-        nodeArgs: ['--loader', 'ts-node/esm'],
+        //nodeArgs: ['--loader', 'ts-node/esm'],
     },
     plugins: [swc.vite()],
 }));

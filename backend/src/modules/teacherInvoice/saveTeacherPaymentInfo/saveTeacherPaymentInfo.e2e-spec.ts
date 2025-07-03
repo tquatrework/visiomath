@@ -1,26 +1,26 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../../app.module'
-import { describe, test, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, test, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import request from 'supertest';
+import {PostgreSqlContainer} from "@testcontainers/postgresql";
 
 describe('Save the teacher payment infos', () => {
 
-    test('should be defined', () => {
-        expect(true).toBeDefined();
-    });
-
-
     let app: INestApplication;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
+        const postgresContainer = await new PostgreSqlContainer("postgres:14").start();
+        const connectionUrl = new URL(postgresContainer.getConnectionUri());
 
-        console.log('env', process.env.NODE_ENV);
-        console.log('E2E DB username:', process.env.DB_USERNAME);
-        console.log('E2E DB HOST:', process.env.DB_HOST);
-        console.log('E2E DB name:', process.env.DB_NAME);
-        console.log('E2E DB password:', process.env.DB_PASSWORD);
-        console.log('E2E DB port:', process.env.DB_PORT);
+        process.env.DB_HOST = connectionUrl.hostname;
+        process.env.DB_PORT = connectionUrl.port;
+        process.env.DB_USERNAME = connectionUrl.username;
+        process.env.DB_PASSWORD = connectionUrl.password;
+        process.env.DB_NAME = connectionUrl.pathname.substring(1);
+        process.env.JWT_SECRET='test';
+        process.env.JWT_EXPIRATION='1d';
+        process.env.JWT_REFRESH_EXPIRES_IN='30d';
 
         const moduleRef = await Test.createTestingModule({
             imports: [AppModule],

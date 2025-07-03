@@ -27,7 +27,7 @@ Continuous delivery :
 Manuel : 
 - ssh sur le serveur
 - `git pull origin feature/teacher-invoice`
-- `docker compose --env-file .env.prod -f docker-compose-vma.prod.yml up --build`
+- `docker compose --env-file .env.prod -f docker-compose-vma.prod.yml build --no-cache && docker compose --env-file .env.prod -f docker-compose-vma.prod.yml up -d`
 
 Automatisé :
 - Push sur feature/teacher-invoice (github action configuré)
