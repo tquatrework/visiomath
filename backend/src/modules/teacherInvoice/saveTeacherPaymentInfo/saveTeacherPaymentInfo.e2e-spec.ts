@@ -1,42 +1,84 @@
-import { INestApplication } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../../../app.module'
-import { describe, test, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import request from 'supertest';
-import {PostgreSqlContainer} from "@testcontainers/postgresql";
+import {INestApplication} from "@nestjs/common";
+import {beforeEach} from "vitest";
+import {DataSource} from "typeorm";
+import {JwtService} from "@nestjs/jwt";
+import generateUserToken from "../../../common/test/fixture/generateUserToken";
 
-describe('Save the teacher payment infos', () => {
 
-    let app: INestApplication;
+declare global {
+    var app: INestApplication;
+}
 
-    beforeEach(async () => {
-        const postgresContainer = await new PostgreSqlContainer("postgres:14").start();
-        const connectionUrl = new URL(postgresContainer.getConnectionUri());
+describe('#US-1: Enregistrement des informations personnelles / de paiement du professeur', () => {
 
-        process.env.DB_HOST = connectionUrl.hostname;
-        process.env.DB_PORT = connectionUrl.port;
-        process.env.DB_USERNAME = connectionUrl.username;
-        process.env.DB_PASSWORD = connectionUrl.password;
-        process.env.DB_NAME = connectionUrl.pathname.substring(1);
-        process.env.JWT_SECRET='test';
-        process.env.JWT_EXPIRATION='1d';
-        process.env.JWT_REFRESH_EXPIRES_IN='30d';
+    test('#US-1-AC-1: Enregistrement réussi avec BIC 6 + 2', async () => {
 
-        const moduleRef = await Test.createTestingModule({
-            imports: [AppModule],
-        }).compile();
-        app = moduleRef.createNestApplication();
+        //Etant donné que je suis connecté en tant que professeur
+        const teacherToken = await generateUserToken(app, "teacher");
 
-        await app.init();
+        /**Quand j’enregistre :
+            nom de l’entreprise : “ProfCompany”
+            siret : “12345678912345
+            type entreprise : AE
+            assujetti TVA : non
+            IBAN : FR 1234567891234567891234567
+            Bic : azertyaz
+         */
+        const res = await request(app.getHttpServer())
+            .post('/teacher-payment-info')
+            .set('Authorization', `Bearer ${teacherToken}`)
+            .send({
+                companyName: 'ProfCompany',
+                siret: '12345678912345',
+                companyType: 'AE',
+                vatExempted: false,
+                iban: 'FR1234567891234567891234567',
+                bic: 'azertyaz'
+            });
+
+        //Alors mon enregistrement doit être confirmé
+        expect(res.status).toBe(201);
+
+        const teacherProfile = await app
+            .get(DataSource)
+            .query('SELECT * FROM teacher_profiles WHERE "userProfileId" = $1', [1])
+
+        console.log(teacherProfile);
+
+        expect(teacherProfile?.paymentInfo?.companyName).toBe('ProfCompany');
+
+
     });
 
-    afterAll(async () => {
-        await app.close();
-    });
+    test('#US-1-AC-2: Enregistrement échoué avec SIRET de moins de 14 caractères', async () => {
 
-    test('It Should save the payment infos of the teacher', async () => {
-        const res = await request(app.getHttpServer()).get('/users/health');
-        expect(res.status).toBe(200);
-        expect(res.body).toEqual({ status: 'ok' });
+        //Etant donné que je suis connecté en tant que professeur
+        const teacherToken = await generateUserToken(app, "teacher");
+
+        /**Quand j’enregistre :
+         nom de l’entreprise : “ProfCompany”
+         Siret : “12345678912"
+         type entreprise : AE
+         assujetti TVA : non
+         IBAN : FR FR1234567891234567891234567
+         Bic : azerty33
+         */
+        const res = await request(app.getHttpServer())
+            .post('/teacher-payment-info')
+            .set('Authorization', `Bearer ${teacherToken}`)
+            .send({
+                companyName: "ProfCompany",
+                siret: "12345678912",
+                companyType: "AE",
+                vatExempt: true,
+                iban: "FR1234567891234567891234567",
+                bic: "azerty33"
+        });
+
+
+        //Alors mon enregistrement doit renvoyer une erreur “Le SIRET doit contenir 14 caractères”
+        expect(res.status).toBe(422);
+        expect(res.body.message).toContain('Le SIRET doit contenir 14 caractères');
     });
 });

@@ -11,7 +11,7 @@ import { Logger } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 
 interface FullUserProfileResponse {
-  user: Omit<User, 'password' | 'toJSON'>;
+  user: Omit<User, 'password' | 'toJSON' | 'addTeacherProfilPaymentInfo'>;
   profile: UserProfile;
   pedago?: StudentProfile | TeacherProfile;
   ordonnance?: StudentOrdonnance | TeacherOrdonnance;
@@ -44,7 +44,7 @@ export class UserProfileService {
   /**
    * Retrieve user profile by user ID.
    */
-  async getUserProfile(userId: number): Promise<{ user: Omit<User, 'password' | 'toJSON'>; profile: UserProfile }> {
+  async getUserProfile(userId: number): Promise<{ user: Omit<User, 'password' | 'toJSON' | 'addTeacherProfilPaymentInfo'>; profile: UserProfile }> {
     const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['userProfile'] });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -164,7 +164,7 @@ export class UserProfileService {
    * Update full user profile with related data.
    */
   async updateFullUserProfile(userId: number, data: {
-    user: Omit<User, 'password' | 'toJSON'>;
+    user: Omit<User, 'password' | 'toJSON' | 'addTeacherProfilPaymentInfo'>;
     profile: UserProfile;
     studentProfile?: StudentProfile;
     studentOrdonnance?: StudentOrdonnance;

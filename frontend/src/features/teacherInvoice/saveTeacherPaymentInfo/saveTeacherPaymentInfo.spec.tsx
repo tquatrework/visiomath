@@ -57,7 +57,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         // Quand j’enregistre :
         // Nom de l’entreprise : "ProfCompany"
         await userEvent.type(screen.getByLabelText(/Nom de l'entreprise/i), 'ProfCompany')
-        // Siret : “12345678912345
+        // Siret : “123456789123
         await userEvent.type(screen.getByLabelText(/Siret/i), '123456789123')
         // Type entreprise : AE
         await userEvent.selectOptions(screen.getByLabelText(/Type entreprise/i), 'AE')

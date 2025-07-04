@@ -6,6 +6,9 @@ import { TeacherProfile } from './teacherProfile.entity.js';
 import { TeacherOrdonnance } from './teacherOrdonnance.entity.js';
 import { CalendarSlot } from './calendarSlots.entity.js';
 import { User } from './user.entity.js';
+import {
+  SaveTeacherPaymentInfoCommand
+} from "../../modules/teacherInvoice/saveTeacherPaymentInfo/teacherPaymentInfo.valueObject";
 
 @Entity('user_profiles')
 export class UserProfile {
@@ -46,4 +49,7 @@ export class UserProfile {
   @OneToMany(() => CalendarSlot, (slot) => slot.userId)
   calendarSlots?: Relation<CalendarSlot[]>;
 
+  addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand: SaveTeacherPaymentInfoCommand) {
+    this.teacherProfile?.addPaymentInfo(saveTeacherPaymentInfoCommand);
+  }
 }

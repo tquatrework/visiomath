@@ -35,6 +35,7 @@
 .env.local
 .env
 /node_modules
+.idea
 /idea
 /.idea/workspace.xml
 /.idea/vcs.xml

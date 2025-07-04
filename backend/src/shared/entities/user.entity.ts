@@ -8,6 +8,9 @@ import { UserProfile } from './userprofile.entity.js';
 import { UserRelation } from './userrelation.entity.js';
 import { NotificationUser } from './notificationUser.entity.js';
 import { RoleList } from '../../common/utils/lists.utils';
+import {
+  SaveTeacherPaymentInfoCommand
+} from "../../modules/teacherInvoice/saveTeacherPaymentInfo/teacherPaymentInfo.valueObject";
 
 @Entity('users')
 export class User {
@@ -78,6 +81,10 @@ export class User {
   toJSON() {
     const { password, ...rest } = this;
     return rest;
+  }
+
+  addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand: SaveTeacherPaymentInfoCommand): void {
+    this.userProfile.addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand);
   }
 
 }

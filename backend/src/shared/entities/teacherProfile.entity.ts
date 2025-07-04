@@ -1,6 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, Relation, JoinColumn } from 'typeorm';
 import {Exclude} from 'class-transformer';
 import { UserProfile } from './userprofile.entity.js';
+import {
+  SaveTeacherPaymentInfoCommand,
+  TeacherPaymentInfo
+} from "../../modules/teacherInvoice/saveTeacherPaymentInfo/teacherPaymentInfo.valueObject";
 
 @Entity('teacher_profiles')
 export class TeacherProfile {
@@ -26,4 +30,13 @@ export class TeacherProfile {
   @JoinColumn()
     @Exclude()
   userProfile!: Relation<UserProfile>;
+
+  @Column(() => TeacherPaymentInfo)
+  private paymentInfo?: TeacherPaymentInfo;
+
+  addPaymentInfo(saveTeacherPaymentInfoCommand: SaveTeacherPaymentInfoCommand) {
+    const teacherPaymentInfo = new TeacherPaymentInfo(saveTeacherPaymentInfoCommand);
+      this.paymentInfo = teacherPaymentInfo;
+  }
+
 }
