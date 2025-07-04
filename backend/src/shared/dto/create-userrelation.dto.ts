@@ -1,7 +1,7 @@
 // src/user-relations/dto/create-userrelation.dto.ts
 import { IsEnum, IsInt, IsIn, IsNotEmpty } from 'class-validator';
-import { relationList, RelationList } from '../../common/utils/lists.utils.js';
-import { relationState, RelationState } from '../../common/utils/lists.utils.js';
+import { relationList, RelationList } from '../../common/utils/lists.utils';
+import { relationState, RelationState } from '../../common/utils/lists.utils';
 
 export class CreateUserRelationDto {
   constructor(userFrom: number, userTo: number, relationType: RelationList, relationState: RelationState) { 

@@ -1,6 +1,6 @@
 import { IsString, IsNumber, IsNotEmpty, IsOptional, IsArray } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { NotificationType } from '../../common/utils/lists.utils.js';
+import { NotificationType } from '../../common/utils/lists.utils';
 
 export class CreateNotificationDto {
   // PERMET LA CREATION SIMULTANEE DU LIEN NOTIFICATION/USER

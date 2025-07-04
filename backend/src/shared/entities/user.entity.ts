@@ -3,14 +3,12 @@ import {
   Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn,
   OneToOne, OneToMany, ManyToMany, JoinColumn, Relation
 } from 'typeorm';
-import { UserFile } from './userfile.entity.js';
-import { UserProfile } from './userprofile.entity.js';
-import { UserRelation } from './userrelation.entity.js';
-import { NotificationUser } from './notificationUser.entity.js';
+import { UserFile } from './userfile.entity';
+import { UserProfile } from './userprofile.entity';
+import { UserRelation } from './userrelation.entity';
+import { NotificationUser } from './notificationUser.entity';
 import { RoleList } from '../../common/utils/lists.utils';
-import {
-  SaveTeacherPaymentInfoCommand
-} from "../../modules/teacherInvoice/saveTeacherPaymentInfo/teacherPaymentInfo.valueObject";
+import {SaveTeacherPaymentInfoCommand} from "./teacherProfile.entity";
 
 @Entity('users')
 export class User {
@@ -60,7 +58,7 @@ export class User {
   @OneToMany(() => UserRelation, (relation:UserRelation) => relation.userTo)
   receivedRelations?: UserRelation[];
 
-  @OneToOne(() => UserProfile, (userProfile: UserProfile) => userProfile.user, {onDelete: 'CASCADE'}) // Relation inverse vers UserProfile
+  @OneToOne(() => UserProfile, (userProfile: UserProfile) => userProfile.user, {onDelete: 'CASCADE', cascade: ['insert', 'update']}) // Relation inverse vers UserProfile
   @JoinColumn()
   userProfile : Relation<UserProfile> = null as any;
   //userProfile : UserProfile = null as any;

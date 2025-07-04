@@ -1,12 +1,12 @@
 // users.module.ts
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from '../auth/auth.module.js';
-import { UsersService } from './users.service.js';
-import { UsersController } from './users.controller.js';
-import { User } from '../../shared/entities/user.entity.js';
-import { Notification } from '../../shared/entities/notification.entity.js';
-import { NotificationsModule } from '../notifications/notifications.module.js';
+import { AuthModule } from '../auth/auth.module';
+import { UsersService } from './users.service';
+import { UsersController } from './users.controller';
+import { User } from '../../shared/entities/user.entity';
+import { Notification } from '../../shared/entities/notification.entity';
+import { NotificationsModule } from '../notifications/notifications.module';
 import {UserTypeOrmRepository} from "./user.typeOrmRepository";
 
 @Module({

@@ -1,11 +1,11 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { NotificationUser } from '../../shared/entities/notificationUser.entity.js';
-import { Notification } from '../../shared/entities/notification.entity.js'; 
-import { User } from '../../shared/entities/user.entity.js';
-import { NotificationUserService } from './notificationUsers.service.js';
-import { NotificationUserController } from './notificationUsers.controller.js';
-import { AuthModule } from '../auth/auth.module.js';
+import { NotificationUser } from '../../shared/entities/notificationUser.entity';
+import { Notification } from '../../shared/entities/notification.entity'; 
+import { User } from '../../shared/entities/user.entity';
+import { NotificationUserService } from './notificationUsers.service';
+import { NotificationUserController } from './notificationUsers.controller';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
     imports: [TypeOrmModule.forFeature([NotificationUser, Notification, User]),

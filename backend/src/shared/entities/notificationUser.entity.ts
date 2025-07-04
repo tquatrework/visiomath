@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Relation } from 'typeorm';
-import { Notification } from './notification.entity.js';
-import { User } from './user.entity.js';
+import { Notification } from './notification.entity';
+import { User } from './user.entity';
 
 @Entity('notification_users')
 export class NotificationUser {

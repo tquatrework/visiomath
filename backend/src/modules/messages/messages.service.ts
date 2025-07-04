@@ -2,11 +2,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Message } from '../../shared/entities/message.entity.js';
-import { User } from '../../shared/entities/user.entity.js';
-import { CreateMessageDto } from '../../shared/dto/create-message.dto.js';
-import { GetMessagesDto } from '../../shared/dto/get-messages.dto.js';
-import { NotificationsService } from '../notifications/notifications.service.js';
+import { Message } from '../../shared/entities/message.entity';
+import { User } from '../../shared/entities/user.entity';
+import { CreateMessageDto } from '../../shared/dto/create-message.dto';
+import { GetMessagesDto } from '../../shared/dto/get-messages.dto';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class MessagesService {

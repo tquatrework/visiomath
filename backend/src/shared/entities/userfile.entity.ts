@@ -1,6 +1,6 @@
 // userfile.entity.ts
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, Relation } from 'typeorm';
-import { User } from './user.entity.js';
+import { User } from './user.entity';
 
 @Entity('user_files')
 export class UserFile {

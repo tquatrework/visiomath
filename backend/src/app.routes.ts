@@ -1,9 +1,9 @@
 import { Routes } from '@nestjs/core';
-import { UsersModule } from './modules/users/users.module.js';
+import { UsersModule } from './modules/users/users.module';
 //import { UsersController } from './modules/users/users.controller';
-import { AuthModule } from './modules/auth/auth.module.js';
+import { AuthModule } from './modules/auth/auth.module';
 //import { AuthController } from './modules/auth/auth.controller';
-import { UserSpacesModule } from './modules/userspaces/userspaces.module.js';
+import { UserSpacesModule } from './modules/userspaces/userspaces.module';
 //import { UserSpacesController } from './modules/userspaces/userspaces.controller';
 
 export const routes: Routes = [

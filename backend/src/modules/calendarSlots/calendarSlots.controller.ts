@@ -2,9 +2,9 @@ import {
   Controller, Get, Post, Put, Delete, Param, Query, Body, UseGuards, HttpException, HttpStatus, ParseIntPipe 
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
-import { CalendarSlotsService } from './calendarSlots.service.js';
-import { CalendarSlot } from '../../shared/entities/calendarSlots.entity.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CalendarSlotsService } from './calendarSlots.service';
+import { CalendarSlot } from '../../shared/entities/calendarSlots.entity';
 
 @ApiTags('Calendar Slots')
 @UseGuards(JwtAuthGuard)

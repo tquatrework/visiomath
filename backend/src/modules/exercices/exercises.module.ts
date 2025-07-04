@@ -1,10 +1,10 @@
 // src/exercise/exercises.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Exercise } from '../../shared/entities/exercise.entity.js';
-import { ExerciseService } from './exercises.service.js';
-import { ExerciseController } from './exercises.controller.js';
-import { AuthModule } from '../auth/auth.module.js';
+import { Exercise } from '../../shared/entities/exercise.entity';
+import { ExerciseService } from './exercises.service';
+import { ExerciseController } from './exercises.controller';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Exercise]),

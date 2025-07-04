@@ -4,6 +4,9 @@ import {beforeEach} from "vitest";
 import {DataSource} from "typeorm";
 import {JwtService} from "@nestjs/jwt";
 import generateUserToken from "../../../common/test/fixture/generateUserToken";
+import {User} from "../../../shared/entities/user.entity";
+import {UserProfile} from "../../../shared/entities/userprofile.entity";
+import {TeacherProfile} from "../../../shared/entities/teacherProfile.entity";
 
 
 declare global {
@@ -37,16 +40,17 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
                 bic: 'azertyaz'
             });
 
+
+
         //Alors mon enregistrement doit être confirmé
         expect(res.status).toBe(201);
 
         const teacherProfile = await app
             .get(DataSource)
-            .query('SELECT * FROM teacher_profiles WHERE "userProfileId" = $1', [1])
+            .query('SELECT * FROM teacher_profiles WHERE "userProfileId" = $1 LIMIT 1', [1]);
 
-        console.log(teacherProfile);
 
-        expect(teacherProfile?.paymentInfo?.companyName).toBe('ProfCompany');
+        expect(teacherProfile[0]?.companyName).toBe('ProfCompany');
 
 
     });
@@ -75,7 +79,6 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
                 iban: "FR1234567891234567891234567",
                 bic: "azerty33"
         });
-
 
         //Alors mon enregistrement doit renvoyer une erreur “Le SIRET doit contenir 14 caractères”
         expect(res.status).toBe(422);

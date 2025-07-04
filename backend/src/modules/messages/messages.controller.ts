@@ -2,10 +2,10 @@
 import { 
     Controller, Get, Post, Body, Query, Param, UseGuards, ParseIntPipe 
   } from '@nestjs/common';
-  import { MessagesService } from './messages.service.js';
-  import { CreateMessageDto } from '../../shared/dto/create-message.dto.js';
-  import { GetMessagesDto } from '../../shared/dto/get-messages.dto.js';
-  import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+  import { MessagesService } from './messages.service';
+  import { CreateMessageDto } from '../../shared/dto/create-message.dto';
+  import { GetMessagesDto } from '../../shared/dto/get-messages.dto';
+  import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
   import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiParam } from '@nestjs/swagger';
   
   @ApiTags('Messages')

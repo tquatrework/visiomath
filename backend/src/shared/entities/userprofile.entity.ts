@@ -1,14 +1,11 @@
 //userprofile.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn, JoinColumn, Relation } from 'typeorm';
-import { StudentProfile } from './studentProfile.entity.js';
-import { StudentOrdonnance } from './studentOrdonnance.entity.js';
-import { TeacherProfile } from './teacherProfile.entity.js';
-import { TeacherOrdonnance } from './teacherOrdonnance.entity.js';
-import { CalendarSlot } from './calendarSlots.entity.js';
-import { User } from './user.entity.js';
-import {
-  SaveTeacherPaymentInfoCommand
-} from "../../modules/teacherInvoice/saveTeacherPaymentInfo/teacherPaymentInfo.valueObject";
+import { StudentProfile } from './studentProfile.entity';
+import { StudentOrdonnance } from './studentOrdonnance.entity';
+import { TeacherOrdonnance } from './teacherOrdonnance.entity';
+import { CalendarSlot } from './calendarSlots.entity';
+import { User } from './user.entity';
+import {SaveTeacherPaymentInfoCommand, TeacherProfile} from "./teacherProfile.entity";
 
 @Entity('user_profiles')
 export class UserProfile {
@@ -40,8 +37,8 @@ export class UserProfile {
   @OneToOne(() => StudentOrdonnance, (studentOrdonnance) => studentOrdonnance.userProfile)
   studentOrdonnance?: Relation<StudentOrdonnance>;
 
-  @OneToOne(() => TeacherProfile, (teacherProfile) => teacherProfile.userProfile)
-  teacherProfile?: Relation<TeacherProfile>;
+  @OneToOne(() => TeacherProfile, (teacherProfile) => teacherProfile.userProfile, {cascade: ['insert', 'update']})
+  teacherProfile?: TeacherProfile;
 
   @OneToOne(() => TeacherOrdonnance, (teacherOrdonnance) => teacherOrdonnance.userProfile)
   teacherOrdonnance?: Relation<TeacherOrdonnance>;

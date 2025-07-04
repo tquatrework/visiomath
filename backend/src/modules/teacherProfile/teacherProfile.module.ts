@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from '../auth/auth.module.js';
-import { TeacherProfile } from '../../shared/entities/teacherProfile.entity.js';
-import { TeacherProfileService } from './teacherProfile.service.js';
-import { TeacherProfileController } from './teacherProfile.controller.js';
-import { UserProfile } from '../../shared/entities/userprofile.entity.js';
+import { AuthModule } from '../auth/auth.module';
+import { TeacherProfile } from '../../shared/entities/teacherProfile.entity';
+import { TeacherProfileService } from './teacherProfile.service';
+import { TeacherProfileController } from './teacherProfile.controller';
+import { UserProfile } from '../../shared/entities/userprofile.entity';
 
 @Module({
   imports: [AuthModule,

@@ -9,9 +9,9 @@ import {
 } from '@nestjs/websockets';
 import { Inject, forwardRef } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
-import { MessagesService } from '../../modules/messages/messages.service.js';
-import { CreateMessageDto } from '../dto/create-message.dto.js';
-import { NotificationsService } from '../../modules/notifications/notifications.service.js';
+import { MessagesService } from '../../modules/messages/messages.service';
+import { CreateMessageDto } from '../dto/create-message.dto';
+import { NotificationsService } from '../../modules/notifications/notifications.service';
 
 @WebSocketGateway({ cors: true }) // Active WebSockets avec prise en charge du CORS
 export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect {

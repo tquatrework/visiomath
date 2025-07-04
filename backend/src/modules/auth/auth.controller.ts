@@ -1,10 +1,10 @@
 // auth.controller.ts
 import { Controller, Post,  Get, UseGuards, Request, Req, Res, Body, Query, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
-import { AuthService } from './auth.service.js';
-import { LocalAuthGuard } from './guards/local-auth.guard.js';
-import { JwtAuthGuard } from './guards/jwt-auth.guard.js';
-import { LoginDto } from '../../shared/dto/login.dto.js';
+import { AuthService } from './auth.service';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { LoginDto } from '../../shared/dto/login.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('auth')

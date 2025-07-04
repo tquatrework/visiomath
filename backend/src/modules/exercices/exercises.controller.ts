@@ -3,9 +3,9 @@ import {
   Controller, Get, Post, Patch, Delete, Param, Body, UseGuards, ParseIntPipe 
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
-import { ExerciseService } from './exercises.service.js';
-import { Exercise } from '../../shared/entities/exercise.entity.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ExerciseService } from './exercises.service';
+import { Exercise } from '../../shared/entities/exercise.entity';
 
 @ApiTags('Exercises')
 @UseGuards(JwtAuthGuard)

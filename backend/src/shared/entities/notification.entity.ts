@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Relation } from 'typeorm';
-import { NotificationUser } from './notificationUser.entity.js';
-import { NotificationType } from '../../common/utils/lists.utils.js';
-//import { ActionNotification } from './actionNotification.entity.js';  // Supposons que vous avez une entité ActionNotification
+import { NotificationUser } from './notificationUser.entity';
+import { NotificationType } from '../../common/utils/lists.utils';
+//import { ActionNotification } from './actionNotification.entity';  // Supposons que vous avez une entité ActionNotification
 
 @Entity('notifications')
 export class Notification {

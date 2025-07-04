@@ -2,10 +2,10 @@ import {
   Controller, Post, Get, Patch, Delete, Query, Param, Body, ParseIntPipe, UseGuards 
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
-import { NotificationUser } from '../../shared/entities/notificationUser.entity.js';
-import { NotificationUserService } from './notificationUsers.service.js';
-import { Notification } from '../../shared/entities/notification.entity.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { NotificationUser } from '../../shared/entities/notificationUser.entity';
+import { NotificationUserService } from './notificationUsers.service';
+import { Notification } from '../../shared/entities/notification.entity';
 
 @ApiTags('Notification Users')
 @UseGuards(JwtAuthGuard)

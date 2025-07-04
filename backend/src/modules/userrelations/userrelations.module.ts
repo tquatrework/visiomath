@@ -1,13 +1,13 @@
 // src/user-relations/user-relations.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserRelation } from '../../shared/entities/userrelation.entity.js';
-import { UserRelationsService } from './userrelations.service.js';
-import { UserRelationsController } from './userrelations.controller.js';
-import { User } from '../../shared/entities/user.entity.js';
-import { AuthModule } from '../auth/auth.module.js';
-import { UsersModule } from '../users/users.module.js';
-import { NotificationsModule } from '../notifications/notifications.module.js';
+import { UserRelation } from '../../shared/entities/userrelation.entity';
+import { UserRelationsService } from './userrelations.service';
+import { UserRelationsController } from './userrelations.controller';
+import { User } from '../../shared/entities/user.entity';
+import { AuthModule } from '../auth/auth.module';
+import { UsersModule } from '../users/users.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
   imports: [

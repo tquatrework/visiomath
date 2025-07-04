@@ -1,7 +1,7 @@
 // shared/dto/create-user.dto.ts
 import { IsEmail, IsString, MinLength, IsOptional } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { RoleList } from '../../common/utils/lists.utils.js';
+import { RoleList } from '../../common/utils/lists.utils';
 
 export class CreateUserDto {
   @ApiProperty({

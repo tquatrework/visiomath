@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { TeacherProfile } from '../../shared/entities/teacherProfile.entity.js';
-import { UserProfile } from '../../shared/entities/userprofile.entity.js';
+import { TeacherProfile } from '../../shared/entities/teacherProfile.entity';
+import { UserProfile } from '../../shared/entities/userprofile.entity';
 
 @Injectable()
 export class TeacherProfileService {

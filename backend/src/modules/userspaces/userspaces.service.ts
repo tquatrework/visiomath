@@ -1,10 +1,10 @@
 import { Injectable, forwardRef, Inject, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserFile } from '../../shared/entities/userfile.entity.js';
-import { User } from '../../shared/entities/user.entity.js';
-import { UsersService } from '../users/users.service.js';
-import { UploadedFileType } from '../../shared/interfaces/uploaded-file-type.js';
+import { UserFile } from '../../shared/entities/userfile.entity';
+import { User } from '../../shared/entities/user.entity';
+import { UsersService } from '../users/users.service';
+import { UploadedFileType } from '../../shared/interfaces/uploaded-file-type';
 import * as fs from 'fs';
 
 @Injectable()

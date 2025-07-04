@@ -2,15 +2,15 @@ import {
   Controller, Get, Post, Delete, Param, Query, Body, ParseIntPipe, UseGuards, Req, Request, Res, UnauthorizedException,
   NotFoundException, BadRequestException, UseInterceptors, UploadedFile 
 } from '@nestjs/common';
-import { UserSpacesService } from './userspaces.service.js';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { UserSpacesService } from './userspaces.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { AuthRequest } from '../../shared/interfaces/auth-request.js';
-import { CustomRequest } from '../../shared/interfaces/custom-request.js';
+import { AuthRequest } from '../../shared/interfaces/auth-request';
+import { CustomRequest } from '../../shared/interfaces/custom-request';
 import { Response } from 'express';
-import { UploadedFileType } from '../../shared/interfaces/uploaded-file-type.js';
-import { UserFile } from '../../shared/entities/userfile.entity.js';
+import { UploadedFileType } from '../../shared/interfaces/uploaded-file-type';
+import { UserFile } from '../../shared/entities/userfile.entity';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiParam } from '@nestjs/swagger';
 import * as path from 'path';
 

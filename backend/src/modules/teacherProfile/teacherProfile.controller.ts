@@ -2,9 +2,9 @@ import {
   Controller, Get, Post, Patch, Delete, Param, Query, Body, ParseIntPipe, UseGuards, NotFoundException 
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags, ApiQuery, ApiParam, ApiBody } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
-import { TeacherProfileService } from './teacherProfile.service.js';
-import { TeacherProfile } from '../../shared/entities/teacherProfile.entity.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { TeacherProfileService } from './teacherProfile.service';
+import { TeacherProfile } from '../../shared/entities/teacherProfile.entity';
 
 @ApiTags('Teacher Profiles')
 @UseGuards(JwtAuthGuard)

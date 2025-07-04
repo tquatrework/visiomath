@@ -1,7 +1,7 @@
 import { registerAs } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { join} from 'path';
-import { getDirname } from '../common/utils/path-utils.js';
+import { getDirname } from '../common/utils/path-utils';
 
 
 
@@ -12,7 +12,7 @@ export default registerAs('database', (): TypeOrmModuleOptions => ({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  migrations: [join(__dirname, '..', 'migrations', '*{.ts,.js}')],
+  migrations: [join(__dirname, '..', 'migrations', '*{.ts,}')],
   autoLoadEntities: true,
   synchronize: true,
   logging: false,

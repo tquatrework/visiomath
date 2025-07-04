@@ -1,7 +1,7 @@
-import {SaveTeacherPaymentInfoCommand, TeacherPaymentInfo} from "./teacherPaymentInfo.valueObject";
 import {Inject} from "@nestjs/common";
 import {UserRepository} from "../../users/user.repository";
 import {UserTypeOrmRepository} from "../../users/user.typeOrmRepository";
+import {SaveTeacherPaymentInfoCommand} from "../../../shared/entities/teacherProfile.entity";
 
 export class SaveTeacherPaymentInfoUsecase {
 
@@ -21,7 +21,7 @@ export class SaveTeacherPaymentInfoUsecase {
         teacher.addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand);
 
         try {
-            const teacherProfileUpdated = await this.userRepository.save(teacher);
+            await this.userRepository.save(teacher);
             return;
         } catch (error) {
             if (error instanceof Error) {
@@ -29,5 +29,6 @@ export class SaveTeacherPaymentInfoUsecase {
             }
             throw new Error("Erreur interne du serveur.");
         }
+
     }
 }

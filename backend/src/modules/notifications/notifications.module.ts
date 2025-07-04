@@ -1,12 +1,12 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { NotificationsController } from './notifications.controller.js';
-import { NotificationsService } from './notifications.service.js';
-import { Notification } from '../../shared/entities/notification.entity.js'; // Entité Notification
-import { User } from '../../shared/entities/user.entity.js'; // Entité User (assurez-vous qu'elle existe)
-import { NotificationUser } from '../../shared/entities/notificationUser.entity.js'; // Entité NotificationUser (assurez-vous qu'elle existe)
-import { NotificationUserModule } from '../notificationUsers/notificationUsers.module.js';
-import { AuthModule } from '../auth/auth.module.js';
+import { NotificationsController } from './notifications.controller';
+import { NotificationsService } from './notifications.service';
+import { Notification } from '../../shared/entities/notification.entity'; // Entité Notification
+import { User } from '../../shared/entities/user.entity'; // Entité User (assurez-vous qu'elle existe)
+import { NotificationUser } from '../../shared/entities/notificationUser.entity'; // Entité NotificationUser (assurez-vous qu'elle existe)
+import { NotificationUserModule } from '../notificationUsers/notificationUsers.module';
+import { AuthModule } from '../auth/auth.module';
 
 
 @Module({

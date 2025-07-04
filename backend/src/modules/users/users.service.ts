@@ -2,12 +2,12 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
-import { User } from '../../shared/entities/user.entity.js';
-import { CreateUserDto } from '../../shared/dto/create-user.dto.js';
-import { UpdateUserDto } from '../../shared/dto/update-user.dto.js';
+import { User } from '../../shared/entities/user.entity';
+import { CreateUserDto } from '../../shared/dto/create-user.dto';
+import { UpdateUserDto } from '../../shared/dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
-import { Notification } from '../../shared/entities/notification.entity.js';
-import { NotificationsService } from '../notifications/notifications.service.js';
+import { Notification } from '../../shared/entities/notification.entity';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class UsersService {

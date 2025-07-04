@@ -2,13 +2,13 @@
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { UserSpacesService } from './userspaces.service.js';
-import { UserSpacesController } from './userspaces.controller.js';
-import { UsersModule } from '../users/users.module.js';
-import { AuthModule} from '../auth/auth.module.js';
+import { UserSpacesService } from './userspaces.service';
+import { UserSpacesController } from './userspaces.controller';
+import { UsersModule } from '../users/users.module';
+import { AuthModule} from '../auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../../shared/entities/user.entity.js';
-import { UserFile } from '../../shared/entities/userfile.entity.js';
+import { User } from '../../shared/entities/user.entity';
+import { UserFile } from '../../shared/entities/userfile.entity';
 
 @Module({
   imports: [

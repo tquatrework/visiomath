@@ -3,11 +3,11 @@ import {
   HttpException, HttpStatus
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiParam } from '@nestjs/swagger';
-import { UserRelationsService } from './userrelations.service.js';
-import { CreateUserRelationDto } from '../../shared/dto/create-userrelation.dto.js';
-import { RelationList, RelationState } from '../../common/utils/lists.utils.js';
-import { UsersService } from '../users/users.service.js';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { UserRelationsService } from './userrelations.service';
+import { CreateUserRelationDto } from '../../shared/dto/create-userrelation.dto';
+import { RelationList, RelationState } from '../../common/utils/lists.utils';
+import { UsersService } from '../users/users.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('User Relations')
 @UseGuards(JwtAuthGuard)

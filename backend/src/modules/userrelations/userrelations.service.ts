@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Equal } from 'typeorm';
-import { UserRelation } from '../../shared/entities/userrelation.entity.js';
-import { RelationList, RelationState, RoleList } from '../../common/utils/lists.utils.js';
-import { User } from '../../shared/entities/user.entity.js';
-import { CreateUserRelationDto } from '../../shared/dto/create-userrelation.dto.js';
-import { NotificationsService } from '../notifications/notifications.service.js';
+import { UserRelation } from '../../shared/entities/userrelation.entity';
+import { RelationList, RelationState, RoleList } from '../../common/utils/lists.utils';
+import { User } from '../../shared/entities/user.entity';
+import { CreateUserRelationDto } from '../../shared/dto/create-userrelation.dto';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class UserRelationsService {

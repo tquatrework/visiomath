@@ -4,13 +4,13 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
-import { CustomRequest } from '../../shared/interfaces/custom-request.js';
-import { UserFilesService } from './userfiles.service.js';
-import { UserFile } from '../../shared/entities/userfile.entity.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CustomRequest } from '../../shared/interfaces/custom-request';
+import { UserFilesService } from './userfiles.service';
+import { UserFile } from '../../shared/entities/userfile.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { UploadedFileType } from '../../shared/interfaces/uploaded-file-type.js';
+import { UploadedFileType } from '../../shared/interfaces/uploaded-file-type';
 import * as path from 'path';
 
 @ApiTags('User Files')

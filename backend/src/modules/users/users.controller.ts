@@ -3,12 +3,12 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiParam, ApiBody } from '@nestjs/swagger';
-import { UsersService } from './users.service.js';
-import { AuthService } from '../auth/auth.service.js';
-import { User } from '../../shared/entities/user.entity.js';
-import { CreateUserDto } from '../../shared/dto/create-user.dto.js';
-import { UpdateUserDto } from '../../shared/dto/update-user.dto.js';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { UsersService } from './users.service';
+import { AuthService } from '../auth/auth.service';
+import { User } from '../../shared/entities/user.entity';
+import { CreateUserDto } from '../../shared/dto/create-user.dto';
+import { UpdateUserDto } from '../../shared/dto/update-user.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Users')
 @Controller('users')

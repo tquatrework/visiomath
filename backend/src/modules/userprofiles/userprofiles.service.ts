@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../../shared/entities/user.entity.js';
-import { UserProfile } from '../../shared/entities/userprofile.entity.js';
-import { StudentProfile } from '../../shared/entities/studentProfile.entity.js';
-import { StudentOrdonnance } from '../../shared/entities/studentOrdonnance.entity.js';
-import { TeacherProfile } from '../../shared/entities/teacherProfile.entity.js';
-import { TeacherOrdonnance } from '../../shared/entities/teacherOrdonnance.entity.js';
+import { User } from '../../shared/entities/user.entity';
+import { UserProfile } from '../../shared/entities/userprofile.entity';
+import { StudentProfile } from '../../shared/entities/studentProfile.entity';
+import { StudentOrdonnance } from '../../shared/entities/studentOrdonnance.entity';
+import { TeacherProfile } from '../../shared/entities/teacherProfile.entity';
+import { TeacherOrdonnance } from '../../shared/entities/teacherOrdonnance.entity';
 import { Logger } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 

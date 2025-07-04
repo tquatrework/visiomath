@@ -1,8 +1,8 @@
 "use strict";
 import {NestFactory} from '@nestjs/core';
-import {AppModule} from './app.module.js';
+import {AppModule} from './app.module';
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
-import {getDirname} from './common/utils/path-utils.js';
+import {getDirname} from './common/utils/path-utils';
 import {Logger, ValidationPipe} from '@nestjs/common';
 
 async function bootstrap() {
@@ -13,6 +13,7 @@ async function bootstrap() {
 
 
     app.setGlobalPrefix('api');
+
 
 
     // Activer CORS avec la liste d'origines autorisées

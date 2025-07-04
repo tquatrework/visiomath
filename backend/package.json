@@ -11,7 +11,7 @@
     "build": "nest build",
     "lint": "eslint . .ts,.js",
     "test": "vitest run --config vitest.config.ts",
-    "test:e2e:watch": "vitest run --config vitest.config.e2e.ts --watch",
+    "test:e2e:watch": "vitest --config vitest.config.e2e.ts --watch",
     "test:unit:watch": "vitest --config vitest.config.unit.ts --watch"
   },
   "keywords": [],

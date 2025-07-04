@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { NotificationUser } from '../../shared/entities/notificationUser.entity.js';
-import { Notification } from '../../shared/entities/notification.entity.js';
-import { User } from '../../shared/entities/user.entity.js';
+import { NotificationUser } from '../../shared/entities/notificationUser.entity';
+import { Notification } from '../../shared/entities/notification.entity';
+import { User } from '../../shared/entities/user.entity';
 
 @Injectable()
 export class NotificationUserService {

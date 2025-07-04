@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer';
 import { Readable } from 'stream';
-import { UploadedFileType } from '../../shared/interfaces/uploaded-file-type.js';
+import { UploadedFileType } from '../../shared/interfaces/uploaded-file-type';
 
 export function createDefaultUploadedFile( id: number, userId: number, filename: string): UploadedFileType {
   const defaultStream = new Readable({

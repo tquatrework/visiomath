@@ -1,8 +1,8 @@
 import { IsEmail, IsString, IsBoolean, MinLength, IsOptional } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateUserDto } from './create-user.dto.js';
+import { CreateUserDto } from './create-user.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { RoleList } from '../../common/utils/lists.utils.js';
+import { RoleList } from '../../common/utils/lists.utils';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
 

@@ -11,10 +11,12 @@ export class UserTypeOrmRepository implements UserRepository {
     ) {}
 
     async findUserByIdWithTeacherProfil(id: number): Promise<User | null> {
-        return this.userRepository.findOne({
-            where: { id },
-            relations: ['teacherProfile'],
-        });
+        return this.userRepository.createQueryBuilder('user')
+            .leftJoinAndSelect('user.userProfile', 'userProfile')
+            .leftJoinAndSelect('userProfile.teacherProfile', 'teacherProfile')
+
+            .andWhere('user.id = :id', { id })
+            .getOne();
     }
 
     async save(user: User): Promise<void> {

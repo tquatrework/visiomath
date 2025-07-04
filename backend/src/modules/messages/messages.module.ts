@@ -1,14 +1,14 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MessagesService } from './messages.service.js';
-import { MessagesController } from './messages.controller.js';
-import { MessagesGateway } from '../../shared/gateways/messages.gateway.js';
-import { Message } from '../../shared/entities/message.entity.js';
-import { Notification } from '../../shared/entities/notification.entity.js';
-import { NotificationUser } from '../../shared/entities/notificationUser.entity.js';
-import { NotificationsModule } from '../notifications/notifications.module.js';
-import { AuthModule } from '../auth/auth.module.js';
-import { User } from '../../shared/entities/user.entity.js';
+import { MessagesService } from './messages.service';
+import { MessagesController } from './messages.controller';
+import { MessagesGateway } from '../../shared/gateways/messages.gateway';
+import { Message } from '../../shared/entities/message.entity';
+import { Notification } from '../../shared/entities/notification.entity';
+import { NotificationUser } from '../../shared/entities/notificationUser.entity';
+import { NotificationsModule } from '../notifications/notifications.module';
+import { AuthModule } from '../auth/auth.module';
+import { User } from '../../shared/entities/user.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Message, Notification, NotificationUser, User]),

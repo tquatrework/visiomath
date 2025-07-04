@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CalendarSlot } from '../../shared/entities/calendarSlots.entity.js';
+import { CalendarSlot } from '../../shared/entities/calendarSlots.entity';
 
 @Injectable()
 export class CalendarSlotsService {

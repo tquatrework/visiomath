@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, Relation, JoinColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { UserProfile } from './userprofile.entity.js';
+import { UserProfile } from './userprofile.entity';
 
 @Entity('teacher_ordonnances')
 export class TeacherOrdonnance {

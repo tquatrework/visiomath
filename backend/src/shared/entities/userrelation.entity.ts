@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Relation } from 'typeorm';
-import { User } from './user.entity.js';
-import { RelationList, RelationState } from '../../common/utils/lists.utils.js';
+import { User } from './user.entity';
+import { RelationList, RelationState } from '../../common/utils/lists.utils';
 
 @Entity('user_relations')
 export class UserRelation {
