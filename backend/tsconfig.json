@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-      "module": "ES2020",
+      "module": "commonjs",
       "moduleResolution": "node",
       "target": "es2018",
       "lib": ["es2018", "dom"],
@@ -16,8 +16,9 @@
       "noImplicitThis": false,
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
-      "skipLibCheck": true
+      "skipLibCheck": true,
+      "types": ["vitest/globals"]
     },
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "src/**/*.e2e-spec.ts"]
+    "exclude": ["node_modules"]
   }

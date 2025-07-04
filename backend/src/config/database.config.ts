@@ -3,13 +3,12 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { join} from 'path';
 import { getDirname } from '../common/utils/path-utils.js';
 
-const __dirname = getDirname(import.meta.url);
 
 
 export default registerAs('database', (): TypeOrmModuleOptions => ({
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT),
+  port: parseInt(process.env.DB_PORT || '5432'),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,

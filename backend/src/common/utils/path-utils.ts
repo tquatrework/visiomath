@@ -12,5 +12,4 @@ export const getFilename = (metaUrl: string): string => {
 };
 
 // Définition du chemin vers le fichier `.env`
-const __dirname = getDirname(import.meta.url);
 export const envFilePath = join(__dirname, '..', '..', '.env');

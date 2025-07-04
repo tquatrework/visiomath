@@ -5,8 +5,6 @@ import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
 import {getDirname} from './common/utils/path-utils.js';
 import {Logger, ValidationPipe} from '@nestjs/common';
 
-const __dirname = getDirname(import.meta.url);
-
 async function bootstrap() {
 
     const app = await NestFactory.create(AppModule, {

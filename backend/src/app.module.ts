@@ -21,9 +21,9 @@ import { ExerciseModule } from './modules/exercices/exercises.module.js';
 import { NotificationUserModule } from './modules/notificationUsers/notificationUsers.module.js';
 import { CalendarSlotsModule } from './modules/calendarSlots/calendarSlots.module.js';
 import { MessagesModule } from './modules/messages/messages.module.js';
+import {TeacherInvoiceModule} from "./modules/teacherInvoice/teacherInvoice.module.js";
 
 
-const __dirname = getDirname(import.meta.url);
 
 @Module({
   imports: [
@@ -62,6 +62,7 @@ const __dirname = getDirname(import.meta.url);
     CalendarSlotsModule,
     MessagesModule,
     ExerciseModule,
+    TeacherInvoiceModule
   ],
 })
 export class AppModule {}

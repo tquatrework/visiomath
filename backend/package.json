@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "backend",
   "version": "1.0.0",
   "description": "",
@@ -11,7 +10,9 @@
     "start:migrate": "npm run build && node dist/scripts/migrate.js && node dist/main.js",
     "build": "nest build",
     "lint": "eslint . .ts,.js",
-    "test": "vitest run --config vitest.config.ts"
+    "test": "vitest run --config vitest.config.ts",
+    "test:e2e:watch": "vitest run --config vitest.config.e2e.ts --watch",
+    "test:watch": "vitest --config vitest.config.unit.ts --watch"
   },
   "keywords": [],
   "author": "Thierry QUATRE",
@@ -70,6 +71,7 @@
     "ts-node": "^10.9.2",
     "typescript": "^4.9.5",
     "unplugin-swc": "^1.5.4",
+    "vite-plugin-checker": "^0.9.3",
     "vitest": "^3.2.3"
   }
 }
