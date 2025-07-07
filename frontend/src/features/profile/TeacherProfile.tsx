@@ -4,11 +4,14 @@ import { useForm } from "react-hook-form";
 import { useTeacherProfile } from "../../hooks/useTeacherProfile";
 import TeacherPaymentInfoForm from "@src/features/teacherInvoice/saveTeacherPaymentInfo/TeacherPaymentInfoForm";
 import {
-  TeacherPaymentInfoInMemoryRepository
+  SaveTeacherPaymentInfoInMemoryRepository
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.inMemoryRepository";
 import {
   SaveTeacherPaymentInfoRepositoryProvider
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.repository.provider";
+import {
+  SaveTeacherPaymentFetchRepository
+} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.fetchRepository";
 
 interface TeacherProfileProps {
   data: any;
@@ -121,7 +124,7 @@ const TeacherProfile: React.FC<TeacherProfileProps> = ({ data, readOnly = false 
       </form>
 
       <SaveTeacherPaymentInfoRepositoryProvider
-          saveTeacherPaymentInfoRepository={new TeacherPaymentInfoInMemoryRepository()}>
+          saveTeacherPaymentInfoRepository={new SaveTeacherPaymentFetchRepository()}>
         <TeacherPaymentInfoForm/>
       </SaveTeacherPaymentInfoRepositoryProvider>
   </>

@@ -82,6 +82,10 @@ export class User {
   }
 
   addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand: SaveTeacherPaymentInfoCommand): void {
+      if (this.userProfile === null) {
+        this.userProfile = new UserProfile();
+      }
+
     this.userProfile.addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand);
   }
 

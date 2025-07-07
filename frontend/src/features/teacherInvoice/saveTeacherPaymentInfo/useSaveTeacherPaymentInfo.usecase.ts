@@ -9,16 +9,16 @@ export const useSaveTeacherPaymentInfos = () => {
 
     const saveTeacherPaymentInfoRepository = useGetSaveTeacherPaymentInfoRepository()
 
-    const saveTeacherPaymentInfosUsecase = (teacherPaymentInfos: TeacherPaymentInfosModel) => {
-
-        if (teacherPaymentInfos.siret.length < 14) {
-            throw new Error('Le SIRET doit contenir 14 caractères');
-        }
+    const saveTeacherPaymentInfosUsecase = async (teacherPaymentInfos: TeacherPaymentInfosModel) => {
 
         try {
-            saveTeacherPaymentInfoRepository.execute(teacherPaymentInfos);
+            await saveTeacherPaymentInfoRepository.execute(teacherPaymentInfos);
         } catch (error) {
-            throw new Error('Failed to save teacher payment information');
+            if (error instanceof Error) {
+                throw new Error(error.message);
+            } else {
+                throw new Error("Enregistrement des informations de paiement impossible.");
+            }
         }
     }
 

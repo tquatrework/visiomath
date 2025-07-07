@@ -47,6 +47,10 @@ export class UserProfile {
   calendarSlots?: Relation<CalendarSlot[]>;
 
   addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand: SaveTeacherPaymentInfoCommand) {
+
+    if (!this.teacherProfile) {
+      this.teacherProfile = new TeacherProfile();
+    }
     this.teacherProfile?.addPaymentInfo(saveTeacherPaymentInfoCommand);
   }
 }

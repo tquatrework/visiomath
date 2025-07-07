@@ -26,9 +26,10 @@ async function bootstrap() {
                 'http://172.20.0.1:8080',
                 'http://visioprof.fr',
                 'http://visioprof.fr:3000',
-                'http://37.59.115.225'
+                'http://37.59.115.225',
             ];
             if (!origin || allowedOrigins.includes(origin)) {
+                console.log('CORS allowed for origin:', origin);
                 callback(null, true);
             } else {
                 console.error('CORS error: Origin not allowed by CORS:', origin);

@@ -2,11 +2,6 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, Relation, JoinColumn 
 import {Exclude} from 'class-transformer';
 import { UserProfile } from './userprofile.entity';
 
-export enum teacherCompanyType {
-  AE = "AE",
-  SARL = "SARL",
-  SA = "SA",
-}
 
 export type SaveTeacherPaymentInfoCommand = {
   companyName: string;
@@ -48,12 +43,8 @@ export class TeacherProfile {
   @Column('char', { length: 14, nullable: true })
   siret!: string;
 
-  @Column({
-    type: 'enum',
-    enum: teacherCompanyType,
-    nullable: true,
-  })
-  companyType!: teacherCompanyType;
+  @Column('text', {nullable:true})
+  companyType!: string;
 
   @Column('boolean', {nullable:true})
   vatExempt!: boolean;
@@ -66,15 +57,11 @@ export class TeacherProfile {
 
   addPaymentInfo(saveTeacherPaymentInfoCommand: SaveTeacherPaymentInfoCommand) {
 
+    console.table(saveTeacherPaymentInfoCommand);
     if (saveTeacherPaymentInfoCommand.siret.length !== 14) {
       throw new Error("Le SIRET doit contenir 14 caractères.");
     }
 
-    if (saveTeacherPaymentInfoCommand.companyType !== teacherCompanyType.AE &&
-        saveTeacherPaymentInfoCommand.companyType !== teacherCompanyType.SARL &&
-        saveTeacherPaymentInfoCommand.companyType !== teacherCompanyType.SA) {
-      throw new Error("Ce type d’entreprise n’existe pas");
-    }
 
     const ibanRegex = /^[A-Z]{2}\d{25}$/;
     if (!ibanRegex.test(saveTeacherPaymentInfoCommand.iban)) {
@@ -92,6 +79,8 @@ export class TeacherProfile {
     this.vatExempt = saveTeacherPaymentInfoCommand.vatExempt;
     this.iban = saveTeacherPaymentInfoCommand.iban;
     this.bic = saveTeacherPaymentInfoCommand.bic;
+
+    console.table(this)
   }
 
 }

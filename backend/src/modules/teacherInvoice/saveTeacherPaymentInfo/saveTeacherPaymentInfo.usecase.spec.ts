@@ -24,7 +24,7 @@ const generateUserWithTeacherProfile = (userId: number) => {
 describe('#US-1: Enregistrement des informations personnelles / de paiement du professeur', () => {
 
     test('#US-1-AC-1: Enregistrement réussi', async () => {
-        //Etant donné que je suis connecté en tant que professeur
+            //Etant donné que je suis connecté en tant que professeur
 
         const user = generateUserWithTeacherProfile(1);
 
@@ -33,7 +33,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
 
         /**Quand j’enregistre :
          nom de l’entreprise : “ProfCompany”
-         siret : “12345678912345
+         siret : “12345678912345"
          type entreprise : AE
          assujetti TVA : non
          IBAN : FR 1234567891234567891234567

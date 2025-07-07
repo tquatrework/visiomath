@@ -6,7 +6,7 @@ import {
     SaveTeacherPaymentInfoRepositoryProvider
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.repository.provider";
 import {
-    TeacherPaymentInfoInMemoryRepository
+    SaveTeacherPaymentInfoInMemoryRepository
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.inMemoryRepository";
 
 
@@ -19,7 +19,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         })
 
         render(<SaveTeacherPaymentInfoRepositoryProvider
-            saveTeacherPaymentInfoRepository={new TeacherPaymentInfoInMemoryRepository()}>
+            saveTeacherPaymentInfoRepository={new SaveTeacherPaymentInfoInMemoryRepository()}>
             <TeacherPaymentInfoForm/>
         </SaveTeacherPaymentInfoRepositoryProvider>);
     })
