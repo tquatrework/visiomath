@@ -16,6 +16,7 @@ export default registerAs('database', (): TypeOrmModuleOptions => ({
   autoLoadEntities: true,
   synchronize: true,
   logging: false,
+  entities: [join(__dirname, '**', '*.entity.{js,ts}')],
   //logging:  ['query', 'error', 'schema', 'migration'],
   ssl: process.env.DB_SSL === 'true' ? {
     rejectUnauthorized: false,
