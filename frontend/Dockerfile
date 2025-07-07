@@ -14,7 +14,7 @@ FROM node:18-slim AS prod
 RUN useradd -m -r nodeusr
 WORKDIR /app
 
-RUN npm install -g serve && npm cache clean --force
+RUN npm install -g serve &&
 
 COPY --from=build /app/dist ./dist
 
