@@ -2,6 +2,19 @@ import { registerAs } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { join} from 'path';
 import { getDirname } from '../common/utils/path-utils';
+import {CalendarSlot} from "../shared/entities/calendarSlots.entity";
+import {Exercise} from "../shared/entities/exercise.entity";
+import {Message} from "../shared/entities/message.entity";
+import {Notification} from "../shared/entities/notification.entity";
+import {NotificationUser} from "../shared/entities/notificationUser.entity";
+import {StudentOrdonnance} from "../shared/entities/studentOrdonnance.entity";
+import {StudentProfile} from "../shared/entities/studentProfile.entity";
+import {TeacherOrdonnance} from "../shared/entities/teacherOrdonnance.entity";
+import {TeacherProfile} from "../shared/entities/teacherProfile.entity";
+import {User} from "../shared/entities/user.entity";
+import {UserFile} from "../shared/entities/userfile.entity";
+import {UserProfile} from "../shared/entities/userprofile.entity";
+import {UserRelation} from "../shared/entities/userrelation.entity";
 
 
 
@@ -13,10 +26,23 @@ export default registerAs('database', (): TypeOrmModuleOptions => ({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   migrations: [join(__dirname, '..', 'migrations', '*{.ts,}')],
-  autoLoadEntities: true,
   synchronize: true,
   logging: false,
-  entities: [join(__dirname, '**', '*.entity.{js,ts}')],
+  entities: [
+      CalendarSlot,
+      Exercise,
+      Message,
+      Notification,
+      NotificationUser,
+      StudentOrdonnance,
+      StudentProfile,
+    TeacherOrdonnance,
+    TeacherProfile,
+    User,
+    UserFile,
+    UserProfile,
+    UserRelation
+  ],
   //logging:  ['query', 'error', 'schema', 'migration'],
   ssl: process.env.DB_SSL === 'true' ? {
     rejectUnauthorized: false,
