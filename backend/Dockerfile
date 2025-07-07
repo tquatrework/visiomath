@@ -1,4 +1,14 @@
 ########################
+# 1. Dépendances complètes
+########################
+FROM node:18-slim AS deps
+WORKDIR /app
+
+COPY package*.json ./
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci
+
+########################
 # 2. Build NestJS
 ########################
 FROM node:18-slim AS build
