@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-      "module": "commonjs",
       "moduleResolution": "node",
+      "module": "ES2022",
       "target": "es2018",
       "lib": ["es2018", "dom"],
       "esModuleInterop": true,
