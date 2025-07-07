@@ -51,30 +51,6 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
 
     })
 
-    test('#US-1-AC-2: Enregistrement échoué avec SIRET de moins de 14 caractères', async () => {
-        // Etant donné que je suis connecté en tant que professeur
-
-        // Quand j’enregistre :
-        // Nom de l’entreprise : "ProfCompany"
-        await userEvent.type(screen.getByLabelText(/Nom de l'entreprise/i), 'ProfCompany')
-        // Siret : “123456789123
-        await userEvent.type(screen.getByLabelText(/Siret/i), '123456789123')
-        // Type entreprise : AE
-        await userEvent.selectOptions(screen.getByLabelText(/Type entreprise/i), 'AE')
-        // Assujetti TVA : non
-        await userEvent.click(screen.getByRole('checkbox', {name: /Assujetti TVA/i}))
-        // IBAN : FR 1234567891234567891234567
-        await userEvent.type(screen.getByLabelText(/IBAN/i), 'FR1234567891234567891234567')
-        // Bic : azertyaz
-        await userEvent.type(screen.getByLabelText(/BIC/i), 'azertyaz')
-
-        await userEvent.click(screen.getByRole('button', {name: /Sauvegarder/i}),)
-
-        // Alors mon enregistrement doit être refusé
-        await waitFor(() => {
-            expect(alertSpy).toHaveBeenCalledWith('Le SIRET doit contenir 14 caractères')
-        })
-    })
 
     test('#US-1-AC-2: Enregistrement échoué avec type d’entreprise "test" qui n’est pas AE, SARL ou SA', async () => {
 

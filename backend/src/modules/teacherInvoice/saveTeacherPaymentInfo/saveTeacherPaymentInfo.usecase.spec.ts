@@ -34,7 +34,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         /**Quand j’enregistre :
          nom de l’entreprise : “ProfCompany”
          siret : “12345678912345"
-         type entreprise : AE
+         type entreprise : Autoentrepreneur
          assujetti TVA : non
          IBAN : FR 1234567891234567891234567
          Bic : azertyaz
@@ -42,7 +42,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         const saveTeacherPaymentInfoCommand = {
             companyName: "ProfCompany",
             siret: "12345678912345",
-            companyType: "AE",
+            companyType: "Autoentrepreneur",
             vatExempt: true,
             iban: "FR1234567891234567891234567",
             bic: "azerty33"
@@ -69,7 +69,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         /**Quand j’enregistre :
          nom de l’entreprise : “ProfCompany”
          Siret : “123456789123"
-         type entreprise : AE
+         type entreprise : Autoentrepreneur
          assujetti TVA : non
          IBAN : FR 1234567891234567891234567
          Bic : azertyaz
@@ -78,7 +78,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         const saveTeacherPaymentInfoCommand = {
             companyName: "ProfCompany",
             siret: "123456789123",
-            companyType: "AE",
+            companyType: "Autoentrepreneur",
             vatExempt: true,
             iban: "FR1234567891234567891234567",
             bic: "azertyaz"
@@ -137,7 +137,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         /**Quand j’enregistre :
          nom de l’entreprise : “ProfCompany”
          siret : “12345678912345
-         type entreprise : AE
+         type entreprise : Autoentrepreneur
          assujetti TVA : non
          IBAN : FR 1234567891234567891234567
          Bic : azertyaz
@@ -145,7 +145,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         const saveTeacherPaymentInfoCommand = {
             companyName: "ProfCompany",
             siret: "12345678912345",
-            companyType: "AE",
+            companyType: "Autoentrepreneur",
             vatExempt: true,
             iban: "FR1234567891234567891234567",
             bic: "azertyaz"
@@ -170,14 +170,14 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         //  Quand j’enregistre:
         //    nom de l’entreprise : « ProfCompany »
         //    siret : « 12345678912345 »
-        //    type entreprise : AE
+        //    type entreprise : Autoentrepreneur
         //    assujetti TVA : non
         //    IBAN : « FR1234567891234567891234567 »
         //    BIC : « azertyaz »
         const saveTeacherPaymentInfoCommand = {
             companyName: "ProfCompany",
             siret: "12345678912345",
-            companyType: "AE",
+            companyType: "Autoentrepreneur",
             vatExempt: true,
             iban: "FR1A34567891234567891234567", // IBAN invalide
             bic: "azertyaz"
@@ -201,14 +201,14 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         //  Quand j’enregistre:
         //    nom de l’entreprise : « ProfCompany »
         //    siret : « 12345678912345 »
-        //    type entreprise : AE
+        //    type entreprise : Autoentrepreneur
         //    assujetti TVA : non
         //    IBAN : « FR1234567891234567891234567 »
         //    BIC : « abc12 » (BIC invalide)
         const saveTeacherPaymentInfoCommand = {
             companyName: "ProfCompany",
             siret: "12345678912345",
-            companyType: "AE",
+            companyType: "Autoentrepreneur",
             vatExempt: true,
             iban: "FR1234567891234567891234567",
             bic: "abc12" // BIC invalide

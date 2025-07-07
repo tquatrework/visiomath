@@ -57,11 +57,9 @@ export class TeacherProfile {
 
   addPaymentInfo(saveTeacherPaymentInfoCommand: SaveTeacherPaymentInfoCommand) {
 
-    console.table(saveTeacherPaymentInfoCommand);
     if (saveTeacherPaymentInfoCommand.siret.length !== 14) {
       throw new Error("Le SIRET doit contenir 14 caractères.");
     }
-
 
     const ibanRegex = /^[A-Z]{2}\d{25}$/;
     if (!ibanRegex.test(saveTeacherPaymentInfoCommand.iban)) {
@@ -73,14 +71,43 @@ export class TeacherProfile {
       throw new Error("Le BIC doit contenir 6 lettres suivies de 2 ou 5 caractères alphanumériques.");
     }
 
+    // entreprise doit être :
+    // Autoentrepreneur
+    // EI
+    // EURL
+    // SARL
+    // SA
+    // SAS
+    // SASU
+    // SNC
+    // (Scop)
+    //  Association
+
+    const validCompanyTypes = [
+      'Autoentrepreneur',
+      'EI',
+      'EURL',
+      'SARL',
+      'SA',
+      'SAS',
+      'SASU',
+      'SNC',
+      'Scop',
+      'Association'
+    ];
+
+    if (!validCompanyTypes.includes(saveTeacherPaymentInfoCommand.companyType)) {
+      throw new Error("Ce type d’entreprise n’existe pas");
+    }
+
+
+
     this.companyName = saveTeacherPaymentInfoCommand.companyName;
     this.siret = saveTeacherPaymentInfoCommand.siret;
     this.companyType = saveTeacherPaymentInfoCommand.companyType;
     this.vatExempt = saveTeacherPaymentInfoCommand.vatExempt;
     this.iban = saveTeacherPaymentInfoCommand.iban;
     this.bic = saveTeacherPaymentInfoCommand.bic;
-
-    console.table(this)
   }
 
 }
