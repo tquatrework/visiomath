@@ -27,7 +27,7 @@ export default registerAs('database', (): TypeOrmModuleOptions => ({
   database: process.env.DB_NAME,
   migrations: [join(__dirname, '..', 'migrations', '*{.ts,}')],
   synchronize: true,
-  logging: false,
+  //logging: false,
   entities: [
       CalendarSlot,
       Exercise,
@@ -43,13 +43,13 @@ export default registerAs('database', (): TypeOrmModuleOptions => ({
     UserProfile,
     UserRelation
   ],
-  //logging:  ['query', 'error', 'schema', 'migration'],
+  logging:  ['query', 'error', 'schema', 'migration'],
   ssl: process.env.DB_SSL === 'true' ? {
     rejectUnauthorized: false,
     } : false,
   extra: {
     connectionLimit: 10,
-    //log: (msg: string) => console.log(`[Database Pool Log] ${msg}`),
+    log: (msg: string) => console.log(`[Database Pool Log] ${msg}`),
   },
   retryAttempts: 0
 }));
