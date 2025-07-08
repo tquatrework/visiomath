@@ -24,7 +24,6 @@ import { MessagesModule } from './modules/messages/messages.module';
 import {TeacherInvoiceModule} from "./modules/teacherInvoice/teacherInvoice.module";
 
 
-
 @Module({
   imports: [
     // Configuration
@@ -40,7 +39,6 @@ import {TeacherInvoiceModule} from "./modules/teacherInvoice/teacherInvoice.modu
       useFactory: async (configService: ConfigService) => ({
         ...configService.get('database'),
       // S'assurer qu'on ne ferme pas la connexion automatiquement dans un environnement non voulu.
-      synchronize: process.env.NODE_ENV !== 'production',
       migrationsRun: true,  // Ce paramètre va forcer TypeORM à exécuter les migrations dès l'initialisation.
       }),
     }),
