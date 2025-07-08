@@ -6,7 +6,8 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN --mount=type=cache,target=/root/.npm \
-    npm ci
+    npm config set engine-strict false && \
+    npm install
 
 ########################
 # 2. Build NestJS
