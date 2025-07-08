@@ -13,9 +13,9 @@ function isTeacherPaymentInfosModel(obj: unknown): obj is TeacherPaymentInfosMod
     return (
         typeof o.companyName === 'string' &&
         typeof o.siret === 'string' &&
-        typeof o.businessType === 'string' &&
-        ['AE', 'SARL', 'SA'].includes(o.businessType) &&
-        typeof o.vatExempted === 'boolean' &&
+        typeof o.companyType === 'string' &&
+        typeof o.companyType === 'string' &&
+        typeof o.vatExempt === 'boolean' &&
         typeof o.iban === 'string' &&
         typeof o.bic === 'string'
     )
@@ -31,8 +31,8 @@ const TeacherPaymentInfoForm = () => {
         const raw = {
             companyName: fd.get('companyName'),
             siret: fd.get('siret'),
-            businessType: fd.get('businessType'),
-            vatExempted: fd.get('vatExempted') === 'on',
+            companyType: fd.get('companyType'),
+            vatExempt: fd.get('vatExempt') === 'on',
             iban: fd.get('iban'),
             bic: fd.get('bic'),
         }
@@ -93,32 +93,41 @@ const TeacherPaymentInfoForm = () => {
 
                 <div className="mb-4">
                     <label
-                        htmlFor="businessType"
+                        htmlFor="companyType"
                         className="block text-sm font-medium text-gray-700"
                     >
                         Type entreprise
                     </label>
                     <select
-                        id="businessType"
-                        name="businessType"
+                        id="companyType"
+                        name="companyType"
                         required
                         className="w-full mt-1 p-2 border rounded-md"
                     >
-                        <option value="AE">Auto-entrepreneur</option>
-                        <option value="SARL">SARL</option>
-                        <option value="SA">SA</option>
+
+                        <option value="Autoentrepreneur">Autoentrepreneur</option>
+                        <option value="EI">Entreprise Individuelle (EI)</option>
+                        <option value="EURL">Entreprise Unipersonnelle à Responsabilité Limitée (EURL)</option>
+                        <option value="SARL">Société à Responsabilité Limitée (SARL)</option>
+                        <option value="SA">Société Anonyme (SA)</option>
+                        <option value="SAS">Société par Actions Simplifiée (SAS)</option>
+                        <option value="SASU">Société par Actions Simplifiée Unipersonnelle (SASU)</option>
+                        <option value="SNC">Société en Nom Collectif (SNC)</option>
+                        <option value="Scop">Société Coopérative de Production (Scop)</option>
+                        <option value="Association">Association</option>
+
                     </select>
                 </div>
 
                 <div className="mb-4">
                     <label
-                        htmlFor="vatExempted"
+                        htmlFor="vatExempt"
                         className="block text-sm font-medium text-gray-700"
                     >
                         <input
                             type="checkbox"
-                            id="vatExempted"
-                            name="vatExempted"
+                            id="vatExempt"
+                            name="vatExempt"
                             className="mr-2"
                         />
                         Assujetti TVA

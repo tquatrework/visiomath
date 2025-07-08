@@ -2,7 +2,7 @@ import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
 import {getDirname} from './common/utils/path-utils';
-import {Logger, ValidationPipe} from '@nestjs/common';
+import {Logger, ValidationPipe, HttpException, HttpStatus} from '@nestjs/common';
 
 async function bootstrap() {
 
@@ -53,10 +53,6 @@ async function bootstrap() {
     global.console.log = (...args) => {
         process.stdout.write(args.join(' ') + '\n');
     };
-
-    app.useGlobalPipes(new ValidationPipe({
-        transform: true,
-    }),);
 
     await app.listen(5000);
 

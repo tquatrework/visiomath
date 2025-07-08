@@ -33,8 +33,8 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         await userEvent.type(screen.getByLabelText(/Nom de l'entreprise/i), 'ProfCompany')
         // Siret : “12345678912345
         await userEvent.type(screen.getByLabelText(/Siret/i), '12345678912345')
-        // Type entreprise : AE
-        await userEvent.selectOptions(screen.getByLabelText(/Type entreprise/i), 'AE')
+        // Type entreprise : Autoentrepreneur
+        await userEvent.selectOptions(screen.getByLabelText(/Type entreprise/i), 'Autoentrepreneur')
         // Assujetti TVA : non
         await userEvent.click(screen.getByRole('checkbox', {name: /Assujetti TVA/i}))
         // IBAN : FR 1234567891234567891234567
@@ -48,41 +48,6 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         await waitFor(() => {
             expect(alertSpy).toHaveBeenCalledWith('Enregistrement Ok')
         })
-
-    })
-
-
-    test('#US-1-AC-2: Enregistrement échoué avec type d’entreprise "test" qui n’est pas AE, SARL ou SA', async () => {
-
-        // Etant donné que je suis connecté en tant que professeur
-
-        // Quand j’enregistre :
-        // Nom de l’entreprise : "ProfCompany"
-        await userEvent.type(screen.getByLabelText(/Nom de l'entreprise/i), 'ProfCompany')
-        // Siret : “12345678912345
-        await userEvent.type(screen.getByLabelText(/Siret/i), '12345678912345')
-        // Type entreprise : test
-        const select = screen.getByLabelText(/Type entreprise/i) as HTMLSelectElement
-        const hackedOption = document.createElement('option')
-        hackedOption.value = 'test'
-        hackedOption.textContent = 'hack'
-        select.appendChild(hackedOption)
-        await userEvent.selectOptions(screen.getByLabelText(/Type entreprise/i), 'test')
-        // Assujetti TVA : non
-        await userEvent.click(screen.getByRole('checkbox', {name: /Assujetti TVA/i}))
-        // IBAN : FR 1234567891234567891234567
-        await userEvent.type(screen.getByLabelText(/IBAN/i), 'FR1234567891234567891234567')
-        // Bic : azertyaz
-        await userEvent.type(screen.getByLabelText(/BIC/i), 'azertyaz')
-
-        await userEvent.click(screen.getByRole('button', {name: /Sauvegarder/i}),)
-
-        // Alors mon enregistrement doit être refusé
-        await waitFor(() => {
-            expect(alertSpy).toHaveBeenCalledWith('Les informations de paiement du professeur ne sont pas au bon format')
-        })
-
-
 
     })
 

@@ -125,7 +125,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             saveTeacherPaymentInfoUseCase.execute(1, saveTeacherPaymentInfoCommand)
 
             //Alors mon enregistrement doit renvoyer une erreur “Ce type d’entreprise n’existe pas”
-        ).rejects.toThrow("Ce type d’entreprise n’existe pas");
+        ).rejects.toThrow("Le type d’entreprise n’est pas valide");
     });
 
     test('#US-1-AC-4: Enregistrement échoué – professeur non trouvé', async () => {

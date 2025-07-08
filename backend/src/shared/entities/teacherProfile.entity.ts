@@ -11,10 +11,23 @@ export type SaveTeacherPaymentInfoCommand = {
   iban: string;
   bic: string;
 }
+enum CompanyType {
+    Autoentrepreneur = 'Autoentrepreneur',
+    EI = 'EI',
+    EURL = 'EURL',
+    SARL = 'SARL',
+    SA = 'SA',
+    SAS = 'SAS',
+    SASU = 'SASU',
+    SNC = 'SNC',
+    Scop = 'Scop',
+    Association = 'Association'
+}
 
 
 @Entity('teacher_profiles')
 export class TeacherProfile {
+
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -71,36 +84,9 @@ export class TeacherProfile {
       throw new Error("Le BIC doit contenir 6 lettres suivies de 2 ou 5 caractères alphanumériques.");
     }
 
-    // entreprise doit être :
-    // Autoentrepreneur
-    // EI
-    // EURL
-    // SARL
-    // SA
-    // SAS
-    // SASU
-    // SNC
-    // (Scop)
-    //  Association
-
-    const validCompanyTypes = [
-      'Autoentrepreneur',
-      'EI',
-      'EURL',
-      'SARL',
-      'SA',
-      'SAS',
-      'SASU',
-      'SNC',
-      'Scop',
-      'Association'
-    ];
-
-    if (!validCompanyTypes.includes(saveTeacherPaymentInfoCommand.companyType)) {
-      throw new Error("Ce type d’entreprise n’existe pas");
+    if (!Object.values(CompanyType).includes(saveTeacherPaymentInfoCommand.companyType as CompanyType)) {
+      throw new Error("Le type d’entreprise n’est pas valide.");
     }
-
-
 
     this.companyName = saveTeacherPaymentInfoCommand.companyName;
     this.siret = saveTeacherPaymentInfoCommand.siret;

@@ -23,7 +23,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         /**Quand j’enregistre :
             nom de l’entreprise : “ProfCompany”
             siret : “12345678912345
-            type entreprise : AE
+            type entreprise : Autoentrepreneur
             assujetti TVA : non
             IBAN : FR 1234567891234567891234567
             Bic : azertyaz
@@ -34,8 +34,8 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             .send({
                 companyName: 'ProfCompany',
                 siret: '12345678912345',
-                companyType: 'AE',
-                vatExempted: false,
+                companyType: 'Autoentrepreneur',
+                vatExempt: false,
                 iban: 'FR1234567891234567891234567',
                 bic: 'azertyaz'
             });
@@ -63,7 +63,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         /**Quand j’enregistre :
          nom de l’entreprise : “ProfCompany”
          Siret : “12345678912"
-         type entreprise : AE
+         type entreprise : Autoentrepreneur
          assujetti TVA : non
          IBAN : FR FR1234567891234567891234567
          Bic : azerty33
@@ -74,7 +74,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             .send({
                 companyName: "ProfCompany",
                 siret: "12345678912",
-                companyType: "AE",
+                companyType: "Autoentrepreneur",
                 vatExempt: true,
                 iban: "FR1234567891234567891234567",
                 bic: "azerty33"
@@ -83,5 +83,42 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         //Alors mon enregistrement doit renvoyer une erreur “Le SIRET doit contenir 14 caractères”
         expect(res.status).toBe(422);
         expect(res.body.message).toContain('Le SIRET doit contenir 14 caractères');
+    });
+
+    /**
+     * #US-1-AC-7 : Enregistrement échoué – Données manquantes
+     * Étant donné que je suis connecté en tant que professeur
+     * Quand j’enregistre mes infos avec BIC oublié :
+     *    • BIC vide
+     *    • les autres informations sont valides
+     * Alors la requête doit échouer avec l’erreur :
+     *  « Des données sont manquantes »
+     */
+
+    test('#US-1-AC-7: Enregistrement échoué – Données manquantes', async () => {
+        // Etant donné que je suis connecté en tant que professeur
+        const teacherToken = await generateUserToken(app, "teacher");
+        /** Quand j’enregistre mes infos avec BIC oublié :
+         *    • BIC vide
+         *    • les autres informations sont valides
+         */
+
+        const res = await request(app.getHttpServer())
+            .post('/teacher-payment-info')
+            .set('Authorization', `Bearer ${teacherToken}`)
+            .send({
+                companyName: "ProfCompany",
+                siret: "12345678912345",
+                companyType: "Autoentrepreneur",
+                vatExempt: true,
+                iban: "FR1234567891234567891234567",
+            });
+
+
+        // Alors la requête doit échouer avec l’erreur :
+        //  « Des données sont manquantes »
+        expect(res.status).toBe(422);
+        expect(res.body.message).toContain('Des données sont manquantes');
+
     });
 });
