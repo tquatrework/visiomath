@@ -35,7 +35,7 @@ export default registerAs('database', (): TypeOrmModuleOptions => ({
     } : false,
   extra: {
     connectionLimit: 10,
-    log: (msg: string) => console.log(`[Database Pool Log] ${msg}`),
+    //log: (msg: string) => console.log(`[Database Pool Log] ${msg}`),
   },
   retryAttempts: 0
 }));
