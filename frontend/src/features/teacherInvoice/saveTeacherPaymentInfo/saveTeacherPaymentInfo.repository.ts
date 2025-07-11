@@ -1,7 +1,7 @@
 import {
-    TeacherPaymentInfosModel
-} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.model";
+    TeacherPaymentInfosCommand
+} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.command";
 
 export interface SaveTeacherPaymentInfoRepository {
-    execute(teacherPaymentInfo: TeacherPaymentInfosModel): Promise<void>
+    execute(teacherPaymentInfo: TeacherPaymentInfosCommand): Promise<void>
 }

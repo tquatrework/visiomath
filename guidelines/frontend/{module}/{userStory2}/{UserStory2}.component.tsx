@@ -1,10 +1,10 @@
 import {
-    useSaveTeacherPaymentInfoUseCase,
-} from '@src/features/teacherInvoice/saveTeacherPaymentInfo/useSaveTeacherPaymentInfo.usecase'
+    use{userStory2}UseCase,
+} from '@src/features/{module}/{userStory2}/use{userStory2}.usecase'
 
 
-const TeacherPaymentInfoForm = () => {
-    const { saveTeacherPaymentInfosCommandHandler, loading, error, success } = useSaveTeacherPaymentInfoUseCase()
+const UserStory2Component = () => {
+    const { {userStory2}sCommandHandler, loading, error, success } = use{userStory2}UseCase()
 
     if (success) {
         alert('Enregistrement Ok')
@@ -19,7 +19,7 @@ const TeacherPaymentInfoForm = () => {
 
         const formData = new FormData(event.currentTarget);
 
-        const saveTeacherPaymentInfosCommand = {
+        const {userStory2}sCommand = {
             companyName: formData.get('companyName') as string,
             siret: formData.get('siret') as string,
             companyType: formData.get('companyType') as string,
@@ -27,7 +27,7 @@ const TeacherPaymentInfoForm = () => {
             iban: formData.get('iban') as string,
             bic: formData.get('bic') as string,
         }
-        await saveTeacherPaymentInfosCommandHandler(saveTeacherPaymentInfosCommand);
+        await {userStory2}sCommandHandler({userStory2}sCommand);
     }
 
     return (
@@ -154,4 +154,4 @@ const TeacherPaymentInfoForm = () => {
     )
 }
 
-export default TeacherPaymentInfoForm
+export default UserStory2Component

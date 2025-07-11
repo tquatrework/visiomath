@@ -26,6 +26,7 @@
     ],
     "rules": {
       "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
       "jsx-a11y/alt-text": "warn",
       "jest/no-disabled-tests": "warn",
       "jest/no-focused-tests": "error",

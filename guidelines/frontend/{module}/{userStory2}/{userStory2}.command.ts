@@ -1,7 +1,7 @@
-export type TeacherPaymentInfosModel = {
+export type {UserStory2}Command = {
     companyName: string;
     siret: string;
-    companyType: 'AE' | 'SARL' | 'SA';
+    companyType: string;
     vatExempt: boolean;
     iban: string;
     bic: string;

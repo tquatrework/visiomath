@@ -9,7 +9,7 @@ export const saveTeacherPaymentInfoRepositoryContext = createContext<SaveTeacher
 export const SaveTeacherPaymentInfoRepositoryProvider: React.FC<{ children: React.ReactNode, saveTeacherPaymentInfoRepository?: SaveTeacherPaymentInfoRepository }> = ({ children, saveTeacherPaymentInfoRepository }) => {
 
     return (
-        <saveTeacherPaymentInfoRepositoryContext.Provider value={saveTeacherPaymentInfoRepository}>
+        <saveTeacherPaymentInfoRepositoryContext.Provider value={saveTeacherPaymentInfoRepository || null}>
             {children}
         </saveTeacherPaymentInfoRepositoryContext.Provider>
     );

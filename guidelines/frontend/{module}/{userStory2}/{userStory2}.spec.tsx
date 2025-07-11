@@ -1,16 +1,16 @@
 import {beforeEach, describe, expect, MockInstance, test, vi} from "vitest";
-import TeacherPaymentInfoForm from "@src/features/teacherInvoice/saveTeacherPaymentInfo/TeacherPaymentInfoForm";
+import TeacherPaymentInfoForm from "@src/features/{module}/{userStory2}/TeacherPaymentInfoForm";
 import {render, waitFor, screen, act} from "@testing-library/react";
 import userEvent from '@testing-library/user-event'
 import {
-    SaveTeacherPaymentInfoRepositoryProvider
-} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.repository.provider";
+    {userStory2}RepositoryProvider
+} from "@src/features/{module}/{userStory2}/{userStory2}.repository.provider";
 import {
-    SaveTeacherPaymentInfoSuccessInMemoryRepository
-} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.successInMemoryRepository";
+    {userStory2}SuccessInMemoryRepository
+} from "@src/features/{module}/{userStory2}/{userStory2}.successInMemoryRepository";
 import {
-    SaveTeacherPaymentInfoFailureInMemoryRepository
-} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.failureInMemoryRepository";
+    {userStory2}FailureInMemoryRepository
+} from "@src/features/{module}/{userStory2}/{userStory2}.failureInMemoryRepository";
 
 
 describe('#US-1: Enregistrement des informations personnelles / de paiement du professeur', async () => {
@@ -27,10 +27,10 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
 
             // Etant donné que je suis connecté en tant que professeur
             act(() => {
-                render(<SaveTeacherPaymentInfoRepositoryProvider
-                    saveTeacherPaymentInfoRepository={new SaveTeacherPaymentInfoSuccessInMemoryRepository()}>
+                render(<{userStory2}RepositoryProvider
+                    {userStory2}Repository={new {userStory2}SuccessInMemoryRepository()}>
                     <TeacherPaymentInfoForm/>
-                </SaveTeacherPaymentInfoRepositoryProvider>);
+                </{userStory2}RepositoryProvider>);
             });
 
             // Quand j'enregistre :
@@ -65,10 +65,10 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
 
             // Etant donné que je suis connecté en tant que professeur
             act(() => {
-                render(<SaveTeacherPaymentInfoRepositoryProvider
-                    saveTeacherPaymentInfoRepository={new SaveTeacherPaymentInfoFailureInMemoryRepository()}>
+                render(<{userStory2}RepositoryProvider
+                    {userStory2}Repository={new {userStory2}FailureInMemoryRepository()}>
                     <TeacherPaymentInfoForm/>
-                </SaveTeacherPaymentInfoRepositoryProvider>);
+                </{userStory2}RepositoryProvider>);
             });
 
             // Quand j'enregistre mes infos avec un siret de moins de 14 caractères

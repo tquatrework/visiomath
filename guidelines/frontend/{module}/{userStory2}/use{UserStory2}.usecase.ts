@@ -1,9 +1,9 @@
 import {
-    useGetSaveTeacherPaymentInfoRepository
-} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.repository.provider";
+    useGet{userStory2}Repository
+} from "@src/features/{module}/{userStory2}/{userStory2}.repository.provider";
 import { useState } from "react";
 
-export type TeacherPaymentInfosCommand = {
+export type {UserStory2}Command = {
     companyName: string;
     siret: string;
     companyType: string;
@@ -12,19 +12,19 @@ export type TeacherPaymentInfosCommand = {
     bic: string;
 }
 
-export const useSaveTeacherPaymentInfoUseCase = () => {
+export const use{userStory2}UseCase = () => {
 
-    const saveTeacherPaymentInfoRepository = useGetSaveTeacherPaymentInfoRepository()
+    const {userStory2}Repository = useGet{userStory2}Repository()
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
 
-    const saveTeacherPaymentInfosCommandHandler = async (teacherPaymentInfosCommand: TeacherPaymentInfosCommand) => {
+    const {userStory2}sCommandHandler = async ({userStory2}Command: {UserStory2}Command) => {
         try {
             setLoading(true);
             setError(null);
             setSuccess(false);
-            await saveTeacherPaymentInfoRepository.execute(teacherPaymentInfosCommand);
+            await {userStory2}Repository.execute({userStory2}Command);
             setSuccess(true);
         } catch (err) {
             if (err instanceof Error) {
@@ -37,6 +37,6 @@ export const useSaveTeacherPaymentInfoUseCase = () => {
         }
     }
 
-    return { saveTeacherPaymentInfosCommandHandler, loading, error, success };
+    return { {userStory2}sCommandHandler, loading, error, success };
 
 }
