@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTeacherProfile } from "../../hooks/useTeacherProfile";
-import TeacherPaymentInfoForm from "@src/features/teacherInvoice/saveTeacherPaymentInfo/TeacherPaymentInfoForm";
+import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoFormComponent";
 import {
   SaveTeacherPaymentInfoInMemoryRepository
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.inMemoryRepository";
@@ -125,7 +125,7 @@ const TeacherProfile: React.FC<TeacherProfileProps> = ({ data, readOnly = false 
 
       <SaveTeacherPaymentInfoRepositoryProvider
           saveTeacherPaymentInfoRepository={new SaveTeacherPaymentFetchRepository()}>
-        <TeacherPaymentInfoForm/>
+        <TeacherPaymentInfoFormComponent/>
       </SaveTeacherPaymentInfoRepositoryProvider>
   </>
   );

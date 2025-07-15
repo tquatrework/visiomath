@@ -19,9 +19,6 @@ export const SaveTeacherPaymentInfoRepositoryProvider: React.FC<{ children: Reac
 export const useGetSaveTeacherPaymentInfoRepository = () => {
 
     const saveTeacherPaymentInfoRepository = useContext(saveTeacherPaymentInfoRepositoryContext);
-    if (!saveTeacherPaymentInfoRepository) {
-        throw new Error("SaveTeacherPaymentInfoRepository is not provided. Please wrap your component with SaveTeacherPaymentInfoRepositoryProvider.");
-    }
 
     return saveTeacherPaymentInfoRepository;
 }

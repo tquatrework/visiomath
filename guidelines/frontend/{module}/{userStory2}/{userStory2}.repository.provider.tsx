@@ -19,9 +19,7 @@ export const {userStory2}RepositoryProvider: React.FC<{ children: React.ReactNod
 export const useGet{userStory2}Repository = () => {
 
     const {userStory2}Repository = useContext({userStory2}RepositoryContext);
-    if (!{userStory2}Repository) {
-        throw new Error("{userStory2}Repository is not provided. Please wrap your component with {userStory2}RepositoryProvider.");
-    }
+
 
     return {userStory2}Repository;
 }

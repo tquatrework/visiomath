@@ -15,6 +15,9 @@ export const useUserStory1Usecase = () => {
     const [paymentInfo, setPaymentInfo] = useState<{userStory1}QueryResult | null>(null);
 
     const {userStory1}Query = async () => {
+        if (!{userStory1}Repository) {
+            return;
+        }
         try {
             setLoading(true);
             setError(null);

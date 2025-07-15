@@ -20,6 +20,11 @@ export const useSaveTeacherPaymentInfoUseCase = () => {
     const [success, setSuccess] = useState(false);
 
     const saveTeacherPaymentInfosCommandHandler = async (teacherPaymentInfosCommand: TeacherPaymentInfosCommand) => {
+
+        if (!saveTeacherPaymentInfoRepository) {
+            return;
+        }
+
         try {
             setLoading(true);
             setError(null);

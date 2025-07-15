@@ -20,6 +20,9 @@ export const use{userStory2}UseCase = () => {
     const [success, setSuccess] = useState(false);
 
     const {userStory2}sCommandHandler = async ({userStory2}Command: {UserStory2}Command) => {
+        if (!{userStory2}Repository) {
+            return;
+        }
         try {
             setLoading(true);
             setError(null);

@@ -207,3 +207,9 @@ si le test passe, je refactorise pour utiliser le vrai cas d’usage et le vrai 
 J’écris ensuite le second test e2e (sad path) et je le fais passer.
 
 Je m’arrête là pour les e2e : deux ou trois scénarios maximum (happy path + un sad path) par user story.
+
+
+## Checklist de validation avant de proposer le code :
+
+- [ ] Le code respecte les conventions de nommage et la structure définie
+- [ ] Aucun code de production n'est écrit sans qu'il ne soit nécessaire pour faire passer un test

@@ -74,9 +74,11 @@ export class TeacherProfile {
       throw new Error("Le SIRET doit contenir 14 caractères.");
     }
 
-    const ibanRegex = /^[A-Z]{2}\d{25}$/;
+    // 2 lettres, 12 chiffres, 13 caractères alphanumériques
+
+    const ibanRegex = /^FR[0-9]{12}[A-Z0-9]{13}$/i;
     if (!ibanRegex.test(saveTeacherPaymentInfoCommand.iban)) {
-      throw new Error("L’IBAN doit commencer par 2 lettres suivies de 25 chiffres.");
+      throw new Error("L’IBAN doit commencer par 2 lettres suivies de 12 chiffres suivies de 13 caractères alphanumériques.");
     }
 
     const bicRegex = /^[A-Z]{6}[A-Z0-9]{2}(?:[A-Z0-9]{3})?$/i;

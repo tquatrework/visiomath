@@ -36,7 +36,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
          siret : “12345678912345"
          type entreprise : Autoentrepreneur
          assujetti TVA : non
-         IBAN : FR 1234567891234567891234567
+         IBAN : FR123456789012AZ67891234567
          Bic : azertyaz
          */
         const saveTeacherPaymentInfoCommand = {
@@ -44,7 +44,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             siret: "12345678912345",
             companyType: "Autoentrepreneur",
             vatExempt: true,
-            iban: "FR1234567891234567891234567",
+            iban: "FR123456789012AZ67891234567",
             bic: "azerty33"
         }
 
@@ -71,7 +71,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
          Siret : “123456789123"
          type entreprise : Autoentrepreneur
          assujetti TVA : non
-         IBAN : FR 1234567891234567891234567
+         IBAN : FR123456789012AZ67891234567
          Bic : azertyaz
          */
 
@@ -80,7 +80,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             siret: "123456789123",
             companyType: "Autoentrepreneur",
             vatExempt: true,
-            iban: "FR1234567891234567891234567",
+            iban: "FR123456789012AZ67891234567",
             bic: "azertyaz"
         };
 
@@ -107,7 +107,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
          siret : “12345678912345
          type entreprise : test
          assujetti TVA : non
-         IBAN : FR 1234567891234567891234567
+         IBAN : FR123456789012AZ67891234567
          Bic : azertyaz
          */
         const saveTeacherPaymentInfoCommand = {
@@ -115,7 +115,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             siret: "12345678912345",
             companyType: "test",
             vatExempt: true,
-            iban: "FR1234567891234567891234567",
+            iban: "FR123456789012AZ67891234567",
             bic: "azertyaz"
         };
 
@@ -139,7 +139,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
          siret : “12345678912345
          type entreprise : Autoentrepreneur
          assujetti TVA : non
-         IBAN : FR 1234567891234567891234567
+         IBAN : FR123456789012AZ67891234567
          Bic : azertyaz
          */
         const saveTeacherPaymentInfoCommand = {
@@ -147,7 +147,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             siret: "12345678912345",
             companyType: "Autoentrepreneur",
             vatExempt: true,
-            iban: "FR1234567891234567891234567",
+            iban: "FR123456789012AZ67891234567",
             bic: "azertyaz"
         };
 
@@ -172,14 +172,14 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         //    siret : « 12345678912345 »
         //    type entreprise : Autoentrepreneur
         //    assujetti TVA : non
-        //    IBAN : « FR1234567891234567891234567 »
+        //    IBAN : « FRA23456789012AZ67891234567 »
         //    BIC : « azertyaz »
         const saveTeacherPaymentInfoCommand = {
             companyName: "ProfCompany",
             siret: "12345678912345",
             companyType: "Autoentrepreneur",
             vatExempt: true,
-            iban: "FR1A34567891234567891234567", // IBAN invalide
+            iban: "FRA23456789012AZ67891234567", // IBAN invalide
             bic: "azertyaz"
         };
 
@@ -187,7 +187,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
 
         await expect(
             saveTeacherPaymentInfoUseCase.execute(1, saveTeacherPaymentInfoCommand)
-        ).rejects.toThrow("L’IBAN doit commencer par 2 lettres suivies de 25 chiffres.");
+        ).rejects.toThrow("L’IBAN doit commencer par 2 lettres suivies de 12 chiffres suivies de 13 caractères alphanumériques.");
     });
 
 
@@ -203,14 +203,14 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         //    siret : « 12345678912345 »
         //    type entreprise : Autoentrepreneur
         //    assujetti TVA : non
-        //    IBAN : « FR1234567891234567891234567 »
+        //    IBAN : « FR123456789012AZ67891234567 »
         //    BIC : « abc12 » (BIC invalide)
         const saveTeacherPaymentInfoCommand = {
             companyName: "ProfCompany",
             siret: "12345678912345",
             companyType: "Autoentrepreneur",
             vatExempt: true,
-            iban: "FR1234567891234567891234567",
+            iban: "FR123456789012AZ67891234567",
             bic: "abc12" // BIC invalide
         };
 

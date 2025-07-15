@@ -1,5 +1,5 @@
 import {beforeEach, describe, expect, MockInstance, test, vi} from "vitest";
-import TeacherPaymentInfoForm from "@src/features/teacherInvoice/saveTeacherPaymentInfo/TeacherPaymentInfoForm";
+import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoFormComponent";
 import {render, waitFor, screen, act} from "@testing-library/react";
 import userEvent from '@testing-library/user-event'
 import {
@@ -29,7 +29,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             act(() => {
                 render(<SaveTeacherPaymentInfoRepositoryProvider
                     saveTeacherPaymentInfoRepository={new SaveTeacherPaymentInfoSuccessInMemoryRepository()}>
-                    <TeacherPaymentInfoForm/>
+                    <TeacherPaymentInfoFormComponent/>
                 </SaveTeacherPaymentInfoRepositoryProvider>);
             });
 
@@ -67,7 +67,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             act(() => {
                 render(<SaveTeacherPaymentInfoRepositoryProvider
                     saveTeacherPaymentInfoRepository={new SaveTeacherPaymentInfoFailureInMemoryRepository()}>
-                    <TeacherPaymentInfoForm/>
+                    <TeacherPaymentInfoFormComponent/>
                 </SaveTeacherPaymentInfoRepositoryProvider>);
             });
 

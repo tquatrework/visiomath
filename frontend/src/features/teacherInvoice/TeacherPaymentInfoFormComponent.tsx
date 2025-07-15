@@ -1,17 +1,25 @@
 import {
     useSaveTeacherPaymentInfoUseCase,
 } from '@src/features/teacherInvoice/saveTeacherPaymentInfo/useSaveTeacherPaymentInfo.usecase'
+import {
+    useGetTeacherPaymentInfoUsecase,
+} from '@src/features/teacherInvoice/getTeacherPaymentInfo/useGetTeacherPaymentInfo.usecase'
 
 
-const TeacherPaymentInfoForm = () => {
-    const { saveTeacherPaymentInfosCommandHandler, loading, error, success } = useSaveTeacherPaymentInfoUseCase()
+const TeacherPaymentInfoFormComponent = () => {
+    const { saveTeacherPaymentInfosCommandHandler, error: saveTeacherPaymentInfoError, success: saveTeacherPaymentInfoSuccess } = useSaveTeacherPaymentInfoUseCase()
+    const { teacherPaymentInfo, error: getTeacherPaymentInfoError } = useGetTeacherPaymentInfoUsecase();
 
-    if (success) {
+    if (saveTeacherPaymentInfoSuccess) {
         alert('Enregistrement Ok')
     }
 
-    if (error) {
-        alert(error)
+    if (saveTeacherPaymentInfoError) {
+        alert(saveTeacherPaymentInfoError)
+    }
+
+    if (getTeacherPaymentInfoError) {
+        alert(getTeacherPaymentInfoError)
     }
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -52,6 +60,7 @@ const TeacherPaymentInfoForm = () => {
                         name="companyName"
                         required
                         className="w-full mt-1 p-2 border rounded-md"
+                        defaultValue={teacherPaymentInfo?.companyName || ''}
                     />
                 </div>
 
@@ -67,6 +76,7 @@ const TeacherPaymentInfoForm = () => {
                         name="siret"
                         required
                         className="w-full mt-1 p-2 border rounded-md"
+                        defaultValue={teacherPaymentInfo?.siret || ''}
                     />
                 </div>
 
@@ -82,6 +92,7 @@ const TeacherPaymentInfoForm = () => {
                         name="companyType"
                         required
                         className="w-full mt-1 p-2 border rounded-md"
+                        defaultValue={teacherPaymentInfo?.companyType || ''}
                     >
 
                         <option value="Autoentrepreneur">Autoentrepreneur</option>
@@ -108,6 +119,7 @@ const TeacherPaymentInfoForm = () => {
                             id="vatExempt"
                             name="vatExempt"
                             className="mr-2"
+                            defaultChecked={teacherPaymentInfo?.vatSubject || false}
                         />
                         Assujetti TVA
                     </label>
@@ -125,6 +137,7 @@ const TeacherPaymentInfoForm = () => {
                         name="iban"
                         required
                         className="w-full mt-1 p-2 border rounded-md"
+                        defaultValue={teacherPaymentInfo?.iban || ''}
                     />
                 </div>
 
@@ -140,6 +153,7 @@ const TeacherPaymentInfoForm = () => {
                         name="bic"
                         required
                         className="w-full mt-1 p-2 border rounded-md"
+                        defaultValue={teacherPaymentInfo?.bic || ''}
                     />
                 </div>
 
@@ -154,4 +168,4 @@ const TeacherPaymentInfoForm = () => {
     )
 }
 
-export default TeacherPaymentInfoForm
+export default TeacherPaymentInfoFormComponent
