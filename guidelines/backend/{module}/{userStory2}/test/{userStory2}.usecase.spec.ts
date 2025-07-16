@@ -1,8 +1,8 @@
 import {beforeEach, describe, expect, test} from "vitest";
-import {{UserStory2}Usecase} from "./{userStory2}.usecase";
-import {UserInMemoryRepository} from "../../users/user.inMemoryRepository";
-import {User} from "../../../shared/entities/user.entity";
-import {{UserStory2}Command} from "./{userStory2}.command";
+import {{UserStory2}Usecase} from "../{userStory2}.usecase";
+import {{UserStory2}InMemoryRepository} from "./{userStory2}.inMemoryRepository";
+import {User} from "../../../../shared/entities/user.entity";
+import {{UserStory2}Command} from "../{userStory2}.command";
 
 const generateUser = (userId: number) => {
     const user = new User();
@@ -12,18 +12,18 @@ const generateUser = (userId: number) => {
 
 describe('#{userStory2Id}: {userStory2Name}', () => {
 
-    let userInMemoryRepository: UserInMemoryRepository;
+    let {userStory2}InMemoryRepository: {UserStory2}InMemoryRepository;
     let {userStory2}Usecase: {UserStory2}Usecase;
 
     beforeEach(() => {
-        userInMemoryRepository = new UserInMemoryRepository();
-        {userStory2}Usecase = new {UserStory2}Usecase(userInMemoryRepository);
+        {userStory2}InMemoryRepository = new {UserStory2}InMemoryRepository();
+        {userStory2}Usecase = new {UserStory2}Usecase({userStory2}InMemoryRepository);
     });
 
     test('#{scenario1Id}: {scenario1Name}', async () => {
         // Etant donné que je suis connecté en tant qu'utilisateur
         const user = generateUser(1);
-        userInMemoryRepository.seed(user);
+        {userStory2}InMemoryRepository.seed(user);
 
         // Quand j'enregistre mes données
         const {userStory2}Command: {UserStory2}Command = {
@@ -40,7 +40,7 @@ describe('#{userStory2Id}: {userStory2Name}', () => {
     test('#{scenario2Id}: {scenario2Name}', async () => {
         // Etant donné que je suis connecté en tant qu'utilisateur
         const user = generateUser(1);
-        userInMemoryRepository.seed(user);
+        {userStory2}InMemoryRepository.seed(user);
 
         // Quand j'enregistre avec des données invalides
         const {userStory2}Command: {UserStory2}Command = {
@@ -57,7 +57,7 @@ describe('#{userStory2Id}: {userStory2Name}', () => {
     test('#{scenario3Id}: {scenario3Name}', async () => {
         // Etant donné que je ne suis pas connecté / utilisateur inexistant
         const user = generateUser(1);
-        userInMemoryRepository.seed(user);
+        {userStory2}InMemoryRepository.seed(user);
 
         // Quand j'enregistre mes données
         const {userStory2}Command: {UserStory2}Command = {

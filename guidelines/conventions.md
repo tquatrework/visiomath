@@ -40,12 +40,13 @@ frontend/src/features/{module}/{userStory}/
 ├── {userStory}.queryResult/command.ts      # Modèles de données TypeScript pour les résultats de la requête ou la commande
 ├── {userStory}.repository.ts               # Interface du repository
 ├── {userStory}.repository.provider.tsx     # Provider avec Context API pour injection de dépendance
-├── {userStory}.successInMemoryRepository.ts # Repository fake pour les tests (cas de succès)
-├── {userStory}.failureInMemoryRepository.ts # Repository fake pour les tests (cas d'erreur)
 ├── {userStory}.fetchRepository.ts          # Repository réel utilisant l'API
 ├── use{UserStory}.usecase.ts              # Hook React contenant la logique métier
 ├── {UserStory}Component.tsx               # Composant React principal
-└── {userStory}.spec.tsx                   # Tests de la fonctionnalité
+└── test/
+    ├── {userStory}.spec.tsx                   # Tests de la fonctionnalité
+    ├── {userStory}.successInMemoryRepository.ts # Repository fake pour les tests (cas de succès)
+    └── {userStory}.failureInMemoryRepository.ts # Repository fake pour les tests (cas d'erreur)
 ```
 
 ## Orientation Clean architecture : 
@@ -72,7 +73,107 @@ Les repositories liés à des commandes renvoient une promesse avec void. Ils pe
 3. **Gestion d'état** : useState dans les hooks pour loading, error, success
 4. **Tests sociaux** : Tests unitaires testant composant + logique mais pas les appels API
 
-Les tests côté frontend sont des tests semi-unitaires / d’intégration (tests « sociaux ») réalisés avec vitest. Ils vérifient les composants et la logique, mais pas les appels API.
+## Conventions pour les Fetch Repositories (Queries)
+
+Pour les repositories qui effectuent des requêtes (GET), suivre ces conventions :
+
+### 1. **Structure du fichier** :
+```typescript
+import {
+    {UserStory}Repository
+} from "@src/features/{module}/{userStory}/{userStory}.repository";
+import {
+    {UserStory}QueryResult
+} from "@src/features/{module}/{userStory}/{userStory}.queryResult";
+import apiSec from "@src/utils/tokenapi.utils";
+import {AxiosError} from "axios";
+
+export class {UserStory}FetchRepository implements {UserStory}Repository {
+    async execute(): Promise<{UserStory}QueryResult> {
+        try {
+            const response = await apiSec.get('/endpoint-url');
+            return response.data;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                const message =
+                    typeof error.response?.data?.message === 'string'
+                        ? error.response.data.message
+                        : 'Message d\'erreur par défaut';
+                throw new Error(message);
+            }
+            throw new Error('Message d\'erreur par défaut');
+        }
+    }
+}
+```
+
+### 2. **URL cohérente** :
+- Utiliser l'URL exacte définie dans le contrôleur backend
+- Respecter la méthode HTTP (GET pour les queries)
+- Correspondance exacte avec l'endpoint défini dans le contrôleur backend
+
+### 3. **Gestion d'erreur** :
+- Message d'erreur par défaut cohérent avec le domaine métier
+- Récupération du message d'erreur depuis la réponse serveur si disponible
+- Gestion des erreurs Axios et des erreurs génériques
+- Double fallback : message serveur → message par défaut
+
+### 4. **Typage TypeScript** :
+- Implémente l'interface du repository correspondant
+- Retourne un `Promise<{UserStory}QueryResult>`
+- Imports avec les alias `@src/` comme dans les autres fichiers
+- Respect des conventions de nommage établies
+
+## Conventions pour les Fetch Repositories (Commands)
+
+Pour les repositories qui effectuent des commandes (POST, PUT, DELETE), suivre ces conventions :
+
+### 1. **Structure du fichier** :
+```typescript
+import {
+    {UserStory}Repository
+} from "@src/features/{module}/{userStory}/{userStory}.repository";
+import {
+    {UserStory}Command
+} from "@src/features/{module}/{userStory}/{userStory}.command";
+import apiSec from "@src/utils/tokenapi.utils";
+import {AxiosError} from "axios";
+
+export class {UserStory}FetchRepository implements {UserStory}Repository {
+    async execute(command: {UserStory}Command): Promise<void> {
+        try {
+            await apiSec.post('/endpoint-url', command);
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                const message =
+                    typeof error.response?.data?.message === 'string'
+                        ? error.response.data.message
+                        : 'Message d\'erreur par défaut';
+                throw new Error(message);
+            }
+            throw new Error('Message d\'erreur par défaut');
+        }
+    }
+}
+```
+
+### 2. **Méthodes HTTP** :
+- POST pour les créations
+- PUT pour les mises à jour complètes
+- PATCH pour les mises à jour partielles
+- DELETE pour les suppressions
+
+### 3. **Gestion des paramètres** :
+- Utiliser un objet Command pour encapsuler les paramètres
+- Validation des paramètres côté frontend avant envoi
+- Respect du contrat défini dans l'interface
+
+### 4. **Retour** :
+- Les commandes retournent `Promise<void>`
+- Pas de données retournées, seulement succès ou erreur
+- Respecter le principe CQS (Command Query Separation)
+
+Les tests côté frontend sont des tests semi-unitaires / d'intégration (tests « sociaux ») réalisés avec vitest. Ils vérifient les composants et la logique, mais pas les appels API.
 La logique est écrite dans des hooks ; ils sont donc couplés à React. Chaque hook joue le rôle de cas d’usage, avec le repository injecté (inversion de dépendance) via l’API Context.
 
 Je commence par écrire le test frontend pour le scénario nominal (happy path) et un seul scénario d’échec (sad path) — celui où une règle métier est violée (le deuxième scénario de la user story). Ensuite, j’écris juste le code nécessaire pour faire passer ce test, en utilisant un repository factice. Quand le test passe, je bascule sur le backend pour la même user story.
@@ -161,15 +262,20 @@ Chaque fonctionnalité en vertical slice doit suivre la structure établie dans 
 ```
 backend/src/modules/{module}/{userStory}/
 ├── {userStory}.usecase.ts           # Use case contenant la logique métier
-├── {userStory}.usecase.spec.ts      # Tests unitaires du use case
 ├── {userStory}.controller.ts        # Contrôleur REST
-├── {userStory}.e2e.spec.ts          # Tests e2e avec testcontainers
 ├── {userStory}.repository.ts        # Interface du repository (pour les queries)
-├── {userStory}.successinMemoryRepository.ts # Repository fake pour les tests
-├── {userStory}.failureinMemoryRepository.ts # Repository fake pour les tests
+├── {userStory}.typeOrmRepository.ts # Repository réel utilisant TypeORM
 ├── {userStory}.queryResult.ts       # Modèle de données pour les queries
 ├── {userStory}.command.ts           # Modèle de données pour les commandes
+└── test/
+    ├── {userStory}.usecase.spec.ts      # Tests unitaires du use case
+    ├── {userStory}.e2e.spec.ts         # Tests e2e avec testcontainers
+    ├── {userStory}.inMemoryRepository.ts # Repository fake pour les tests (succès)
+    └── {userStory}.failureInMemoryRepository.ts # Repository fake pour les tests (échec)
 ```
+
+**Note importante sur l'organisation des tests :**
+Tous les fichiers liés aux tests (fichiers de test `.spec.tsx` et repositories in-memory) doivent être organisés dans un dossier `test` séparé, similaire à la structure du backend. Cela permet une meilleure organisation et une séparation claire entre le code de production et le code de test.
 
 ## Orientation Clean architecture :
 
@@ -251,7 +357,7 @@ Par exemple :
 
 ```typescript
 import {beforeEach, describe, expect, test} from "vitest";
-import {{UserStory}Usecase} from "./{userStory}.usecase";
+import {{UserStory}Usecase} from "../{userStory}.usecase";
 import {{UserStory}InMemoryRepository} from "./{userStory}.inMemoryRepository";
 
 describe('#{userStoryId}: {userStoryName}', () => {
@@ -292,7 +398,7 @@ Implémentez ensuite le code nécessaire pour que le test passe.
 Créez le usecase, le repository in-memory, les types nécessaires, et toute autre classe requise pour faire passer le test.
 Attention, il faut absolument respecter l'inversion de dépendance : le usecase dépend de l'interface du repository, pas de l'implémentation concrète.
 Attention, les messages d'erreur doivent être lancés explicitement par le use case.
-
+Attention, les services, repositories etc doivent être enregistrés dans le module NestJS correspondant, pour que l'injection de dépendance fonctionne correctement.
 
 ## Checklist de validation avant de proposer le code :
 

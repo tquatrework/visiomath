@@ -1,9 +1,10 @@
 import {beforeEach, expect} from "vitest";
-import {SaveTeacherPaymentInfoUsecase} from "./saveTeacherPaymentInfo.usecase";
-import {User} from "../../../shared/entities/user.entity";
-import {UserProfile} from "../../../shared/entities/userprofile.entity";
-import {UserInMemoryRepository} from "../../users/user.inMemoryRepository";
-import {TeacherProfile} from "../../../shared/entities/teacherProfile.entity";
+import {UserInMemoryRepository} from "../../../users/user.inMemoryRepository";
+import {TeacherProfile} from "../../../../shared/entities/teacherProfile.entity";
+import {UserProfile} from "../../../../shared/entities/userprofile.entity";
+import {User} from "../../../../shared/entities/user.entity";
+import {SaveTeacherPaymentInfoUsecase} from "../saveTeacherPaymentInfo.usecase";
+
 
 
 const generateUserWithTeacherProfile = (userId: number) => {

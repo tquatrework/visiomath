@@ -2,7 +2,7 @@ import request from 'supertest';
 import {INestApplication} from "@nestjs/common";
 import {beforeEach, describe, expect, test} from "vitest";
 import {DataSource} from "typeorm";
-import generateUserToken from "../../../common/test/fixture/generateUserToken";
+import {UserBuilder} from "../../../../common/test/fixture/userBuilder";
 
 declare global {
     var app: INestApplication;
@@ -12,7 +12,9 @@ describe('#{userStory2Id}: {userStory2Name}', () => {
 
     test('#{scenario1Id}: {scenario1Name}', async () => {
         // Etant donné que je suis connecté en tant qu'utilisateur
-        const userToken = await generateUserToken(app, "user");
+        const userBuilder = new UserBuilder(app).withId(1).withRole("user");
+        await userBuilder.build();
+        const userToken = await userBuilder.getToken();
 
         // Quand j'enregistre mes données
         const res = await request(app.getHttpServer())
@@ -37,7 +39,9 @@ describe('#{userStory2Id}: {userStory2Name}', () => {
 
     test('#{scenario2Id}: {scenario2Name}', async () => {
         // Etant donné que je suis connecté en tant qu'utilisateur
-        const userToken = await generateUserToken(app, "user");
+        const userBuilder = new UserBuilder(app).withId(2).withRole("user");
+        await userBuilder.build();
+        const userToken = await userBuilder.getToken();
 
         // Quand j'enregistre avec des données invalides
         const res = await request(app.getHttpServer())

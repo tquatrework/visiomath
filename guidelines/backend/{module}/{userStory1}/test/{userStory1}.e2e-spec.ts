@@ -2,7 +2,7 @@ import request from 'supertest';
 import {INestApplication} from "@nestjs/common";
 import {beforeEach, describe, expect, test} from "vitest";
 import {DataSource} from "typeorm";
-import generateUserToken from "../../../common/test/fixture/generateUserToken";
+import {UserBuilder} from "../../../../common/test/fixture/userBuilder";
 
 declare global {
     var app: INestApplication;
@@ -13,7 +13,9 @@ describe('#{userStory1Id}: {userStory1Name}', () => {
     test('#{scenario1Id}: {scenario1Name}', async () => {
         // Etant donné que je suis connecté en tant qu'utilisateur
         // Et que j'ai des données enregistrées
-        const userToken = await generateUserToken(app, "user");
+        const userBuilder = new UserBuilder(app).withId(1).withRole("user");
+        await userBuilder.build();
+        const userToken = await userBuilder.getToken();
         
         // Seed des données de test
         await app.get(DataSource).query(
@@ -35,7 +37,9 @@ describe('#{userStory1Id}: {userStory1Name}', () => {
     test('#{scenario2Id}: {scenario2Name}', async () => {
         // Etant donné que je suis connecté en tant qu'utilisateur
         // Et que je n'ai pas de données enregistrées
-        const userToken = await generateUserToken(app, "user");
+        const userBuilder = new UserBuilder(app).withId(2).withRole("user");
+        await userBuilder.build();
+        const userToken = await userBuilder.getToken();
 
         // Quand je demande mes données
         const res = await request(app.getHttpServer())

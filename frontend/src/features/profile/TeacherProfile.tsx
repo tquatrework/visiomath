@@ -1,11 +1,8 @@
 // src/features/profile/TeacherProfile.tsx
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTeacherProfile } from "../../hooks/useTeacherProfile";
 import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoFormComponent";
-import {
-  SaveTeacherPaymentInfoInMemoryRepository
-} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.inMemoryRepository";
 import {
   SaveTeacherPaymentInfoRepositoryProvider
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.repository.provider";
@@ -13,14 +10,17 @@ import {
   SaveTeacherPaymentFetchRepository
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.fetchRepository";
 import {
-  GetTeacherPaymentInfoSuccessInMemoryRepository
-} from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.successInMemoryRepository";
-import {
   GetTeacherPaymentInfoProvider
 } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.repository.provider";
 import {
   GetTeacherPaymentInfoCompanyType
 } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.queryResult";
+import {
+  GetTeacherPaymentInfoSuccessInMemoryRepository
+} from "@src/features/teacherInvoice/getTeacherPaymentInfo/test/getTeacherPaymentInfo.successInMemoryRepository";
+import {
+  GetTeacherPaymentInfoFetchRepository
+} from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.fetchRepository";
 
 interface TeacherProfileProps {
   data: any;
@@ -32,6 +32,9 @@ const TeacherProfile: React.FC<TeacherProfileProps> = ({ data, readOnly = false 
 
   const profileId = data?.user?.id || 1; // Fallback to 1 if no profileId is provided, just for being able to dev here (data.user.id is undefined)
   const { teacherProfile, loading, error, handleUpdateProfile } = useTeacherProfile(profileId);
+
+  const getTeacherPaymentInfoRepository = useMemo(() => new GetTeacherPaymentInfoFetchRepository(), []);
+  const saveTeacherPaymentInfoRepository = useMemo(() => new SaveTeacherPaymentFetchRepository(), []);
 
   const { register, handleSubmit, reset } = useForm({
     defaultValues: teacherProfile,
@@ -142,9 +145,9 @@ const TeacherProfile: React.FC<TeacherProfileProps> = ({ data, readOnly = false 
       </form>
 
       <GetTeacherPaymentInfoProvider
-          getTeacherPaymentInfoRepository={new GetTeacherPaymentInfoSuccessInMemoryRepository(mockPaymentInfo)}>
+          getTeacherPaymentInfoRepository={getTeacherPaymentInfoRepository}>
         <SaveTeacherPaymentInfoRepositoryProvider
-            saveTeacherPaymentInfoRepository={new SaveTeacherPaymentFetchRepository()}>
+            saveTeacherPaymentInfoRepository={saveTeacherPaymentInfoRepository}>
           <TeacherPaymentInfoFormComponent/>
         </SaveTeacherPaymentInfoRepositoryProvider>
       </GetTeacherPaymentInfoProvider>

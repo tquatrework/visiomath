@@ -1,5 +1,5 @@
-import {GetTeacherPaymentInfoRepository} from "./getTeacherPaymentInfo.repository";
-import {GetTeacherPaymentInfoQueryResult} from "./getTeacherPaymentInfo.queryResult";
+import {GetTeacherPaymentInfoRepository} from "../getTeacherPaymentInfo.repository";
+import {GetTeacherPaymentInfoQueryResult} from "../getTeacherPaymentInfo.queryResult";
 
 export class GetTeacherPaymentInfoFailureInMemoryRepository implements GetTeacherPaymentInfoRepository {
     

@@ -11,4 +11,3 @@ export class SaveTeacherPaymentInfoSuccessInMemoryRepository implements SaveTeac
     }
 
 }
-

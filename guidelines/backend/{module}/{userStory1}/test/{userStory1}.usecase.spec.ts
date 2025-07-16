@@ -1,7 +1,7 @@
 import {beforeEach, describe, expect, test} from "vitest";
-import {{UserStory1}Usecase} from "./{userStory1}.usecase";
+import {{UserStory1}Usecase} from "../{userStory1}.usecase";
 import {{UserStory1}InMemoryRepository} from "./{userStory1}.inMemoryRepository";
-import {{UserStory1}QueryResult} from "./{userStory1}.queryResult";
+import {{UserStory1}QueryResult} from "../{userStory1}.queryResult";
 
 describe('#{userStory1Id}: {userStory1Name}', () => {
 

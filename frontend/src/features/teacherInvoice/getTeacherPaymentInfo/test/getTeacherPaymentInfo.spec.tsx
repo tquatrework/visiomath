@@ -1,8 +1,8 @@
 import {beforeEach, describe, expect, MockInstance, test, vi} from "vitest";
 import {render, screen, waitFor} from "@testing-library/react";
 import { GetTeacherPaymentInfoProvider } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.repository.provider";
-import { GetTeacherPaymentInfoSuccessInMemoryRepository } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.successInMemoryRepository";
-import { GetTeacherPaymentInfoFailureInMemoryRepository } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.failureInMemoryRepository";
+import { GetTeacherPaymentInfoSuccessInMemoryRepository } from "@src/features/teacherInvoice/getTeacherPaymentInfo/test/getTeacherPaymentInfo.successInMemoryRepository";
+import { GetTeacherPaymentInfoFailureInMemoryRepository } from "@src/features/teacherInvoice/getTeacherPaymentInfo/test/getTeacherPaymentInfo.failureInMemoryRepository";
 import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoFormComponent";
 import { GetTeacherPaymentInfoCompanyType } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.queryResult";
 

@@ -2,10 +2,8 @@ import request from 'supertest';
 import {INestApplication} from "@nestjs/common";
 import {DataSource} from "typeorm";
 import {JwtService} from "@nestjs/jwt";
-import {User} from "../../../shared/entities/user.entity";
-import {UserProfile} from "../../../shared/entities/userprofile.entity";
-import {TeacherProfile} from "../../../shared/entities/teacherProfile.entity";
-import {UserBuilder} from "../../../common/test/fixture/userBuilder";
+import {UserBuilder} from "../../../../common/test/fixture/userBuilder";
+
 
 
 declare global {

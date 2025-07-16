@@ -1,19 +1,11 @@
 import {beforeEach, describe, expect, test} from "vitest";
-import {GetTeacherPaymentInfoUsecase} from "./getTeacherPaymentInfo.usecase";
+import {GetTeacherPaymentInfoUsecase} from "../getTeacherPaymentInfo.usecase";
 import {GetTeacherPaymentInfoInMemoryRepository} from "./getTeacherPaymentInfo.inMemoryRepository";
 import {GetTeacherPaymentInfoFailureInMemoryRepository} from "./getTeacherPaymentInfo.failureInMemoryRepository";
-import {GetTeacherPaymentInfoQueryResult} from "./getTeacherPaymentInfo.queryResult";
-import {CompanyType} from "../../../shared/entities/teacherProfile.entity";
+import {GetTeacherPaymentInfoQueryResult} from "../getTeacherPaymentInfo.queryResult";
+import {CompanyType} from "../../../../shared/entities/teacherProfile.entity";
 
 describe('#US-2: Récupération des informations bancaires du professeur', () => {
-    
-    let getTeacherPaymentInfoInMemoryRepository: GetTeacherPaymentInfoInMemoryRepository;
-    let getTeacherPaymentInfoUsecase: GetTeacherPaymentInfoUsecase;
-
-    beforeEach(() => {
-        getTeacherPaymentInfoInMemoryRepository = new GetTeacherPaymentInfoInMemoryRepository();
-        getTeacherPaymentInfoUsecase = new GetTeacherPaymentInfoUsecase(getTeacherPaymentInfoInMemoryRepository);
-    });
 
     test('#US-2-AC-1: Récupération réussie', async () => {
 
@@ -26,7 +18,10 @@ describe('#US-2: Récupération des informations bancaires du professeur', () =>
             iban: "FR1234567891234567891234567",
             bic: "azertyaz"
         };
-        
+
+        const getTeacherPaymentInfoInMemoryRepository = new GetTeacherPaymentInfoInMemoryRepository();
+        const getTeacherPaymentInfoUsecase = new GetTeacherPaymentInfoUsecase(getTeacherPaymentInfoInMemoryRepository);
+
         getTeacherPaymentInfoInMemoryRepository.seed(1, expectedPaymentInfo);
 
         // Quand je récupère mes informations bancaire
@@ -57,6 +52,19 @@ describe('#US-2: Récupération des informations bancaires du professeur', () =>
         // Etant donné que je ne suis pas ou plus reconnu comme professeur dans le système
         // (le repository ne retourne aucune donnée pour cet utilisateur)
         // Pas de seed dans le repository, donc aucune donnée pour l'utilisateur 999
+
+
+        const expectedPaymentInfo: GetTeacherPaymentInfoQueryResult = {
+            companyName: "ProfCompany",
+            siret: "12345678912345",
+            companyType: CompanyType.Autoentrepreneur,
+            vatExempt: true,
+            iban: "FR1234567891234567891234567",
+            bic: "azertyaz"
+        };
+
+        const getTeacherPaymentInfoInMemoryRepository = new GetTeacherPaymentInfoInMemoryRepository();
+        const getTeacherPaymentInfoUsecase = new GetTeacherPaymentInfoUsecase(getTeacherPaymentInfoInMemoryRepository);
 
         // Quand je récupère mes informations bancaire
         // Alors une erreur "Professeur non trouvé" doit être affichée

@@ -1,18 +1,18 @@
 import {Inject} from "@nestjs/common";
-import {UserRepository} from "../../users/user.repository";
-import {UserTypeOrmRepository} from "../../users/user.typeOrmRepository";
+import {SaveTeacherPaymentInfoRepository} from "./saveTeacherPaymentInfo.repository";
+import {SaveTeacherPaymentInfoTypeOrmRepository} from "./saveTeacherPaymentInfo.typeOrmRepository";
 import {AddTeacherPaymentInfoCommand} from "../../../shared/entities/teacherProfile.entity";
 
 export class SaveTeacherPaymentInfoUsecase {
 
     constructor(
-        @Inject(UserTypeOrmRepository)
-        private userRepository: UserRepository
+        @Inject(SaveTeacherPaymentInfoTypeOrmRepository)
+        private saveTeacherPaymentInfoRepository: SaveTeacherPaymentInfoRepository
     ) {}
 
     async execute(teacherId: number, saveTeacherPaymentInfoCommand: AddTeacherPaymentInfoCommand) {
 
-        const teacher = await this.userRepository.findUserByIdWithTeacherProfil(teacherId);
+        const teacher = await this.saveTeacherPaymentInfoRepository.findUserByIdWithTeacherProfil(teacherId);
 
         if (!teacher) {
             throw new Error("Professeur introuvable.");
@@ -21,7 +21,7 @@ export class SaveTeacherPaymentInfoUsecase {
         teacher.addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand);
 
         try {
-            await this.userRepository.save(teacher);
+            await this.saveTeacherPaymentInfoRepository.save(teacher);
             return;
         } catch (error) {
             if (error instanceof Error) {

@@ -7,7 +7,6 @@ import { UsersController } from './users.controller';
 import { User } from '../../shared/entities/user.entity';
 import { Notification } from '../../shared/entities/notification.entity';
 import { NotificationsModule } from '../notifications/notifications.module';
-import {UserTypeOrmRepository} from "./user.typeOrmRepository";
 
 @Module({
   imports: [
@@ -16,7 +15,7 @@ import {UserTypeOrmRepository} from "./user.typeOrmRepository";
     forwardRef(() => NotificationsModule),
     ],
   controllers: [UsersController],
-  providers: [UsersService, UserTypeOrmRepository],
-  exports: [UsersService, UserTypeOrmRepository],
+  providers: [UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}

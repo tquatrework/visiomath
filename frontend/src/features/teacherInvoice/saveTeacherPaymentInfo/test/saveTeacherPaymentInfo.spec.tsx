@@ -7,10 +7,10 @@ import {
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.repository.provider";
 import {
     SaveTeacherPaymentInfoSuccessInMemoryRepository
-} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.successInMemoryRepository";
+} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/test/saveTeacherPaymentInfo.successInMemoryRepository";
 import {
     SaveTeacherPaymentInfoFailureInMemoryRepository
-} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.failureInMemoryRepository";
+} from "@src/features/teacherInvoice/saveTeacherPaymentInfo/test/saveTeacherPaymentInfo.failureInMemoryRepository";
 
 
 describe('#US-1: Enregistrement des informations personnelles / de paiement du professeur', async () => {

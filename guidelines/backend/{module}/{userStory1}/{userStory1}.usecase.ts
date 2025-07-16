@@ -12,12 +12,16 @@ export class {UserStory1}Usecase {
 
     async execute(userId: number): Promise<{UserStory1}QueryResult> {
         
-        const result = await this.{userStory1}Repository.findByUserId(userId);
-        
-        if (!result) {
-            throw new Error("Données introuvables.");
+        try {
+            const result = await this.{userStory1}Repository.findByUserId(userId);
+            
+            if (!result) {
+                throw new Error("Données introuvables.");
+            }
+            
+            return result;
+        } catch (error) {
+            throw new Error("replace with your error message");
         }
-        
-        return result;
     }
 }

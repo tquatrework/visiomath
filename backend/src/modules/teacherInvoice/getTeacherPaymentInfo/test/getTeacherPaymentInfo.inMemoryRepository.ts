@@ -1,5 +1,5 @@
-import {GetTeacherPaymentInfoRepository} from "./getTeacherPaymentInfo.repository";
-import {GetTeacherPaymentInfoQueryResult} from "./getTeacherPaymentInfo.queryResult";
+import {GetTeacherPaymentInfoRepository} from "../getTeacherPaymentInfo.repository";
+import {GetTeacherPaymentInfoQueryResult} from "../getTeacherPaymentInfo.queryResult";
 
 export class GetTeacherPaymentInfoInMemoryRepository implements GetTeacherPaymentInfoRepository {
     private data: Map<number, GetTeacherPaymentInfoQueryResult> = new Map();
