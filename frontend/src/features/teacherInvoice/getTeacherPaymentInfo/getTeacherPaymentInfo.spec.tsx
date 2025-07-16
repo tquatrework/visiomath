@@ -15,7 +15,7 @@ describe('#US-2: Récupération des informations de paiement du professeur', asy
     })
 
 
-    test('#US-2-AC-1: Récupération réussie', async () => {
+    test('#{scenarioID}: {scenarioName}', async () => {
 
         // Etant donné que je suis connecté en tant que professeur avec ces informations bancaires stockées : 
         // nom de l'entreprise : "ProfCompany"

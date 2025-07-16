@@ -17,7 +17,6 @@ export class saveTeacherPaymentInfoController {
         @Res() res: Response
     ) {
 
-
         if (typeof body !== "object" || typeof body.companyName !== 'string' || typeof body.siret !== 'string' ||
             typeof body.companyType !== 'string' || typeof body.iban !== 'string' ||
             typeof body.bic !== 'string' || typeof body.vatExempt !== 'boolean') {

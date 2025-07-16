@@ -13,7 +13,7 @@ import {
 } from "@src/features/{module}/{userStory2}/{userStory2}.failureInMemoryRepository";
 
 
-describe('#US-1: Enregistrement des informations personnelles / de paiement du professeur', async () => {
+describe('#{userStory2ID}: {userStory2}', async () => {
 
     let alertSpy: MockInstance;
 
@@ -21,80 +21,32 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {})
     })
 
-    describe('#US-1-AC-1: Enregistrement réussi', async () => {
+    test('#{scenarioID}: {scenarioName}', async () => {
 
-        test('#US-1-AC-1: Enregistrement réussi avec BIC 6 + 2', async () => {
+        // Etant donné que je suis connecté en tant que xxxx
+        act(() => {
+            render(<{userStory2}RepositoryProvider
+                {userStory2}Repository={new {userStory2}SuccessInMemoryRepository()}>
+                <{UserStoryComponent}/>
+            </{userStory2}RepositoryProvider>);
+        });
 
-            // Etant donné que je suis connecté en tant que professeur
-            act(() => {
-                render(<{userStory2}RepositoryProvider
-                    {userStory2}Repository={new {userStory2}SuccessInMemoryRepository()}>
-                    <TeacherPaymentInfoForm/>
-                </{userStory2}RepositoryProvider>);
-            });
+        // Quand j'enregistre :
+        // nomTest : "Dupont"
+        await userEvent.type(screen.getByLabelText(/Nom test/i), 'Dupont')
+        // prenomTest : "JeanPierre"
+        await userEvent.type(screen.getByLabelText(/Prenom test/i), 'JeanPierre')
 
-            // Quand j'enregistre :
-            // Nom de l'entreprise : "ProfCompany"
-            await userEvent.type(screen.getByLabelText(/Nom de l'entreprise/i), 'ProfCompany')
-            // Siret : "12345678912345
-            await userEvent.type(screen.getByLabelText(/Siret/i), '12345678912345')
-            // Type entreprise : Autoentrepreneur
-            await userEvent.selectOptions(screen.getByLabelText(/Type entreprise/i), 'Autoentrepreneur')
-            // Assujetti TVA : non
-            await userEvent.click(screen.getByRole('checkbox', {name: /Assujetti TVA/i}))
-            // IBAN : FR 1234567891234567891234567
-            await userEvent.type(screen.getByLabelText(/IBAN/i), 'FR1234567891234567891234567')
-            // Bic : azertyaz
-            await userEvent.type(screen.getByLabelText(/BIC/i), 'azertyaz')
+        await act(async () => {
+            await userEvent.click(screen.getByRole('button', {name: /Sauvegarder/i}));
+        });
 
-            await act(async () => {
-                await userEvent.click(screen.getByRole('button', {name: /Sauvegarder/i}));
-            });
-
-            // Alors mon enregistrement doit être confirmé
-            await waitFor(() => {
-                expect(alertSpy).toHaveBeenCalledWith('Enregistrement Ok')
-            })
-
+        // Alors mon enregistrement doit être confirmé
+        await waitFor(() => {
+            expect(alertSpy).toHaveBeenCalledWith('Enregistrement Ok')
         })
+
     })
 
-    describe('#US-1-AC-2: Enregistrement échoué', async () => {
-
-        test('#US-1-AC-2: Enregistrement échoué avec SIRET de moins de 14 caractères', async () => {
-
-            // Etant donné que je suis connecté en tant que professeur
-            act(() => {
-                render(<{userStory2}RepositoryProvider
-                    {userStory2}Repository={new {userStory2}FailureInMemoryRepository()}>
-                    <TeacherPaymentInfoForm/>
-                </{userStory2}RepositoryProvider>);
-            });
-
-            // Quand j'enregistre mes infos avec un siret de moins de 14 caractères
-            // Nom de l'entreprise : "ProfCompany"
-            await userEvent.type(screen.getByLabelText(/Nom de l'entreprise/i), 'ProfCompany')
-            // Siret : "123456789123" (moins de 14 caractères)
-            await userEvent.type(screen.getByLabelText(/Siret/i), '123456789123')
-            // Type entreprise : Autoentrepreneur
-            await userEvent.selectOptions(screen.getByLabelText(/Type entreprise/i), 'Autoentrepreneur')
-            // Assujetti TVA : non
-            await userEvent.click(screen.getByRole('checkbox', {name: /Assujetti TVA/i}))
-            // IBAN : FR 1234567891234567891234567
-            await userEvent.type(screen.getByLabelText(/IBAN/i), 'FR1234567891234567891234567')
-            // Bic : azertyaz
-            await userEvent.type(screen.getByLabelText(/BIC/i), 'azertyaz')
-
-            await act(async () => {
-                await userEvent.click(screen.getByRole('button', {name: /Sauvegarder/i}));
-            });
-
-            // Alors mon enregistrement doit renvoyer une erreur "Le SIRET doit contenir 14 caractères"
-            await waitFor(() => {
-                expect(alertSpy).toHaveBeenCalledWith('Le SIRET doit contenir 14 caractères')
-            })
-
-        })
-    })
 
 })

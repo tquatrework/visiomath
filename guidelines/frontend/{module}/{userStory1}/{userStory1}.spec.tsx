@@ -8,73 +8,41 @@ import {
     {userStory1}CompanyType
 } from "@src/features/{module}/{userStory1}/{userStory1}.queryResult";
 
-describe('#US-2: Récupération des informations de paiement du professeur', async () => {
+describe('#{userStory1ID}: {userStory1}', async () => {
 
-    test('#US-2-AC-1: Récupération réussie', async () => {
+    test('#{scenario1ID}: {scenario1Name}', async () => {
 
-        // Etant donné que je suis connecté en tant que professeur avec ces informations bancaires stockées : 
-        // nom de l'entreprise : "ProfCompany"
-        // siret : "12345678912345"
-        // type entreprise : Autoentrepreneur
-        // assujetti TVA : non
-        // IBAN : FR 1234567891234567891234567
-        // Bic : azertyaz
-        const mockPaymentInfo = {
-            companyName: "ProfCompany",
-            siret: "12345678912345",
-            companyType: {userStory1}CompanyType.Autoentrepreneur,
-            vatSubject: false,
-            iban: "FR1234567891234567891234567",
-            bic: "azertyaz"
+        // Etant donné que je suis connecté en tant que xxxx avec ces informations stockées :
+        const mock{userStory1} = {
+            name: "Dupont",
+            prenom: "Jean-Pierre"
         };
 
-        // Quand je récupère mes informations de paiement
+        // Quand je récupère mes informations
         render(<{userStory1}Provider
-            {userStory1}Repository={new {userStory1}SuccessInMemoryRepository(mockPaymentInfo)}>
+            {userStory1}Repository={new {userStory1}SuccessInMemoryRepository(mock{userStory1})}>
             <{userStory1}Component/>
         </{userStory1}Provider>);
 
         // Alors je dois voir : 
-        // nom de l'entreprise : "ProfCompany"
-        // siret : "12345678912345"
-        // type entreprise : Autoentrepreneur
-        // assujetti TVA : non
-        // IBAN : FR1234567891234567891234567
-        // Bic : azertyaz
-        expect(
-          await screen.findByTestId('company-name')
-        ).toHaveTextContent('ProfCompany');
-        expect(
-          await screen.findByTestId('siret')
-        ).toHaveTextContent('12345678912345');
-        expect(
-          await screen.findByTestId('company-type')
-        ).toHaveTextContent('AE');
-        expect(
-          await screen.findByTestId('vat-subject')
-        ).toHaveTextContent('non');
-        expect(
-          await screen.findByTestId('iban')
-        ).toHaveTextContent('FR1234567891234567891234567');
-        expect(
-          await screen.findByTestId('bic')
-        ).toHaveTextContent('azertyaz');
+        // nom : "Dupont"
+        // prénom : "Jean-Pierre"
+        expect(await screen.findByDisplayValue('Dupont')).toBeInTheDocument();
+        expect(await screen.findByDisplayValue('Jean-Pierre')).toBeInTheDocument();
 
     })
 
-    test('#US-2-AC-1: Récupération échouée', async () => {
+    test('#{scenario2ID}: {scenario2Name}', async () => {
 
-        // Étant donné que je suis connecté en tant que professeur avec ces informations de paiement stockées : 
-        // nom de l’entreprise : "ProfCompany"
-        // siret : "12345678912345"
-        // type entreprise : AE
-        // assujetti TVA : non
-        // IBAN : FR 1234567891234567891234567
-        // Bic : azertyaz
+        // Etant donné que je suis connecté en tant que xxxx avec ces informations stockées :
+        const mock{userStory1} = {
+            name: "Dupont",
+            prenom: "Jean-Pierre"
+        };
 
-        // Quand je récupère mes informations bancaire, si la récupération échoue
+        // Quand je récupère mes informations, si la récupération échoue
 
-        // Alors une erreur "Impossible de récupérer les informations de paiement" doit être affichée
+        // Alors une erreur "Impossible de récupérer les informations" doit être affichée
         render(
             <{userStory1}Provider
                 {userStory1}Repository={new {userStory1}FailureInMemoryRepository()}
@@ -83,7 +51,7 @@ describe('#US-2: Récupération des informations de paiement du professeur', asy
             </{userStory1}Provider>
         );
 
-        expect(await screen.findByText(/Impossible de récupérer les informations de paiement/i)).toBeInTheDocument();
+        expect(await screen.findByText(/Impossible de récupérer les informations/i)).toBeInTheDocument();
 
     })
 

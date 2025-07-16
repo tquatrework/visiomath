@@ -209,6 +209,83 @@ J’écris ensuite le second test e2e (sad path) et je le fais passer.
 Je m’arrête là pour les e2e : deux ou trois scénarios maximum (happy path + un sad path) par user story.
 
 
+## Itérations TDD
+
+Lorsque je te demande de générer des tests unitaires pour le backend :
+
+### Première itération :
+
+Quand je te demande de générer le premier test, tu dois produire uniquement le test du premier scénario : donc une seule fonction test ou it. La première itération ne doit contenir que :
+```typescript
+import {beforeEach, describe, expect, test, } from "vitest";
+
+describe('Name of the US (replace with the name of the US)', async () => {
+
+    beforeEach(() => {
+    })
+
+    test('name of the first scenario (replace with the name of the scenario)', async () => {
+
+        // Etant donné que ...(replace with the given part of the scenario)
+
+        // Quand ... (replace with the when part of the scenario)
+
+        // Alors ... (replace with the then part of the scenario)
+        expect(false).toBe(true); // This will fail, but it's ok for the first iteration
+
+    })
+
+})
+```
+
+### Deuxième itération :
+
+La deuxième itération doit ajouter le code correspondant aux étapes Given / When / Then, sans créer d’autres fichiers.
+Par exemple :
+
+```
+import {beforeEach, describe, expect, test, vi} from "vitest";
+import {render, waitFor, screen} from "@testing-library/react";
+
+
+describe('#{userStoryId}: {userStoryName}', async () => {
+  
+    test('#{acceptanceCriteriaId}: {acceptanceCriteriaName}', async () => {
+
+        // Etant donné que ...(replace with the given part of the scenario)
+
+        // Quand ... (replace with the when part of the scenario)
+        render(<xxxxProvider
+            xxxxRepository={new xxxxInMemoryRepository()}>
+            <xxxxComponent/>
+        </xxxxProvider>);
+
+        // Alors ... (replace with the then part of the scenario)
+        // replace with coherent expect for the scenario
+        expect(
+          await screen.findByTestId('xxxId')
+        ).toHaveTextContent('xxxValue);
+        
+    })
+
+
+})
+
+```
+
+Le test échouera parce que le composant 'xxxxComponent', le provider 'xxxxProvider', etc. n’existent pas encore ; c’est normal pour cette étape.
+Évidemment, il faudra remplacer 'xxxxComponent', 'xxxxProvider' et 'mockXxxRepository' par les noms cohérents du composant, du provider et du repository que vous créerez plus tard.
+Ne créez aucun autre fichier ; seul le fichier de test doit être modifié. N’ajoutez pas non plus les imports des composants ou providers qui n’existent pas encore.
+
+Important : Attention, avant de générer la deuxième itération, vérifie de bien respecter les conventions de nommage pour les vertical slices.
+
+### Troisième itération :
+
+Implémentez ensuite le code nécessaire pour que le test passe.
+Attention, il faut absolument que le composant n'ai pas de dépendance avec le repository. Il a une dépendance au use case, qui lui récupère le repository via le provider. Une fois les cycles de TDD terminés, le composant sera utilisé avec le provider dans un autre composant (mais c'est une étape de développement ultérieure, qui n'est pas demandée ici).
+
+
+
 ## Checklist de validation avant de proposer le code :
 
 - [ ] Le code respecte les conventions de nommage et la structure définie

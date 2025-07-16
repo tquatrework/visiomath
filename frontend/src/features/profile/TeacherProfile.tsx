@@ -12,6 +12,15 @@ import {
 import {
   SaveTeacherPaymentFetchRepository
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.fetchRepository";
+import {
+  GetTeacherPaymentInfoSuccessInMemoryRepository
+} from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.successInMemoryRepository";
+import {
+  GetTeacherPaymentInfoProvider
+} from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.repository.provider";
+import {
+  GetTeacherPaymentInfoCompanyType
+} from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.queryResult";
 
 interface TeacherProfileProps {
   data: any;
@@ -46,6 +55,15 @@ const TeacherProfile: React.FC<TeacherProfileProps> = ({ data, readOnly = false 
 
   if (loading) return <div>Chargement...</div>;
   //if (error) return <div className="text-red-500">{error}</div>;
+
+  const mockPaymentInfo = {
+    companyName: "ProfCompany",
+    siret: "12345678912345",
+    companyType: GetTeacherPaymentInfoCompanyType.Autoentrepreneur,
+    vatSubject: false,
+    iban: "FR 1234567891234567891234567",
+    bic: "azertyaz"
+  };
 
   return (
     <>
@@ -123,10 +141,13 @@ const TeacherProfile: React.FC<TeacherProfileProps> = ({ data, readOnly = false 
         )}
       </form>
 
-      <SaveTeacherPaymentInfoRepositoryProvider
-          saveTeacherPaymentInfoRepository={new SaveTeacherPaymentFetchRepository()}>
-        <TeacherPaymentInfoFormComponent/>
-      </SaveTeacherPaymentInfoRepositoryProvider>
+      <GetTeacherPaymentInfoProvider
+          getTeacherPaymentInfoRepository={new GetTeacherPaymentInfoSuccessInMemoryRepository(mockPaymentInfo)}>
+        <SaveTeacherPaymentInfoRepositoryProvider
+            saveTeacherPaymentInfoRepository={new SaveTeacherPaymentFetchRepository()}>
+          <TeacherPaymentInfoFormComponent/>
+        </SaveTeacherPaymentInfoRepositoryProvider>
+      </GetTeacherPaymentInfoProvider>
   </>
   );
 };
