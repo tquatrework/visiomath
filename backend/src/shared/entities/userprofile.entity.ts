@@ -5,7 +5,7 @@ import { StudentOrdonnance } from './studentOrdonnance.entity';
 import { TeacherOrdonnance } from './teacherOrdonnance.entity';
 import { CalendarSlot } from './calendarSlots.entity';
 import { User } from './user.entity';
-import {SaveTeacherPaymentInfoCommand, TeacherProfile} from "./teacherProfile.entity";
+import {AddTeacherPaymentInfoCommand, TeacherProfile} from "./teacherProfile.entity";
 
 @Entity('user_profiles')
 export class UserProfile {
@@ -46,7 +46,7 @@ export class UserProfile {
   @OneToMany(() => CalendarSlot, (slot) => slot.userId)
   calendarSlots?: Relation<CalendarSlot[]>;
 
-  addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand: SaveTeacherPaymentInfoCommand) {
+  addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand: AddTeacherPaymentInfoCommand) {
 
     if (!this.teacherProfile) {
       this.teacherProfile = new TeacherProfile();

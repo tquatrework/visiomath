@@ -8,7 +8,7 @@ import { UserProfile } from './userprofile.entity';
 import { UserRelation } from './userrelation.entity';
 import { NotificationUser } from './notificationUser.entity';
 import { RoleList } from '../../common/utils/lists.utils';
-import {SaveTeacherPaymentInfoCommand} from "./teacherProfile.entity";
+import {AddTeacherPaymentInfoCommand} from "./teacherProfile.entity";
 
 @Entity('users')
 export class User {
@@ -81,7 +81,7 @@ export class User {
     return rest;
   }
 
-  addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand: SaveTeacherPaymentInfoCommand): void {
+  addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand: AddTeacherPaymentInfoCommand): void {
       if (this.userProfile === null) {
         this.userProfile = new UserProfile();
       }

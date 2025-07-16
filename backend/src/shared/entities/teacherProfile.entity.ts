@@ -3,7 +3,7 @@ import {Exclude} from 'class-transformer';
 import { UserProfile } from './userprofile.entity';
 
 
-export type SaveTeacherPaymentInfoCommand = {
+export type AddTeacherPaymentInfoCommand = {
   companyName: string;
   siret: string;
   companyType: string;
@@ -11,7 +11,7 @@ export type SaveTeacherPaymentInfoCommand = {
   iban: string;
   bic: string;
 }
-enum CompanyType {
+export enum CompanyType {
     Autoentrepreneur = 'Autoentrepreneur',
     EI = 'EI',
     EURL = 'EURL',
@@ -68,13 +68,11 @@ export class TeacherProfile {
   @Column('varchar', { length: 11, nullable:true })
   bic!: string;
 
-  addPaymentInfo(saveTeacherPaymentInfoCommand: SaveTeacherPaymentInfoCommand) {
+  addPaymentInfo(saveTeacherPaymentInfoCommand: AddTeacherPaymentInfoCommand) {
 
     if (saveTeacherPaymentInfoCommand.siret.length !== 14) {
       throw new Error("Le SIRET doit contenir 14 caractères.");
     }
-
-    // 2 lettres, 12 chiffres, 13 caractères alphanumériques
 
     const ibanRegex = /^FR[0-9]{12}[A-Z0-9]{13}$/i;
     if (!ibanRegex.test(saveTeacherPaymentInfoCommand.iban)) {
