@@ -1,7 +1,7 @@
 import {Inject} from "@nestjs/common";
 import {UserRepository} from "../../users/user.repository";
 import {UserTypeOrmRepository} from "../../users/user.typeOrmRepository";
-import {SaveTeacherPaymentInfoCommand} from "../../../shared/entities/teacherProfile.entity";
+import {AddTeacherPaymentInfoCommand} from "../../../shared/entities/teacherProfile.entity";
 
 export class SaveTeacherPaymentInfoUsecase {
 
@@ -10,7 +10,7 @@ export class SaveTeacherPaymentInfoUsecase {
         private userRepository: UserRepository
     ) {}
 
-    async execute(teacherId: number, saveTeacherPaymentInfoCommand: SaveTeacherPaymentInfoCommand) {
+    async execute(teacherId: number, saveTeacherPaymentInfoCommand: AddTeacherPaymentInfoCommand) {
 
         const teacher = await this.userRepository.findUserByIdWithTeacherProfil(teacherId);
 

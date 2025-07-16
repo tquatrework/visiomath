@@ -1,12 +1,11 @@
 import request from 'supertest';
 import {INestApplication} from "@nestjs/common";
-import {beforeEach} from "vitest";
 import {DataSource} from "typeorm";
 import {JwtService} from "@nestjs/jwt";
-import generateUserToken from "../../../common/test/fixture/generateUserToken";
 import {User} from "../../../shared/entities/user.entity";
 import {UserProfile} from "../../../shared/entities/userprofile.entity";
 import {TeacherProfile} from "../../../shared/entities/teacherProfile.entity";
+import {UserBuilder} from "../../../common/test/fixture/userBuilder";
 
 
 declare global {
@@ -18,11 +17,13 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
     test('#US-1-AC-1: Enregistrement réussi avec BIC 6 + 2', async () => {
 
         //Etant donné que je suis connecté en tant que professeur
-        const teacherToken = await generateUserToken(app, "teacher");
+        const userBuilder = new UserBuilder(app).withRole("teacher");
+        await userBuilder.build();
+        const teacherToken = await userBuilder.getToken();
 
-        /**Quand j’enregistre :
-            nom de l’entreprise : “ProfCompany”
-            siret : “12345678912345
+        /**Quand j'enregistre :
+            nom de l'entreprise : "ProfCompany"
+            siret : "12345678912345
             type entreprise : Autoentrepreneur
             assujetti TVA : non
             IBAN : FR 1234567891234567891234567
@@ -58,7 +59,9 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
     test('#US-1-AC-2: Enregistrement échoué avec SIRET de moins de 14 caractères', async () => {
 
         //Etant donné que je suis connecté en tant que professeur
-        const teacherToken = await generateUserToken(app, "teacher");
+        const userBuilder = new UserBuilder(app).withRole("teacher");
+        await userBuilder.build();
+        const teacherToken = await userBuilder.getToken();
 
         /**Quand j’enregistre :
          nom de l’entreprise : “ProfCompany”
@@ -97,7 +100,9 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
 
     test('#US-1-AC-7: Enregistrement échoué – Données manquantes', async () => {
         // Etant donné que je suis connecté en tant que professeur
-        const teacherToken = await generateUserToken(app, "teacher");
+        const userBuilder = new UserBuilder(app).withRole("teacher");
+        await userBuilder.build();
+        const teacherToken = await userBuilder.getToken();
         /** Quand j’enregistre mes infos avec BIC oublié :
          *    • BIC vide
          *    • les autres informations sont valides
