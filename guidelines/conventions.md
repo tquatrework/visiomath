@@ -51,6 +51,7 @@ frontend/src/features/{module}/{userStory}/
 ## Orientation Clean architecture : 
 
 Le use case est implémenté dans un hook React, qui est ensuite utilisé dans un composant. Le repository est injecté via le Context API pour permettre l'inversion de dépendance. Le composant n'a pas connaissance du repository.
+Les messages d'erreurs doivent thrown par le use case.
 
 ## Orientation CQS : 
 
@@ -155,19 +156,24 @@ Attention, il faut absolument que le composant n'ai pas de dépendance avec le r
 
 ## Structure et Vertical Slice
 
-Chaque fonctionnalité doit suivre la structure établie dans `backend/src/modules//{module}/{userStory}/` :
+Chaque fonctionnalité en vertical slice doit suivre la structure établie dans ce dossier de guidelines avec les exemples `backend/{module}/{userStory}`:
 
 ```
 backend/src/modules/{module}/{userStory}/
-├── {userStory}.usecase.ts        # Use case contenant la logique métier
-├── {userStory}.usecase.spec.ts   # Tests unitaires du use case
-├── {userStory}.controller.ts     # Contrôleur REST
-├── {userStory}.e2e.spec.ts      # Tests e2e avec testcontainers
+├── {userStory}.usecase.ts           # Use case contenant la logique métier
+├── {userStory}.usecase.spec.ts      # Tests unitaires du use case
+├── {userStory}.controller.ts        # Contrôleur REST
+├── {userStory}.e2e.spec.ts          # Tests e2e avec testcontainers
+├── {userStory}.repository.ts        # Interface du repository (pour les queries)
+├── {userStory}.successinMemoryRepository.ts # Repository fake pour les tests
+├── {userStory}.failureinMemoryRepository.ts # Repository fake pour les tests
+├── {userStory}.queryResult.ts       # Modèle de données pour les queries
+├── {userStory}.command.ts           # Modèle de données pour les commandes
 ```
 
 ## Orientation Clean architecture :
 
-Le use case est implémenté dans une classe dédiée. Le contrôleur appelle ce use case pour traiter les requêtes HTTP. Les repositories, libs etc sont injectés dans le use case via le constructeur, permettant l'inversion de dépendance. Dans les tests, les repostories fakes sont injectés manuellement. Dans le flow normal, la classe de repository est injecté via le décorateur de NestJS. 
+Le use case est implémenté dans une classe dédiée. Le contrôleur appelle ce use case pour traiter les requêtes HTTP. Les repositories, libs etc sont injectés dans le use case via le constructeur, permettant l'inversion de dépendance. Dans les tests, les repostories fakes sont injectés manuellement. Dans le flow normal, la classe de repository est injecté via le décorateur de NestJS.
 
 ## CQS :
 
@@ -209,7 +215,7 @@ J’écris ensuite le second test e2e (sad path) et je le fais passer.
 Je m’arrête là pour les e2e : deux ou trois scénarios maximum (happy path + un sad path) par user story.
 
 
-## Itérations TDD
+## Itérations TDD use case
 
 Lorsque je te demande de générer des tests unitaires pour le backend :
 
@@ -240,53 +246,55 @@ describe('Name of the US (replace with the name of the US)', async () => {
 
 ### Deuxième itération :
 
-La deuxième itération doit ajouter le code correspondant aux étapes Given / When / Then, sans créer d’autres fichiers.
+La deuxième itération doit ajouter le code correspondant aux étapes Given / When / Then, sans créer d'autres fichiers.
 Par exemple :
 
-```
-import {beforeEach, describe, expect, test, vi} from "vitest";
-import {render, waitFor, screen} from "@testing-library/react";
+```typescript
+import {beforeEach, describe, expect, test} from "vitest";
+import {{UserStory}Usecase} from "./{userStory}.usecase";
+import {{UserStory}InMemoryRepository} from "./{userStory}.inMemoryRepository";
 
+describe('#{userStoryId}: {userStoryName}', () => {
+    
+    let {userStory}InMemoryRepository: {UserStory}InMemoryRepository;
+    let {userStory}Usecase: {UserStory}Usecase;
 
-describe('#{userStoryId}: {userStoryName}', async () => {
+    beforeEach(() => {
+        {userStory}InMemoryRepository = new {UserStory}InMemoryRepository();
+        {userStory}Usecase = new {UserStory}Usecase({userStory}InMemoryRepository);
+    });
   
     test('#{acceptanceCriteriaId}: {acceptanceCriteriaName}', async () => {
 
         // Etant donné que ...(replace with the given part of the scenario)
-
+        // Setup test data
+        
         // Quand ... (replace with the when part of the scenario)
-        render(<xxxxProvider
-            xxxxRepository={new xxxxInMemoryRepository()}>
-            <xxxxComponent/>
-        </xxxxProvider>);
+        const result = await {userStory}Usecase.execute(/* parameters */);
 
         // Alors ... (replace with the then part of the scenario)
-        // replace with coherent expect for the scenario
-        expect(
-          await screen.findByTestId('xxxId')
-        ).toHaveTextContent('xxxValue);
+        expect(result).toEqual(/* expected value */);
         
     })
 
-
 })
-
 ```
 
-Le test échouera parce que le composant 'xxxxComponent', le provider 'xxxxProvider', etc. n’existent pas encore ; c’est normal pour cette étape.
-Évidemment, il faudra remplacer 'xxxxComponent', 'xxxxProvider' et 'mockXxxRepository' par les noms cohérents du composant, du provider et du repository que vous créerez plus tard.
-Ne créez aucun autre fichier ; seul le fichier de test doit être modifié. N’ajoutez pas non plus les imports des composants ou providers qui n’existent pas encore.
+Le test échouera parce que le usecase '{UserStory}Usecase', le repository '{UserStory}InMemoryRepository', etc. n'existent pas encore ; c'est normal pour cette étape.
+Évidemment, il faudra remplacer '{UserStory}Usecase', '{UserStory}InMemoryRepository' par les noms cohérents du usecase et du repository que vous créerez plus tard.
+Ne créez aucun autre fichier ; seul le fichier de test doit être modifié. N'ajoutez pas non plus les imports des classes qui n'existent pas encore.
 
 Important : Attention, avant de générer la deuxième itération, vérifie de bien respecter les conventions de nommage pour les vertical slices.
 
 ### Troisième itération :
 
 Implémentez ensuite le code nécessaire pour que le test passe.
-Attention, il faut absolument que le composant n'ai pas de dépendance avec le repository. Il a une dépendance au use case, qui lui récupère le repository via le provider. Une fois les cycles de TDD terminés, le composant sera utilisé avec le provider dans un autre composant (mais c'est une étape de développement ultérieure, qui n'est pas demandée ici).
-
+Créez le usecase, le repository in-memory, les types nécessaires, et toute autre classe requise pour faire passer le test.
+Attention, il faut absolument respecter l'inversion de dépendance : le usecase dépend de l'interface du repository, pas de l'implémentation concrète.
+Attention, les messages d'erreur doivent être lancés explicitement par le use case.
 
 
 ## Checklist de validation avant de proposer le code :
 
 - [ ] Le code respecte les conventions de nommage et la structure définie
-- [ ] Aucun code de production n'est écrit sans qu'il ne soit nécessaire pour faire passer un test
+- [ ] Aucun code de production n'est écrit sans qu'il ne soit nécessaire pour faire passer un test. Il ne faut donc pas écrire de code incluant des vérifications si le test n'est pas encore écrit.
