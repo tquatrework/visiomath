@@ -22,6 +22,8 @@ import { NotificationUserModule } from './modules/notificationUsers/notification
 import { CalendarSlotsModule } from './modules/calendarSlots/calendarSlots.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import {TeacherInvoiceModule} from "./modules/teacherInvoice/teacherInvoice.module";
+import { LessonModule } from './modules/lesson/lesson.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 
 
@@ -45,6 +47,9 @@ import {TeacherInvoiceModule} from "./modules/teacherInvoice/teacherInvoice.modu
       }),
     }),
 
+    // Event emitter pour les événements
+    EventEmitterModule.forRoot(),
+    
     // Modules de l'application
     //RouterModule.register(routes),
     AuthModule,
@@ -62,7 +67,8 @@ import {TeacherInvoiceModule} from "./modules/teacherInvoice/teacherInvoice.modu
     CalendarSlotsModule,
     MessagesModule,
     ExerciseModule,
-    TeacherInvoiceModule
+    TeacherInvoiceModule,
+    LessonModule
   ],
 })
 export class AppModule {}

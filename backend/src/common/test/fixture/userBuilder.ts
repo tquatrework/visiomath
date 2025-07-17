@@ -17,6 +17,7 @@ export class UserBuilder {
     private role: string = 'user';
     private teacherProfileId: number | null = null;
     private paymentInfo: PaymentInfo | null = null;
+    private teacherAmountToInvoice: number = 0;
 
     constructor(app: INestApplication) {
         this.app = app;
@@ -47,6 +48,15 @@ export class UserBuilder {
         return this;
     }
 
+    withTeacherAmountToInvoice(amount: number): UserBuilder {
+        this.teacherAmountToInvoice = amount;
+        if (!this.teacherProfileId) {
+            this.teacherProfileId = this.userId;
+        }
+        this.role = 'teacher';
+        return this;
+    }
+
     async build(): Promise<void> {
         const dataSource = this.app.get(DataSource);
 
@@ -57,7 +67,7 @@ export class UserBuilder {
 
         if (this.teacherProfileId) {
             await dataSource.query(
-                `INSERT INTO public.teacher_profiles (id, diplomes, experience, specialites, particularites, "cvUrl", "userProfileId", "companyName", "siret", "companyType", "subjectToVat", "iban", "bic") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
+                `INSERT INTO public.teacher_profiles (id, diplomes, experience, specialites, particularites, "cvUrl", "userProfileId", "companyName", "siret", "companyType", "subjectToVat", "iban", "bic", "amountToInvoice") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
                 [
                     this.teacherProfileId,
                     'test',
@@ -71,7 +81,8 @@ export class UserBuilder {
                     this.paymentInfo?.companyType || null,
                     this.paymentInfo?.subjectToVat || null,
                     this.paymentInfo?.iban || null,
-                    this.paymentInfo?.bic || null
+                    this.paymentInfo?.bic || null,
+                    this.teacherAmountToInvoice
                 ]
             );
         }

@@ -53,4 +53,11 @@ export class UserProfile {
     }
     this.teacherProfile?.addPaymentInfo(saveTeacherPaymentInfoCommand);
   }
+
+  increaseTeacherAmountToInvoice(amount: number): void {
+    if (!this.teacherProfile) {
+      this.teacherProfile = new TeacherProfile();
+    }
+    this.teacherProfile?.increaseAmountToInvoice(amount);
+  }
 }

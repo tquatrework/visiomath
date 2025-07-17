@@ -11,6 +11,11 @@ export type AddTeacherPaymentInfoCommand = {
   iban: string;
   bic: string;
 }
+
+export type IncreaseTeacherAmountToInvoiceCommand = {
+  amount: number;
+}
+
 export enum CompanyType {
     Autoentrepreneur = 'Autoentrepreneur',
     EI = 'EI',
@@ -68,6 +73,9 @@ export class TeacherProfile {
   @Column('varchar', { length: 11, nullable:true })
   bic!: string;
 
+  @Column('decimal', { precision: 10, scale: 2, default: 0 })
+  amountToInvoice!: number;
+
   addPaymentInfo(saveTeacherPaymentInfoCommand: AddTeacherPaymentInfoCommand) {
 
     if (saveTeacherPaymentInfoCommand.siret.length !== 14) {
@@ -94,6 +102,13 @@ export class TeacherProfile {
     this.subjectToVat = saveTeacherPaymentInfoCommand.subjectToVat;
     this.iban = saveTeacherPaymentInfoCommand.iban;
     this.bic = saveTeacherPaymentInfoCommand.bic;
+  }
+
+  increaseAmountToInvoice(amount: number): void {
+    if (amount <= 0) {
+      throw new Error("Le montant doit supérieur à 0.");
+    }
+    this.amountToInvoice = Number(this.amountToInvoice) + amount;
   }
 
 }

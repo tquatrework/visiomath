@@ -89,4 +89,12 @@ export class User {
     this.userProfile.addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand);
   }
 
+  increaseTeacherAmountToInvoice(amount: number): void {
+    if (this.userProfile === null) {
+      this.userProfile = new UserProfile();
+    }
+
+    this.userProfile.increaseTeacherAmountToInvoice(amount);
+  }
+
 }
