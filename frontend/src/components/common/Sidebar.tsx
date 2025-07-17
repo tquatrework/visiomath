@@ -8,6 +8,7 @@ const individualItems = [
   { title: "📓 Cahier de texte", url: "/notebook" },
   { title: "📝 Carnet personnel", url: "/personal-notes" },
   { title: "📌 Mémos", url: "/memos" },
+  { title: "🧾 Facturation", url: "/teacher-facturation" },
 ];
 
 const collectiveItems = [

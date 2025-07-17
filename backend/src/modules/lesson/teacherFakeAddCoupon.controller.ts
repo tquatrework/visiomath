@@ -13,9 +13,8 @@ export class TeacherFakeAddCouponController {
 
     @Get('/teacher-fake-add-coupon')
     @HttpCode(HttpStatus.OK)
-    @UseGuards(JwtAuthGuard)
-    async fakeAddCoupon(@CurrentUser() user: { id: number },): Promise<void> {
-        const event = new CouponRegisteredByTeacher(user.id, 30);
+    async fakeAddCoupon(): Promise<void> {
+        const event = new CouponRegisteredByTeacher(3, 30);
 
         this.eventEmitter.emit(CouponRegisteredByTeacherName, event);
     }

@@ -8,6 +8,8 @@ yarn.lock*
 # Build outputs
 dist
 build
+.next
+out
 
 # IDE files
 .vscode
