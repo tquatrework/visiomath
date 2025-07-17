@@ -15,7 +15,7 @@ export type GetTeacherPaymentInfoQueryResult = {
     companyName: string;
     siret: string;
     companyType: GetTeacherPaymentInfoCompanyType;
-    vatSubject: boolean;
+    subjectToVat: boolean;
     iban: string;
     bic: string;
 }

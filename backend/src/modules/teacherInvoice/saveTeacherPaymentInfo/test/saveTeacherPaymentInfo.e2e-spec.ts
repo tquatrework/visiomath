@@ -34,7 +34,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
                 companyName: 'ProfCompany',
                 siret: '12345678912345',
                 companyType: 'Autoentrepreneur',
-                vatExempt: false,
+                subjectToVat: false,
                 iban: 'FR1234567891234567891234567',
                 bic: 'azertyaz'
             });
@@ -76,7 +76,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
                 companyName: "ProfCompany",
                 siret: "12345678912",
                 companyType: "Autoentrepreneur",
-                vatExempt: true,
+                subjectToVat: true,
                 iban: "FR1234567891234567891234567",
                 bic: "azerty33"
         });
@@ -113,7 +113,7 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
                 companyName: "ProfCompany",
                 siret: "12345678912345",
                 companyType: "Autoentrepreneur",
-                vatExempt: true,
+                subjectToVat: true,
                 iban: "FR1234567891234567891234567",
             });
 

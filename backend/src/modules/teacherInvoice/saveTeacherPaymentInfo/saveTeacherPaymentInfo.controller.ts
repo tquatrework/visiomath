@@ -19,7 +19,7 @@ export class saveTeacherPaymentInfoController {
 
         if (typeof body !== "object" || typeof body.companyName !== 'string' || typeof body.siret !== 'string' ||
             typeof body.companyType !== 'string' || typeof body.iban !== 'string' ||
-            typeof body.bic !== 'string' || typeof body.vatExempt !== 'boolean') {
+            typeof body.bic !== 'string' || typeof body.subjectToVat !== 'boolean') {
             return res.status(422).json({ message : 'Des données sont manquantes' });
         }
 

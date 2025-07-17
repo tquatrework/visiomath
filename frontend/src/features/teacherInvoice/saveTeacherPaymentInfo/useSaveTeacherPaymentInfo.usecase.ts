@@ -7,7 +7,7 @@ export type TeacherPaymentInfosCommand = {
     companyName: string;
     siret: string;
     companyType: string;
-    vatExempt: boolean;
+    subjectToVat: boolean;
     iban: string;
     bic: string;
 }

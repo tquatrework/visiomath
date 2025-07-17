@@ -1,9 +1,9 @@
 import {beforeEach, expect} from "vitest";
-import {UserInMemoryRepository} from "../../../users/user.inMemoryRepository";
 import {TeacherProfile} from "../../../../shared/entities/teacherProfile.entity";
 import {UserProfile} from "../../../../shared/entities/userprofile.entity";
 import {User} from "../../../../shared/entities/user.entity";
 import {SaveTeacherPaymentInfoUsecase} from "../saveTeacherPaymentInfo.usecase";
+import {SaveTeacherPaymentInfoInMemoryRepository} from "./saveTeacherPaymentInfo.inMemoryRepository";
 
 
 
@@ -29,8 +29,8 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
 
         const user = generateUserWithTeacherProfile(1);
 
-        const userInMemoryRepository = new UserInMemoryRepository();
-        userInMemoryRepository.seed(user)
+        const saveTeacherPaymentInfoInMemoryRepository = new SaveTeacherPaymentInfoInMemoryRepository();
+        saveTeacherPaymentInfoInMemoryRepository.seed(user)
 
         /**Quand j’enregistre :
          nom de l’entreprise : “ProfCompany”
@@ -44,12 +44,12 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             companyName: "ProfCompany",
             siret: "12345678912345",
             companyType: "Autoentrepreneur",
-            vatExempt: true,
+            subjectToVat: true,
             iban: "FR123456789012AZ67891234567",
             bic: "azerty33"
         }
 
-        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(userInMemoryRepository);
+        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(saveTeacherPaymentInfoInMemoryRepository);
 
         await expect(
             saveTeacherPaymentInfoUseCase.execute(1, saveTeacherPaymentInfoCommand)
@@ -63,8 +63,8 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         //Etant donné que je suis connecté en tant que professeur
         const user = generateUserWithTeacherProfile(1);
 
-        const userInMemoryRepository = new UserInMemoryRepository();
-        userInMemoryRepository.seed(user)
+        const saveTeacherPaymentInfoInMemoryRepository = new SaveTeacherPaymentInfoInMemoryRepository();
+        saveTeacherPaymentInfoInMemoryRepository.seed(user)
 
 
         /**Quand j’enregistre :
@@ -80,12 +80,12 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             companyName: "ProfCompany",
             siret: "123456789123",
             companyType: "Autoentrepreneur",
-            vatExempt: true,
+            subjectToVat: true,
             iban: "FR123456789012AZ67891234567",
             bic: "azertyaz"
         };
 
-        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(userInMemoryRepository);
+        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(saveTeacherPaymentInfoInMemoryRepository);
 
         await expect(
             saveTeacherPaymentInfoUseCase.execute(1, saveTeacherPaymentInfoCommand)
@@ -100,8 +100,8 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         //Etant donné que je suis connecté en tant que professeur
         const user = generateUserWithTeacherProfile(1);
 
-        const userInMemoryRepository = new UserInMemoryRepository();
-        userInMemoryRepository.seed(user)
+        const saveTeacherPaymentInfoInMemoryRepository = new SaveTeacherPaymentInfoInMemoryRepository();
+        saveTeacherPaymentInfoInMemoryRepository.seed(user)
 
         /**Quand j’enregistre :
          nom de l’entreprise : “ProfCompany”
@@ -115,12 +115,12 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             companyName: "ProfCompany",
             siret: "12345678912345",
             companyType: "test",
-            vatExempt: true,
+            subjectToVat: true,
             iban: "FR123456789012AZ67891234567",
             bic: "azertyaz"
         };
 
-        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(userInMemoryRepository);
+        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(saveTeacherPaymentInfoInMemoryRepository);
 
         await expect(
             saveTeacherPaymentInfoUseCase.execute(1, saveTeacherPaymentInfoCommand)
@@ -133,8 +133,8 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         //Etant donné que je suis connecté en tant que professeur
         const user = generateUserWithTeacherProfile(1);
 
-        const userInMemoryRepository = new UserInMemoryRepository();
-        userInMemoryRepository.seed(user)
+        const saveTeacherPaymentInfoInMemoryRepository = new SaveTeacherPaymentInfoInMemoryRepository();
+        saveTeacherPaymentInfoInMemoryRepository.seed(user)
         /**Quand j’enregistre :
          nom de l’entreprise : “ProfCompany”
          siret : “12345678912345
@@ -147,12 +147,12 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             companyName: "ProfCompany",
             siret: "12345678912345",
             companyType: "Autoentrepreneur",
-            vatExempt: true,
+            subjectToVat: true,
             iban: "FR123456789012AZ67891234567",
             bic: "azertyaz"
         };
 
-        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(userInMemoryRepository);
+        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(saveTeacherPaymentInfoInMemoryRepository);
 
         await expect(
             saveTeacherPaymentInfoUseCase.execute(999, saveTeacherPaymentInfoCommand)
@@ -165,8 +165,8 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         //Etant donné que je suis connecté en tant que professeur
         const user = generateUserWithTeacherProfile(1);
 
-        const userInMemoryRepository = new UserInMemoryRepository();
-        userInMemoryRepository.seed(user)
+        const saveTeacherPaymentInfoInMemoryRepository = new SaveTeacherPaymentInfoInMemoryRepository();
+        saveTeacherPaymentInfoInMemoryRepository.seed(user)
 
         //  Quand j’enregistre:
         //    nom de l’entreprise : « ProfCompany »
@@ -179,12 +179,12 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             companyName: "ProfCompany",
             siret: "12345678912345",
             companyType: "Autoentrepreneur",
-            vatExempt: true,
+            subjectToVat: true,
             iban: "FRA23456789012AZ67891234567", // IBAN invalide
             bic: "azertyaz"
         };
 
-        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(userInMemoryRepository);
+        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(saveTeacherPaymentInfoInMemoryRepository);
 
         await expect(
             saveTeacherPaymentInfoUseCase.execute(1, saveTeacherPaymentInfoCommand)
@@ -196,8 +196,8 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         //Etant donné que je suis connecté en tant que professeur
         const user = generateUserWithTeacherProfile(1);
 
-        const userInMemoryRepository = new UserInMemoryRepository();
-        userInMemoryRepository.seed(user)
+        const saveTeacherPaymentInfoInMemoryRepository = new SaveTeacherPaymentInfoInMemoryRepository();
+        saveTeacherPaymentInfoInMemoryRepository.seed(user)
 
         //  Quand j’enregistre:
         //    nom de l’entreprise : « ProfCompany »
@@ -210,12 +210,12 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             companyName: "ProfCompany",
             siret: "12345678912345",
             companyType: "Autoentrepreneur",
-            vatExempt: true,
+            subjectToVat: true,
             iban: "FR123456789012AZ67891234567",
             bic: "abc12" // BIC invalide
         };
 
-        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(userInMemoryRepository);
+        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(saveTeacherPaymentInfoInMemoryRepository);
 
         await expect(
             saveTeacherPaymentInfoUseCase.execute(1, saveTeacherPaymentInfoCommand)

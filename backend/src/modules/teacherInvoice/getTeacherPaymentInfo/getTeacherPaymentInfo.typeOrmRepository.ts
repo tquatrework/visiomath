@@ -15,7 +15,7 @@ export class GetTeacherPaymentInfoTypeOrmRepository implements GetTeacherPayment
                 tp."companyName",
                 tp."siret",
                 tp."companyType",
-                tp."vatExempt",
+                tp."subjectToVat",
                 tp."iban",
                 tp."bic"
             FROM teacher_profiles tp
@@ -35,7 +35,7 @@ export class GetTeacherPaymentInfoTypeOrmRepository implements GetTeacherPayment
             companyName: row.companyName,
             siret: row.siret,
             companyType: row.companyType as CompanyType,
-            vatExempt: row.vatExempt,
+            subjectToVat: row.subjectToVat,
             iban: row.iban,
             bic: row.bic
         };

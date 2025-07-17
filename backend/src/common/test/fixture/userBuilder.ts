@@ -6,7 +6,7 @@ export interface PaymentInfo {
     companyName: string;
     siret: string;
     companyType: string;
-    vatExempt: boolean;
+    subjectToVat: boolean;
     iban: string;
     bic: string;
 }
@@ -57,7 +57,7 @@ export class UserBuilder {
 
         if (this.teacherProfileId) {
             await dataSource.query(
-                `INSERT INTO public.teacher_profiles (id, diplomes, experience, specialites, particularites, "cvUrl", "userProfileId", "companyName", "siret", "companyType", "vatExempt", "iban", "bic") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
+                `INSERT INTO public.teacher_profiles (id, diplomes, experience, specialites, particularites, "cvUrl", "userProfileId", "companyName", "siret", "companyType", "subjectToVat", "iban", "bic") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
                 [
                     this.teacherProfileId,
                     'test',
@@ -69,7 +69,7 @@ export class UserBuilder {
                     this.paymentInfo?.companyName || null,
                     this.paymentInfo?.siret || null,
                     this.paymentInfo?.companyType || null,
-                    this.paymentInfo?.vatExempt || null,
+                    this.paymentInfo?.subjectToVat || null,
                     this.paymentInfo?.iban || null,
                     this.paymentInfo?.bic || null
                 ]

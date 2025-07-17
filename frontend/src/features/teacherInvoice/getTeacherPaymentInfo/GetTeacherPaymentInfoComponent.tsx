@@ -28,7 +28,7 @@ const GetTeacherPaymentInfoComponent: React.FC = () => {
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Assujetti TVA</label>
                     <p data-testid="vat-subject" className="mt-1 text-sm text-gray-900">
-                        {paymentInfo?.vatSubject ? 'oui' : 'non'}
+                        {paymentInfo?.subjectToVat ? 'oui' : 'non'}
                     </p>
                 </div>
                 <div>

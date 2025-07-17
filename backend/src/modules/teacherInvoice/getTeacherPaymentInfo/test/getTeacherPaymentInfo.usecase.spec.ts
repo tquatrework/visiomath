@@ -14,7 +14,7 @@ describe('#US-2: Récupération des informations bancaires du professeur', () =>
             companyName: "ProfCompany",
             siret: "12345678912345",
             companyType: CompanyType.Autoentrepreneur,
-            vatExempt: true,
+            subjectToVat: true,
             iban: "FR1234567891234567891234567",
             bic: "azertyaz"
         };
@@ -58,7 +58,7 @@ describe('#US-2: Récupération des informations bancaires du professeur', () =>
             companyName: "ProfCompany",
             siret: "12345678912345",
             companyType: CompanyType.Autoentrepreneur,
-            vatExempt: true,
+            subjectToVat: true,
             iban: "FR1234567891234567891234567",
             bic: "azertyaz"
         };

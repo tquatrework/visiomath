@@ -18,7 +18,7 @@ describe('#US-2: Récupération des informations bancaires du professeur', () =>
             companyName: 'ProfCompany',
             siret : '12345678912345',
             companyType: 'Autoentrepreneur',
-            vatExempt: true,
+            subjectToVat: true,
             iban: 'FR1234567891234567891234567',
             bic: 'azertyaz'
         });
@@ -36,7 +36,7 @@ describe('#US-2: Récupération des informations bancaires du professeur', () =>
         expect(res.body.companyName).toBe('ProfCompany');
         expect(res.body.siret).toBe('12345678912345');
         expect(res.body.companyType).toBe('Autoentrepreneur');
-        expect(res.body.vatExempt).toBe(true);
+        expect(res.body.subjectToVat).toBe(true);
         expect(res.body.iban).toBe('FR1234567891234567891234567');
         expect(res.body.bic).toBe('azertyaz');
 

@@ -7,7 +7,7 @@ export type AddTeacherPaymentInfoCommand = {
   companyName: string;
   siret: string;
   companyType: string;
-  vatExempt: boolean;
+  subjectToVat: boolean;
   iban: string;
   bic: string;
 }
@@ -60,7 +60,7 @@ export class TeacherProfile {
   companyType!: string;
 
   @Column('boolean', {nullable:true})
-  vatExempt!: boolean;
+  subjectToVat!: boolean;
 
   @Column('char', { length: 27, nullable:true })
   iban!: string;
@@ -91,7 +91,7 @@ export class TeacherProfile {
     this.companyName = saveTeacherPaymentInfoCommand.companyName;
     this.siret = saveTeacherPaymentInfoCommand.siret;
     this.companyType = saveTeacherPaymentInfoCommand.companyType;
-    this.vatExempt = saveTeacherPaymentInfoCommand.vatExempt;
+    this.subjectToVat = saveTeacherPaymentInfoCommand.subjectToVat;
     this.iban = saveTeacherPaymentInfoCommand.iban;
     this.bic = saveTeacherPaymentInfoCommand.bic;
   }

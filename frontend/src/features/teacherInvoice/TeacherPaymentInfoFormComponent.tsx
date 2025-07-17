@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
     useSaveTeacherPaymentInfoUseCase,
 } from '@src/features/teacherInvoice/saveTeacherPaymentInfo/useSaveTeacherPaymentInfo.usecase'
@@ -9,6 +10,29 @@ import {
 const TeacherPaymentInfoFormComponent = () => {
     const { saveTeacherPaymentInfosCommandHandler, error: saveTeacherPaymentInfoError, success: saveTeacherPaymentInfoSuccess } = useSaveTeacherPaymentInfoUseCase()
     const { teacherPaymentInfo, error: getTeacherPaymentInfoError } = useGetTeacherPaymentInfoUsecase();
+
+    const [formData, setFormData] = useState({
+        companyName: '',
+        siret: '',
+        companyType: '',
+        subjectToVat: false,
+        iban: '',
+        bic: ''
+    });
+
+    useEffect(() => {
+        if (teacherPaymentInfo) {
+            setFormData({
+                companyName: teacherPaymentInfo.companyName || '',
+                siret: teacherPaymentInfo.siret || '',
+                companyType: teacherPaymentInfo.companyType || '',
+                subjectToVat: teacherPaymentInfo.subjectToVat || false,
+                iban: teacherPaymentInfo.iban || '',
+                bic: teacherPaymentInfo.bic || ''
+            });
+        }
+    }, [teacherPaymentInfo]);
+
 
     if (saveTeacherPaymentInfoSuccess) {
         alert('Enregistrement Ok')
@@ -25,18 +49,24 @@ const TeacherPaymentInfoFormComponent = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const formData = new FormData(event.currentTarget);
-
         const saveTeacherPaymentInfosCommand = {
-            companyName: formData.get('companyName') as string,
-            siret: formData.get('siret') as string,
-            companyType: formData.get('companyType') as string,
-            vatExempt: formData.get('vatExempt') === 'on',
-            iban: formData.get('iban') as string,
-            bic: formData.get('bic') as string,
+            companyName: formData.companyName,
+            siret: formData.siret,
+            companyType: formData.companyType,
+            subjectToVat: formData.subjectToVat,
+            iban: formData.iban,
+            bic: formData.bic,
         }
         await saveTeacherPaymentInfosCommandHandler(saveTeacherPaymentInfosCommand);
     }
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value, type } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+        }));
+    };
 
     return (
         <div>
@@ -60,7 +90,8 @@ const TeacherPaymentInfoFormComponent = () => {
                         name="companyName"
                         required
                         className="w-full mt-1 p-2 border rounded-md"
-                        defaultValue={teacherPaymentInfo?.companyName || ''}
+                        value={formData.companyName}
+                        onChange={handleInputChange}
                     />
                 </div>
 
@@ -76,7 +107,8 @@ const TeacherPaymentInfoFormComponent = () => {
                         name="siret"
                         required
                         className="w-full mt-1 p-2 border rounded-md"
-                        defaultValue={teacherPaymentInfo?.siret || ''}
+                        value={formData.siret}
+                        onChange={handleInputChange}
                     />
                 </div>
 
@@ -92,7 +124,8 @@ const TeacherPaymentInfoFormComponent = () => {
                         name="companyType"
                         required
                         className="w-full mt-1 p-2 border rounded-md"
-                        defaultValue={teacherPaymentInfo?.companyType || ''}
+                        value={formData.companyType}
+                        onChange={handleInputChange}
                     >
 
                         <option value="Autoentrepreneur">Autoentrepreneur</option>
@@ -111,15 +144,16 @@ const TeacherPaymentInfoFormComponent = () => {
 
                 <div className="mb-4">
                     <label
-                        htmlFor="vatExempt"
+                        htmlFor="subjectToVat"
                         className="block text-sm font-medium text-gray-700"
                     >
                         <input
                             type="checkbox"
-                            id="vatExempt"
-                            name="vatExempt"
+                            id="subjectToVat"
+                            name="subjectToVat"
                             className="mr-2"
-                            defaultChecked={teacherPaymentInfo?.vatSubject || false}
+                            checked={formData.subjectToVat}
+                            onChange={handleInputChange}
                         />
                         Assujetti TVA
                     </label>
@@ -137,7 +171,8 @@ const TeacherPaymentInfoFormComponent = () => {
                         name="iban"
                         required
                         className="w-full mt-1 p-2 border rounded-md"
-                        defaultValue={teacherPaymentInfo?.iban || ''}
+                        value={formData.iban}
+                        onChange={handleInputChange}
                     />
                 </div>
 
@@ -153,7 +188,8 @@ const TeacherPaymentInfoFormComponent = () => {
                         name="bic"
                         required
                         className="w-full mt-1 p-2 border rounded-md"
-                        defaultValue={teacherPaymentInfo?.bic || ''}
+                        value={formData.bic}
+                        onChange={handleInputChange}
                     />
                 </div>
 
