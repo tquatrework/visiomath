@@ -25,7 +25,9 @@ export class GetTeacherPaymentInfoTypeOrmRepository implements GetTeacherPayment
         `;
 
         const result = await this.dataSource.query(query, [teacherId]);
-        
+
+        console.log('Executing query to get teacher payment info:', result);
+
         if (!result || result.length === 0) {
             return null;
         }

@@ -3,6 +3,8 @@ import { Injectable, ConflictException, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { User } from '../../shared/entities/user.entity';
+import { UserProfile } from '../../shared/entities/userprofile.entity';
+import { TeacherProfile } from '../../shared/entities/teacherProfile.entity';
 import { CreateUserDto } from '../../shared/dto/create-user.dto';
 import { UpdateUserDto } from '../../shared/dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
@@ -14,6 +16,12 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+
+    @InjectRepository(UserProfile)
+    private readonly userProfileRepository: Repository<UserProfile>,
+
+    @InjectRepository(TeacherProfile)
+    private readonly teacherProfileRepository: Repository<TeacherProfile>,
 
     @InjectRepository(Notification)
     private readonly notificationRepository: Repository<Notification>,
@@ -39,6 +47,16 @@ export class UsersService {
       ...createUserDto,
       password: hashedPassword,
     });
+
+    // Création du UserProfile
+    let userProfile = new UserProfile();
+    user.userProfile = userProfile;
+
+    // Si l'utilisateur est un enseignant, créer un TeacherProfile
+    if (createUserDto.role === 'teacher') {
+      let teacherProfile = new TeacherProfile();
+      userProfile.teacherProfile = teacherProfile;
+    }
 
     if (['student', 'parent'].includes(createUserDto.role ?? '')) {
       const managers = await this.userRepository.find({

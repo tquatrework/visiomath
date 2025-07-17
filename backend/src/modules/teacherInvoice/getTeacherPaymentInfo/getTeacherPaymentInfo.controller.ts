@@ -15,6 +15,7 @@ export class GetTeacherPaymentInfoController {
         @CurrentUser() user: { id: number },
         @Res() res: Response
     ) {
+
         try {
             const result = await this.getTeacherPaymentInfoUsecase.execute(user.id);
             return res.status(200).json(result);
