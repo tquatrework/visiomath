@@ -26,8 +26,8 @@ FROM node:18-slim AS prod
 RUN useradd -m -r nodeusr
 WORKDIR /app
 
-COPY --from=deps  /app/node_modules ./node_modules
-RUN npm prune --omit=dev
+COPY --from=deps /app/package*.json ./
+RUN npm ci --omit=dev
 
 COPY --from=build /app/dist          ./dist
 COPY --from=build /app/package.json  ./

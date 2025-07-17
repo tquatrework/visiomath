@@ -9,9 +9,16 @@ services:
       - backend
     networks:
       my-app-network:
-
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
     environment:
-      - ENV_MODE=${ENV_MODE:-development}
+      - ENV_MODE=${ENV_MODE:-production}
 
   backend:
     build:
@@ -23,7 +30,14 @@ services:
       - postgres
     networks:
       my-app-network:
-
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
     volumes:
       - ./datafiles:/app/datafiles
     environment:
