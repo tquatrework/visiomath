@@ -60,4 +60,12 @@ export class UserProfile {
     }
     this.teacherProfile?.increaseAmountToInvoice(amount);
   }
+
+  payTeacherInvoice(amount: number) {
+    if (this.teacherProfile === null) {
+      this.teacherProfile = new TeacherProfile();
+    }
+
+    this.teacherProfile?.payInvoice(amount);
+  }
 }

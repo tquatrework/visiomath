@@ -81,6 +81,10 @@ export class User {
     return rest;
   }
 
+  isFinancialAdmin(): boolean {
+    return this.role === 'financial_admin';
+  }
+
   addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand: AddTeacherPaymentInfoCommand): void {
       if (this.userProfile === null) {
         this.userProfile = new UserProfile();
@@ -95,6 +99,15 @@ export class User {
     }
 
     this.userProfile.increaseTeacherAmountToInvoice(amount);
+  }
+
+  payTeacherInvoice(amount: number): void {
+      if (this.userProfile === null) {
+          this.userProfile = new UserProfile();
+      }
+
+      this.userProfile.payTeacherInvoice(amount);
+
   }
 
 }

@@ -269,7 +269,7 @@ backend/src/modules/{module}/{userStory}/
 ├── {userStory}.command.ts           # Modèle de données pour les commandes
 └── test/
     ├── {userStory}.usecase.spec.ts      # Tests unitaires du use case
-    ├── {userStory}.e2e.spec.ts         # Tests e2e avec testcontainers
+    ├── {userStory}.e2e-spec.ts         # Tests e2e avec testcontainers
     ├── {userStory}.inMemoryRepository.ts # Repository fake pour les tests (succès)
     └── {userStory}.failureInMemoryRepository.ts # Repository fake pour les tests (échec)
 ```

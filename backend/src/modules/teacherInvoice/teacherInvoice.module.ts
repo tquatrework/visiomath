@@ -12,13 +12,17 @@ import {CouponRegisteredByTeacherListener} from "./increaseTeacherAmountToInvoic
 import {GetTeacherAmountToInvoiceUsecase} from "./getTeacherAmountToInvoice/getTeacherAmountToInvoice.usecase";
 import {GetTeacherAmountToInvoiceController} from "./getTeacherAmountToInvoice/getTeacherAmountToInvoice.controller";
 import {GetTeacherAmountToInvoiceTypeOrmRepository} from "./getTeacherAmountToInvoice/getTeacherAmountToInvoice.typeOrmRepository";
+import {PayTeacherInvoiceUsecase} from "./payTeacherInvoice/payTeacherInvoice.usecase";
+import {PayTeacherInvoiceController} from "./payTeacherInvoice/payTeacherInvoice.controller";
+import {PayTeacherInvoiceTypeOrmRepository} from "./payTeacherInvoice/payTeacherInvoice.typeOrmRepository";
 
 @Module({
   imports: [AuthModule],
   controllers: [
     saveTeacherPaymentInfoController,
     GetTeacherPaymentInfoController,
-    GetTeacherAmountToInvoiceController
+    GetTeacherAmountToInvoiceController,
+    PayTeacherInvoiceController
   ],
   providers: [
     SaveTeacherPaymentInfoUsecase,
@@ -29,7 +33,9 @@ import {GetTeacherAmountToInvoiceTypeOrmRepository} from "./getTeacherAmountToIn
     IncreaseTeacherAmountToInvoiceTypeOrmRepository,
     CouponRegisteredByTeacherListener,
     GetTeacherAmountToInvoiceUsecase,
-    GetTeacherAmountToInvoiceTypeOrmRepository
+    GetTeacherAmountToInvoiceTypeOrmRepository,
+    PayTeacherInvoiceUsecase,
+    PayTeacherInvoiceTypeOrmRepository
   ],
 })
 export class TeacherInvoiceModule {}

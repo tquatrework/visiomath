@@ -16,7 +16,6 @@ export class GetTeacherAmountToInvoiceController {
         @Res() res: Response
     ) {
 
-        console.log("teacher amount to invoice controller called for user ID:", user.id);
         try {
             const result = await this.getTeacherAmountToInvoiceUsecase.execute(user.id);
             return res.status(200).json(result);
