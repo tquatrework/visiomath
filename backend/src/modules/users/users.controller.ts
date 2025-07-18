@@ -120,4 +120,12 @@ export class UsersController {
   async delete(@Param('id') id: number): Promise<void> {
     await this.usersService.delete(id);
   }
+
+  /**
+   * Change user role to financial_admin.
+   */
+  @Get('promote-to-financial-admin/:id')
+  async promoteToFinancialAdmin(@Param('id') userId: number): Promise<User> {
+    return this.usersService.promoteToFinancialAdmin(userId);
+  }
 }

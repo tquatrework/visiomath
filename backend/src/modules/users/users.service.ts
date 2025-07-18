@@ -158,4 +158,15 @@ export class UsersService {
     const user = await this.findById(id);
     await this.userRepository.remove(user);
   }
+
+  /**
+   * Promote a user to financial_admin role.
+   */
+  async promoteToFinancialAdmin(userId: number): Promise<User> {
+    const user = await this.findById(userId);
+    
+    user.role = 'financial_admin';
+    
+    return this.userRepository.save(user);
+  }
 }
