@@ -33,8 +33,7 @@ const TeacherProfile: React.FC<TeacherProfileProps> = ({ data, readOnly = false 
   const profileId = data?.user?.id || 1; // Fallback to 1 if no profileId is provided, just for being able to dev here (data.user.id is undefined)
   const { teacherProfile, loading, error, handleUpdateProfile } = useTeacherProfile(profileId);
 
-  const getTeacherPaymentInfoRepository = useMemo(() => new GetTeacherPaymentInfoFetchRepository(), []);
-  const saveTeacherPaymentInfoRepository = useMemo(() => new SaveTeacherPaymentFetchRepository(), []);
+
 
   const { register, handleSubmit, reset } = useForm({
     defaultValues: teacherProfile,
@@ -144,13 +143,7 @@ const TeacherProfile: React.FC<TeacherProfileProps> = ({ data, readOnly = false 
         )}
       </form>
 
-      <GetTeacherPaymentInfoProvider
-          getTeacherPaymentInfoRepository={getTeacherPaymentInfoRepository}>
-        <SaveTeacherPaymentInfoRepositoryProvider
-            saveTeacherPaymentInfoRepository={saveTeacherPaymentInfoRepository}>
-          <TeacherPaymentInfoFormComponent/>
-        </SaveTeacherPaymentInfoRepositoryProvider>
-      </GetTeacherPaymentInfoProvider>
+
   </>
   );
 };
