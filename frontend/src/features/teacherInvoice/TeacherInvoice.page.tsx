@@ -18,13 +18,24 @@ import {
 import {
     SaveTeacherPaymentInfoRepositoryProvider
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.repository.provider";
-import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoFormComponent";
+import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoForm.component";
 import {
     GetTeacherPaymentInfoFetchRepository
 } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.fetchRepository";
 import {
     SaveTeacherPaymentFetchRepository
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.fetchRepository";
+import {
+    CreateTeacherInvoiceRepositoryProvider
+} from "@src/features/teacherInvoice/createTeacherInvoice/createTeacherInvoice.repository.provider";
+import CreateTeacherInvoiceComponent
+    from "@src/features/teacherInvoice/createTeacherInvoice/CreateTeacherInvoice.component";
+import {
+    CreateTeacherInvoiceFailureInMemoryRepository
+} from "@src/features/teacherInvoice/createTeacherInvoice/test/createTeacherInvoice.failureInMemoryRepository";
+import {
+    CreateTeacherInvoiceSuccessInMemoryRepository
+} from "@src/features/teacherInvoice/createTeacherInvoice/test/createTeacherInvoice.successInMemoryRepository";
 
 const TeacherInvoicePage: React.FC = () => {
 
@@ -65,6 +76,12 @@ const TeacherInvoicePage: React.FC = () => {
                         getTeacherAmountToInvoiceRepository={new GetTeacherAmountToInvoiceFetchRepository()}>
                         <GetTeacherAmountToInvoiceComponent/>
                     </GetTeacherAmountToInvoiceProvider>
+
+
+                    <CreateTeacherInvoiceRepositoryProvider
+                        createTeacherInvoiceRepository={new CreateTeacherInvoiceSuccessInMemoryRepository()}>
+                        <CreateTeacherInvoiceComponent/>
+                    </CreateTeacherInvoiceRepositoryProvider>
                 </TabPanel>
 
             </Tabs>

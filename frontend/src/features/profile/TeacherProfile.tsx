@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTeacherProfile } from "../../hooks/useTeacherProfile";
-import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoFormComponent";
+import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoForm.component";
 import {
   SaveTeacherPaymentInfoRepositoryProvider
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.repository.provider";

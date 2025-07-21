@@ -13,7 +13,7 @@ import Contacts from '../features/contacts/Contacts';
 import UserFilesManager from '../features/userfiles/UserFilesManager';
 import Exercises from '../features/exercise/Exercises';
 import MessageWindow from '../features/messages/MessageWindow';
-import TeacherInvoicePage from '../features/teacherInvoice/TeacherInvoicePage';
+import TeacherInvoicePage from '../features/teacherInvoice/TeacherInvoice.page';
 
 export const router = createBrowserRouter([
   // Route publique : Authentification

@@ -1,5 +1,5 @@
 import {beforeEach, describe, expect, MockInstance, test, vi} from "vitest";
-import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoFormComponent";
+import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoForm.component";
 import {render, waitFor, screen, act} from "@testing-library/react";
 import userEvent from '@testing-library/user-event'
 import {
@@ -21,7 +21,6 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {})
     })
 
-    describe('#US-1-AC-1: Enregistrement réussi', async () => {
 
         test('#US-1-AC-1: Enregistrement réussi avec BIC 6 + 2', async () => {
 
@@ -57,9 +56,8 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             })
 
         })
-    })
 
-    describe('#US-1-AC-2: Enregistrement échoué', async () => {
+
 
         test('#US-1-AC-2: Enregistrement échoué avec SIRET de moins de 14 caractères', async () => {
 
@@ -95,6 +93,6 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             })
 
         })
-    })
+
 
 })

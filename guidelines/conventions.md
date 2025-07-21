@@ -42,7 +42,7 @@ frontend/src/features/{module}/{userStory}/
 ├── {userStory}.repository.provider.tsx     # Provider avec Context API pour injection de dépendance
 ├── {userStory}.fetchRepository.ts          # Repository réel utilisant l'API
 ├── use{UserStory}.usecase.ts              # Hook React contenant la logique métier
-├── {UserStory}Component.tsx               # Composant React principal
+├── {UserStory}.component.tsx               # Composant React principal
 └── test/
     ├── {userStory}.spec.tsx                   # Tests de la fonctionnalité
     ├── {userStory}.successInMemoryRepository.ts # Repository fake pour les tests (cas de succès)

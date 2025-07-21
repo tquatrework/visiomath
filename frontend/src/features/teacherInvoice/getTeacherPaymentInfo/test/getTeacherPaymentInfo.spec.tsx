@@ -3,7 +3,7 @@ import {render, screen, waitFor} from "@testing-library/react";
 import { GetTeacherPaymentInfoProvider } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.repository.provider";
 import { GetTeacherPaymentInfoSuccessInMemoryRepository } from "@src/features/teacherInvoice/getTeacherPaymentInfo/test/getTeacherPaymentInfo.successInMemoryRepository";
 import { GetTeacherPaymentInfoFailureInMemoryRepository } from "@src/features/teacherInvoice/getTeacherPaymentInfo/test/getTeacherPaymentInfo.failureInMemoryRepository";
-import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoFormComponent";
+import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoForm.component";
 import { GetTeacherPaymentInfoCompanyType } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.queryResult";
 
 describe('#US-2: Récupération des informations de paiement du professeur', async () => {
