@@ -15,6 +15,8 @@ export class UserBuilder {
     private app: INestApplication;
     private userId: number = 1;
     private role: string = 'user';
+    private firstName: string = 'Test';
+    private lastName: string = 'User';
     private teacherProfileId: number | null = null;
     private paymentInfo: PaymentInfo | null = null;
     private teacherAmountToInvoice: number = 0;
@@ -30,6 +32,16 @@ export class UserBuilder {
 
     withRole(role: string): UserBuilder {
         this.role = role;
+        return this;
+    }
+
+    withFirstName(firstName: string): UserBuilder {
+        this.firstName = firstName;
+        return this;
+    }
+
+    withLastName(lastName: string): UserBuilder {
+        this.lastName = lastName;
         return this;
     }
 
@@ -94,9 +106,9 @@ export class UserBuilder {
                 `test${this.userId}@gmail.com`,
                 '$2b$10$2sC2EI44j/j2MatHiRKakO.j8wRga3Pg5d36pf9KMBK0JZ84YsOyW',
                 true,
-                `User ${this.userId}`,
-                'Test',
-                'User',
+                `${this.firstName}${this.lastName}`,
+                this.firstName,
+                this.lastName,
                 '1900-01-01',
                 null,
                 null,

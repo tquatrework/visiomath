@@ -51,7 +51,7 @@ export class UserProfileService {
     }
 
     const { password, ...restUser } = user;
-    return { user: restUser, profile: user.userProfile };
+    return { user: { ...restUser, isTeacher: user.isTeacher }, profile: user.userProfile };
   }
 
   /**
@@ -79,7 +79,7 @@ export class UserProfileService {
     const ordonnance = user.role === 'student' ? profile?.studentOrdonnance : profile?.teacherOrdonnance;
 
     return {
-      user: restUser,
+      user: { ...restUser, isTeacher: user.isTeacher },
       profile,
       pedago,
       ordonnance,

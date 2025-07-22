@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
 import {SaveTeacherPaymentInfoUsecase} from "./saveTeacherPaymentInfo/saveTeacherPaymentInfo.usecase";
 import {saveTeacherPaymentInfoController} from "./saveTeacherPaymentInfo/saveTeacherPaymentInfo.controller";
@@ -15,14 +16,25 @@ import {GetTeacherAmountToInvoiceTypeOrmRepository} from "./getTeacherAmountToIn
 import {PayTeacherInvoiceUsecase} from "./payTeacherInvoice/payTeacherInvoice.usecase";
 import {PayTeacherInvoiceController} from "./payTeacherInvoice/payTeacherInvoice.controller";
 import {PayTeacherInvoiceTypeOrmRepository} from "./payTeacherInvoice/payTeacherInvoice.typeOrmRepository";
+import {CreateTeacherInvoiceUsecase} from "./createTeacherInvoice/createTeacherInvoice.usecase";
+import {CreateTeacherInvoiceController} from "./createTeacherInvoice/createTeacherInvoice.controller";
+import {CreateTeacherInvoiceTypeOrmRepository} from "./createTeacherInvoice/createTeacherInvoice.typeOrmRepository";
+import {CreateTeacherInvoiceFileStorageImplementation} from "./createTeacherInvoice/createTeacherInvoice.fileStorageImplementation";
+import {CreateTeacherInvoiceDateTimeProviderImplementation} from "./createTeacherInvoice/createTeacherInvoice.dateTimeProviderImplementation";
+import { TeacherInvoice } from "./createTeacherInvoice/teacherInvoice.entity";
+import { User } from "../../shared/entities/user.entity";
 
 @Module({
-  imports: [AuthModule],
+  imports: [
+    AuthModule,
+    TypeOrmModule.forFeature([TeacherInvoice, User])
+  ],
   controllers: [
     saveTeacherPaymentInfoController,
     GetTeacherPaymentInfoController,
     GetTeacherAmountToInvoiceController,
-    PayTeacherInvoiceController
+    PayTeacherInvoiceController,
+    CreateTeacherInvoiceController
   ],
   providers: [
     SaveTeacherPaymentInfoUsecase,
@@ -35,7 +47,11 @@ import {PayTeacherInvoiceTypeOrmRepository} from "./payTeacherInvoice/payTeacher
     GetTeacherAmountToInvoiceUsecase,
     GetTeacherAmountToInvoiceTypeOrmRepository,
     PayTeacherInvoiceUsecase,
-    PayTeacherInvoiceTypeOrmRepository
+    PayTeacherInvoiceTypeOrmRepository,
+    CreateTeacherInvoiceUsecase,
+    CreateTeacherInvoiceTypeOrmRepository,
+    CreateTeacherInvoiceFileStorageImplementation,
+    CreateTeacherInvoiceDateTimeProviderImplementation
   ],
 })
 export class TeacherInvoiceModule {}

@@ -173,7 +173,7 @@ export class {UserStory}FetchRepository implements {UserStory}Repository {
 - Pas de données retournées, seulement succès ou erreur
 - Respecter le principe CQS (Command Query Separation)
 
-Les tests côté frontend sont des tests semi-unitaires / d'intégration (tests « sociaux ») réalisés avec vitest. Ils vérifient les composants et la logique, mais pas les appels API.
+Les tests côté frontend sont des tests unitaires / d'intégration (tests « sociaux ») réalisés avec vitest. Ils vérifient les composants et la logique, mais pas les appels API.
 La logique est écrite dans des hooks ; ils sont donc couplés à React. Chaque hook joue le rôle de cas d’usage, avec le repository injecté (inversion de dépendance) via l’API Context.
 
 Je commence par écrire le test frontend pour le scénario nominal (happy path) et un seul scénario d’échec (sad path) — celui où une règle métier est violée (le deuxième scénario de la user story). Ensuite, j’écris juste le code nécessaire pour faire passer ce test, en utilisant un repository factice. Quand le test passe, je bascule sur le backend pour la même user story.
@@ -404,3 +404,4 @@ Attention, les services, repositories etc doivent être enregistrés dans le mod
 
 - [ ] Le code respecte les conventions de nommage et la structure définie
 - [ ] Aucun code de production n'est écrit sans qu'il ne soit nécessaire pour faire passer un test. Il ne faut donc pas écrire de code incluant des vérifications si le test n'est pas encore écrit.
+- [ ] Les erreurs attendues dans les tests sont lancées par le use case ou l'entité ou le controleur. Les erreurs de l'infra sont toujours catchées et renvoyées de manière custom dans le use case 

@@ -85,6 +85,10 @@ export class User {
     return this.role === 'financial_admin';
   }
 
+    isTeacher(): boolean {
+        return this.role === 'teacher';
+    }
+
   addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand: AddTeacherPaymentInfoCommand): void {
       if (this.userProfile === null) {
         this.userProfile = new UserProfile();
