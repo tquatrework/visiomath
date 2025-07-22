@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCreateTeacherInvoiceUseCase } from '@src/features/teacherInvoice/createTeacherInvoice/useCreateTeacherInvoice.usecase';
 
 const CreateTeacherInvoiceComponent = () => {
@@ -9,13 +9,18 @@ const CreateTeacherInvoiceComponent = () => {
         pdfFile: null as File | null
     });
 
-    if (createTeacherInvoiceSuccess) {
-        alert('Facture envoyée avec succès')
-    }
+    // afficher les alertes qu'une seule fois quand ces valeurs changent
+    useEffect(() => {
+        if (createTeacherInvoiceSuccess) {
+            alert('Facture envoyée avec succès')
+        }
+    }, [createTeacherInvoiceSuccess]);
 
-    if (createTeacherInvoiceError) {
-        alert(createTeacherInvoiceError)
-    }
+    useEffect(() => {
+        if (createTeacherInvoiceError) {
+            alert(createTeacherInvoiceError)
+        }
+    }, [createTeacherInvoiceError]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -29,14 +34,15 @@ const CreateTeacherInvoiceComponent = () => {
             amount: formData.amount,
             pdfFile: formData.pdfFile,
         };
-        
+
         await createTeacherInvoiceCommandHandler(createTeacherInvoiceCommand);
     };
 
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
         setFormData(prev => ({
             ...prev,
-            amount: parseFloat(e.target.value) || 0
+            amount: parseFloat(e.target.value)
         }));
     };
 
@@ -69,11 +75,18 @@ const CreateTeacherInvoiceComponent = () => {
                         id="amount"
                         name="amount"
                         type="number"
-                        step="0.01"
+                        inputMode="decimal"
+                        pattern="[0-9]*\.?[0-9]*"
                         required
                         className="w-full mt-1 p-2 border rounded-md"
                         value={formData.amount}
                         onChange={handleAmountChange}
+                        onKeyDown={(e) => {
+                            // Empêcher la soumission du formulaire sur la touche backspace dans ce champ
+                            if (e.key === 'Backspace') {
+                                e.stopPropagation();
+                            }
+                        }}
                     />
                 </div>
 

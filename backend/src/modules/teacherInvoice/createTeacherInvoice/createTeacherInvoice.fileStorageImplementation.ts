@@ -22,7 +22,12 @@ export class CreateTeacherInvoiceFileStorageImplementation implements CreateTeac
             fs.writeFileSync(filePath, fileContent);
             return filePath;
         } catch (error) {
-            throw new Error(`Failed to save file: ${error.message}`);
+
+            if (error instanceof Error) {
+                throw new Error(`EFailed to save file: ${error.message}`);
+            }
+
+            throw new Error('Erreur lors de la sauvegarde du fichier: une erreur inconnue est survenue');
         }
     }
 }

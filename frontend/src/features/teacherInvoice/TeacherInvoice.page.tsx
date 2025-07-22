@@ -36,6 +36,9 @@ import {
 import {
     CreateTeacherInvoiceSuccessInMemoryRepository
 } from "@src/features/teacherInvoice/createTeacherInvoice/test/createTeacherInvoice.successInMemoryRepository";
+import {
+    CreateTeacherInvoiceFetchRepository
+} from "@src/features/teacherInvoice/createTeacherInvoice/createTeacherInvoice.fetchRepository";
 
 const TeacherInvoicePage: React.FC = () => {
 
@@ -79,7 +82,7 @@ const TeacherInvoicePage: React.FC = () => {
 
 
                     <CreateTeacherInvoiceRepositoryProvider
-                        createTeacherInvoiceRepository={new CreateTeacherInvoiceSuccessInMemoryRepository()}>
+                        createTeacherInvoiceRepository={new CreateTeacherInvoiceFetchRepository()}>
                         <CreateTeacherInvoiceComponent/>
                     </CreateTeacherInvoiceRepositoryProvider>
                 </TabPanel>
