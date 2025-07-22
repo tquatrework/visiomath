@@ -33,7 +33,7 @@ describe('US-6: Envoie d’une facture', async () => {
 
         // Quand j'envoie un montant de 600e et un fichier PDF
         await userEvent.type(screen.getByLabelText(/Montant/i), '600')
-        const fileInput = screen.getByLabelText(/Fichier PDF/i);
+        const fileInput = screen.getByLabelText(/Facture PDF/i);
         const file = new File(['test'], 'facture.pdf', { type: 'application/pdf' });
         await userEvent.upload(fileInput, file);
 
@@ -66,7 +66,7 @@ describe('US-6: Envoie d’une facture', async () => {
         // Quand j’envoie un montant de -200e et un fichier PDF…
         await userEvent.clear(screen.getByLabelText('Montant'))
         await userEvent.type(screen.getByLabelText('Montant'), '-200');
-        const fileInput = screen.getByLabelText(/Fichier PDF/i);
+        const fileInput = screen.getByLabelText(/Facture PDF/i);
         const file = new File(['test'], 'facture.pdf', { type: 'application/pdf' });
         await userEvent.upload(fileInput, file);
 
