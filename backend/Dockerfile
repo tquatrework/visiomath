@@ -31,6 +31,9 @@ RUN npm prune --omit=dev
 COPY --from=build /app/dist          ./dist
 COPY --from=build /app/package.json  ./
 
+# Créer le répertoire uploads et donner les permissions à nodeusr
+RUN mkdir -p /app/uploads && chown -R nodeusr:nodeusr /app/uploads
+
 ENV NODE_ENV=production
 EXPOSE 5000
 USER nodeusr

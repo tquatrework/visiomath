@@ -24,6 +24,7 @@ services:
       my-app-network:
     volumes:
       - ./datafiles:/app/datafiles
+      - uploads_data:/app/uploads
     environment:
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
@@ -69,6 +70,7 @@ services:
 volumes:
   datafiles:
   db_data:
+  uploads_data:
 
 networks:
   my-app-network:
