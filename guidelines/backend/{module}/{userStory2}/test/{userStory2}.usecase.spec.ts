@@ -12,18 +12,17 @@ const generateUser = (userId: number) => {
 
 describe('#{userStory2Id}: {userStory2Name}', () => {
 
-    let {userStory2}InMemoryRepository: {UserStory2}InMemoryRepository;
-    let {userStory2}Usecase: {UserStory2}Usecase;
-
-    beforeEach(() => {
-        {userStory2}InMemoryRepository = new {UserStory2}InMemoryRepository();
-        {userStory2}Usecase = new {UserStory2}Usecase({userStory2}InMemoryRepository);
-    });
 
     test('#{scenario1Id}: {scenario1Name}', async () => {
         // Etant donné que je suis connecté en tant qu'utilisateur
+
         const user = generateUser(1);
+
+        const {userStory2}InMemoryRepository = new {UserStory2}InMemoryRepository();
         {userStory2}InMemoryRepository.seed(user);
+
+        const {userStory2}Usecase = new {UserStory2}Usecase({userStory2}InMemoryRepository);
+
 
         // Quand j'enregistre mes données
         const {userStory2}Command: {UserStory2}Command = {

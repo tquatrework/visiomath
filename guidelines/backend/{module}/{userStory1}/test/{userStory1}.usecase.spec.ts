@@ -5,13 +5,6 @@ import {{UserStory1}QueryResult} from "../{userStory1}.queryResult";
 
 describe('#{userStory1Id}: {userStory1Name}', () => {
 
-    let {userStory1}InMemoryRepository: {UserStory1}InMemoryRepository;
-    let {userStory1}Usecase: {UserStory1}Usecase;
-
-    beforeEach(() => {
-        {userStory1}InMemoryRepository = new {UserStory1}InMemoryRepository();
-        {userStory1}Usecase = new {UserStory1}Usecase({userStory1}InMemoryRepository);
-    });
 
     test('#{scenario1Id}: {scenario1Name}', async () => {
         // Etant donné que je suis connecté en tant qu'utilisateur
@@ -20,8 +13,12 @@ describe('#{userStory1Id}: {userStory1Name}', () => {
             name: "Dupont",
             firstName: "JeanPierre",
         };
-        
+
+        const {userStory1}InMemoryRepository = new {UserStory1}InMemoryRepository();
+
         {userStory1}InMemoryRepository.seed(1, expectedResult);
+
+        const {userStory1}Usecase = new {UserStory1}Usecase({userStory1}InMemoryRepository);
 
         // Quand je demande mes données
         const result = await {userStory1}Usecase.execute(1);

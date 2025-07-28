@@ -23,6 +23,10 @@ import {CreateTeacherInvoiceFileStorageImplementation} from "./createTeacherInvo
 import {CreateTeacherInvoiceDateTimeProviderImplementation} from "./createTeacherInvoice/createTeacherInvoice.dateTimeProviderImplementation";
 import { TeacherInvoice } from "./createTeacherInvoice/teacherInvoice.entity";
 import { User } from "../../shared/entities/user.entity";
+import {GetTeacherInvoicesUsecase} from "./getTeacherInvoices/getTeacherInvoices.usecase";
+import {GetTeacherInvoicesController} from "./getTeacherInvoices/getTeacherInvoices.controller";
+import {GetTeacherInvoicesTypeOrmRepository} from "./getTeacherInvoices/getTeacherInvoices.typeOrmRepository";
+import {GetTeacherInvoicesUserTypeOrmRepository} from "./getTeacherInvoices/getTeacherInvoices.userTypeOrmRepository";
 
 @Module({
   imports: [
@@ -34,7 +38,8 @@ import { User } from "../../shared/entities/user.entity";
     GetTeacherPaymentInfoController,
     GetTeacherAmountToInvoiceController,
     PayTeacherInvoiceController,
-    CreateTeacherInvoiceController
+    CreateTeacherInvoiceController,
+    GetTeacherInvoicesController
   ],
   providers: [
     SaveTeacherPaymentInfoUsecase,
@@ -51,7 +56,10 @@ import { User } from "../../shared/entities/user.entity";
     CreateTeacherInvoiceUsecase,
     CreateTeacherInvoiceTypeOrmRepository,
     CreateTeacherInvoiceFileStorageImplementation,
-    CreateTeacherInvoiceDateTimeProviderImplementation
+    CreateTeacherInvoiceDateTimeProviderImplementation,
+    GetTeacherInvoicesUsecase,
+    GetTeacherInvoicesTypeOrmRepository,
+    GetTeacherInvoicesUserTypeOrmRepository
   ],
 })
 export class TeacherInvoiceModule {}
