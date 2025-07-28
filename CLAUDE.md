@@ -33,7 +33,7 @@ Le projet est un "monorepo" avec un dossier frontend (react) et un backend (nest
 
 ## Structure et Vertical Slice
 
-Chaque fonctionnalité en vertical slice doit suivre la structure établie dans ce dossier de guidelines avec les exemples `frontend/{module}/{userStory}`:
+Chaque fonctionnalité en vertical slice doit suivre la structure établie dans ce dossier de guidelines avec les exemples `guidelines/frontend/{module}/{userStory}`:
 
 ```
 frontend/src/features/{module}/{userStory}/
@@ -77,36 +77,6 @@ Les repositories liés à des commandes renvoient une promesse avec void. Ils pe
 
 Pour les repositories qui effectuent des requêtes (GET), suivre ces conventions :
 
-### 1. **Structure du fichier** :
-```typescript
-import {
-    {UserStory}Repository
-} from "@src/features/{module}/{userStory}/{userStory}.repository";
-import {
-    {UserStory}QueryResult
-} from "@src/features/{module}/{userStory}/{userStory}.queryResult";
-import apiSec from "@src/utils/tokenapi.utils";
-import {AxiosError} from "axios";
-
-export class {UserStory}FetchRepository implements {UserStory}Repository {
-    async execute(): Promise<{UserStory}QueryResult> {
-        try {
-            const response = await apiSec.get('/endpoint-url');
-            return response.data;
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                const message =
-                    typeof error.response?.data?.message === 'string'
-                        ? error.response.data.message
-                        : 'Message d\'erreur par défaut';
-                throw new Error(message);
-            }
-            throw new Error('Message d\'erreur par défaut');
-        }
-    }
-}
-```
-
 ### 2. **URL cohérente** :
 - Utiliser l'URL exacte définie dans le contrôleur backend
 - Respecter la méthode HTTP (GET pour les queries)
@@ -127,35 +97,6 @@ export class {UserStory}FetchRepository implements {UserStory}Repository {
 ## Conventions pour les Fetch Repositories (Commands)
 
 Pour les repositories qui effectuent des commandes (POST, PUT, DELETE), suivre ces conventions :
-
-### 1. **Structure du fichier** :
-```typescript
-import {
-    {UserStory}Repository
-} from "@src/features/{module}/{userStory}/{userStory}.repository";
-import {
-    {UserStory}Command
-} from "@src/features/{module}/{userStory}/{userStory}.command";
-import apiSec from "@src/utils/tokenapi.utils";
-import {AxiosError} from "axios";
-
-export class {UserStory}FetchRepository implements {UserStory}Repository {
-    async execute(command: {UserStory}Command): Promise<void> {
-        try {
-            await apiSec.post('/endpoint-url', command);
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                const message =
-                    typeof error.response?.data?.message === 'string'
-                        ? error.response.data.message
-                        : 'Message d\'erreur par défaut';
-                throw new Error(message);
-            }
-            throw new Error('Message d\'erreur par défaut');
-        }
-    }
-}
-```
 
 ### 2. **Méthodes HTTP** :
 - POST pour les créations
