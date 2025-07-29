@@ -26,7 +26,6 @@ RUN useradd -m -r nodeusr
 WORKDIR /app
 
 COPY --from=deps  /app/node_modules ./node_modules
-RUN npm prune --omit=dev
 
 COPY --from=build /app/dist          ./dist
 COPY --from=build /app/package.json  ./
