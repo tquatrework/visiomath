@@ -37,7 +37,7 @@ describe('US-8: Visualisation du détail d\'une facture', async () => {
         
         expect(
           await screen.findByTestId('invoice-pdf-download')
-        ).toHaveAttribute('href', 'facture-david-robert.pdf');
+        ).toHaveAttribute('href', '/uploads/facture-david-robert.pdf');
         
     })
 
