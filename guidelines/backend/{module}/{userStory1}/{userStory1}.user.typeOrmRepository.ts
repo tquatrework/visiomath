@@ -4,7 +4,7 @@ import {{UserStory1}Repository} from "./{userStory1}.repository";
 import {{UserStory1}QueryResult} from "./{userStory1}.queryResult";
 
 @Injectable()
-export class {UserStory1}TypeOrmRepository implements {UserStory1}Repository {
+export class {UserStory1}UserTypeOrmRepository implements {UserStory1}Repository {
 
     constructor(private dataSource: DataSource) {}
 

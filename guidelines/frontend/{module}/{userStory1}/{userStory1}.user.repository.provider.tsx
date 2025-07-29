@@ -3,7 +3,7 @@ import {
 } from "@src/features/{module}/{userStory1}/{userStory1}.repository";
 import {createContext, useContext} from "react";
 
-export const {userStory1}RepositoryContext = createContext<{userStory1}Repository | null>(null)
+export const {userStory1}UserRepositoryContext = createContext<{userStory1}Repository | null>(null)
 
 export const {userStory1}Provider: React.FC<{ children: React.ReactNode, {userStory1}Repository?: {userStory1}Repository }> = ({ children, {userStory1}Repository }) => {
 

@@ -38,15 +38,15 @@ Chaque fonctionnalité en vertical slice doit suivre la structure établie dans 
 ```
 frontend/src/features/{module}/{userStory}/
 ├── {userStory}.queryResult/command.ts      # Modèles de données TypeScript pour les résultats de la requête ou la commande
-├── {userStory}.repository.ts               # Interface du repository
-├── {userStory}.repository.provider.tsx     # Provider avec Context API pour injection de dépendance
-├── {userStory}.fetchRepository.ts          # Repository réel utilisant l'API
+├── {userStory}.user.repository.ts               # Interface du repository avec le nom de la ressource ajouté à la user story
+├── {userStory}.user.repository.provider.tsx     # Provider avec Context API pour injection de dépendance (avec le nom de la ressource)
+├── {userStory}.user.fetchRepository.ts          # Repository réel utilisant l'API (avec le nom de la ressource)
 ├── use{UserStory}.usecase.ts              # Hook React contenant la logique métier
 ├── {UserStory}.component.tsx               # Composant React principal
 └── test/
     ├── {userStory}.spec.tsx                   # Tests de la fonctionnalité
-    ├── {userStory}.successInMemoryRepository.ts # Repository fake pour les tests (cas de succès)
-    └── {userStory}.failureInMemoryRepository.ts # Repository fake pour les tests (cas d'erreur)
+    ├── {userStory}.user.successInMemoryRepository.ts # Repository fake pour les tests (cas de succès)
+    └── {userStory}.user.failureInMemoryRepository.ts # Repository fake pour les tests (cas d'erreur)
 ```
 
 ## Orientation Clean architecture : 
@@ -62,8 +62,8 @@ Les repositories liés à des commandes renvoient une promesse avec void. Ils pe
 - **Fichiers** : camelCase avec le nom de la user story (ex: `{userStory}.command.ts`)
 - **Composants React** : PascalCase (ex: `{UserStory}Component.tsx`)
 - **Hooks** : préfixe `use` + PascalCase (ex: `use{userStory}.usecase.ts`)
-- **Interfaces** : PascalCase (ex: `{UserStory}.repository.ts`)
-- **Repository implementations** : PascalCase (ex: `{userStory}.successInMemoryRepository.ts`)
+- **Interfaces** : PascalCase (ex: `{UserStory}.user.repository.ts`)
+- **Repository implementations** : PascalCase (ex: `{userStory}.user.successInMemoryRepository.ts`)
 - **Query, Query Result and Command Types** : PascalCase (ex: `{userStory}.queryResult/command.ts`)
 
 
@@ -72,6 +72,7 @@ Les repositories liés à des commandes renvoient une promesse avec void. Ils pe
 2. **Influence de la **Clean Architecture** : Les uses cases sont séparés des appels API via l'inversion de dépendance. Le provider fournit donc une implémentation du repository et est typé avec une interface. Le but de cette séparation est de permettre de tester ici les use case (en partant des composants, donc pas 100% clean archi), sans dépendre des appels API réels.
 3. **Gestion d'état** : useState dans les hooks pour loading, error, success
 4. **Tests sociaux** : Tests unitaires testant composant + logique mais pas les appels API
+5. **Repository** : un repository pour chaque ressource
 
 ## Conventions pour les Fetch Repositories (Queries)
 
@@ -127,12 +128,10 @@ Lorsque je te demande de générer des tests pour le frontend :
 
 Quand je te demande de générer le premier test, tu dois produire uniquement le test du premier scénario : donc une seule fonction test ou it. La première itération ne doit contenir que :
 ```typescript
-import {beforeEach, describe, expect, test, } from "vitest";
+import {describe, expect, test, } from "vitest";
 
 describe('Name of the US (replace with the name of the US)', async () => {
-
-    beforeEach(() => {
-    })
+    
 
     test('name of the first scenario (replace with the name of the scenario)', async () => {
 
@@ -154,7 +153,7 @@ La deuxième itération doit ajouter le code correspondant aux étapes Given / W
 Par exemple :
 
 ```
-import {beforeEach, describe, expect, test, vi} from "vitest";
+import {describe, expect, test, vi} from "vitest";
 import {render, waitFor, screen} from "@testing-library/react";
 
 
@@ -204,15 +203,15 @@ Chaque fonctionnalité en vertical slice doit suivre la structure établie dans 
 backend/src/modules/{module}/{userStory}/
 ├── {userStory}.usecase.ts           # Use case contenant la logique métier
 ├── {userStory}.controller.ts        # Contrôleur REST
-├── {userStory}.repository.ts        # Interface du repository (pour les queries)
-├── {userStory}.typeOrmRepository.ts # Repository réel utilisant TypeORM
+├── {userStory}.user.repository.ts        # Interface du repository (pour les queries) avec le nom de la ressource
+├── {userStory}.user.typeOrmRepository.ts # Repository réel utilisant TypeORM avec le nom de la ressource
 ├── {userStory}.queryResult.ts       # Modèle de données pour les queries
 ├── {userStory}.command.ts           # Modèle de données pour les commandes
 └── test/
     ├── {userStory}.usecase.spec.ts      # Tests unitaires du use case
     ├── {userStory}.e2e-spec.ts         # Tests e2e avec testcontainers
-    ├── {userStory}.inMemoryRepository.ts # Repository fake pour les tests (succès)
-    └── {userStory}.failureInMemoryRepository.ts # Repository fake pour les tests (échec)
+    ├── {userStory}.user.inMemoryRepository.ts # Repository fake pour les tests (succès) avec le nom de la ressource
+    └── {userStory}.user.failureInMemoryRepository.ts # Repository fake pour les tests (échec) avec le nom de la ressource
 ```
 
 **Note importante sur l'organisation des tests :**
@@ -235,8 +234,8 @@ Pour les user stories requêtes (get, list), j’utilise directement des requêt
 ## Patterns :
 1. **Use cases** : Logique métier dans des classes dédiées
 2. **Entities** : Logique business dans les entités TypeORM. Il n'y a pas d'entités de domain séparées des entités TypeORM. 
-3. **Repository pattern** : Pour les commandes (create/update/delete) utiliser l'ORM
-4. **Raw SQL** : Pour les queries (get/list) utiliser des requêtes SQL directes
+3. **Repository pattern** : Pour les commandes (create/update/delete) utiliser l'ORM avec le nom de la ressource
+4. **Raw SQL** : Pour toutes les queries (get/list) utiliser des requêtes SQL directes
 5. **Tests unitaires** : Avec repositories in-memory
 6. **Tests e2e** : Avec testcontainers pour la base de données
 

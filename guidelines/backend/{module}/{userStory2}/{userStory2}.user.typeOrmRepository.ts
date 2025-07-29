@@ -4,7 +4,7 @@ import {{UserStory2}Repository} from "./{userStory2}.repository";
 import {User} from "../../../shared/entities/user.entity";
 
 @Injectable()
-export class {UserStory2}TypeOrmRepository implements {UserStory2}Repository {
+export class {UserStory2}UserTypeOrmRepository implements {UserStory2}Repository {
     private userRepository: Repository<User>;
 
     constructor(private dataSource: DataSource) {

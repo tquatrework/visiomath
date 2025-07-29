@@ -5,10 +5,8 @@ import {
     {userStory1}Repository
 } from "@src/features/{module}/{userStory1}/{userStory1}.repository";
 
-export class UserStory1SuccessInMemoryRepository implements {userStory1}Repository {
-    constructor(private mockData: {userStory1}QueryResult) {}
-
+export class UserStory1UserFailureInMemoryRepository implements {userStory1}Repository {
     async execute(): Promise<{userStory1}QueryResult> {
-        return this.mockData;
+        throw new Error("Impossible de récupérer les informations de paiement");
     }
 }
