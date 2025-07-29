@@ -14,6 +14,7 @@ import UserFilesManager from '../features/userfiles/UserFilesManager';
 import Exercises from '../features/exercise/Exercises';
 import MessageWindow from '../features/messages/MessageWindow';
 import TeacherInvoicePage from '../features/teacherInvoice/TeacherInvoice.page';
+import TeacherInvoiceDetailPage from '../features/teacherInvoice/TeacherInvoiceDetail.page';
 
 export const router = createBrowserRouter([
   // Route publique : Authentification
@@ -54,6 +55,10 @@ export const router = createBrowserRouter([
           {
             path: "/teacher-facturation",
             element: <TeacherInvoicePage />,
+          },
+          {
+            path: "/teacher-facturation/invoice/:id",
+            element: <TeacherInvoiceDetailPage />,
           },
 
           // Routes du menu principal (en haut)

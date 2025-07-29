@@ -27,6 +27,10 @@ import {GetTeacherInvoicesUsecase} from "./getTeacherInvoices/getTeacherInvoices
 import {GetTeacherInvoicesController} from "./getTeacherInvoices/getTeacherInvoices.controller";
 import {GetTeacherInvoicesTypeOrmRepository} from "./getTeacherInvoices/getTeacherInvoices.typeOrmRepository";
 import {GetTeacherInvoicesUserTypeOrmRepository} from "./getTeacherInvoices/getTeacherInvoices.userTypeOrmRepository";
+import { GetTeacherInvoiceDetailController } from './getTeacherInvoiceDetail/getTeacherInvoiceDetail.controller';
+import { GetTeacherInvoiceDetailUsecase } from './getTeacherInvoiceDetail/getTeacherInvoiceDetail.usecase';
+import { GetTeacherInvoiceDetailTeacherInvoiceTypeOrmRepository } from './getTeacherInvoiceDetail/getTeacherInvoiceDetail.teacherInvoice.typeOrmRepository';
+import { GetTeacherInvoiceDetailUserTypeOrmRepository } from './getTeacherInvoiceDetail/getTeacherInvoiceDetail.user.typeOrmRepository';
 
 @Module({
   imports: [
@@ -39,7 +43,8 @@ import {GetTeacherInvoicesUserTypeOrmRepository} from "./getTeacherInvoices/getT
     GetTeacherAmountToInvoiceController,
     PayTeacherInvoiceController,
     CreateTeacherInvoiceController,
-    GetTeacherInvoicesController
+    GetTeacherInvoicesController,
+    GetTeacherInvoiceDetailController
   ],
   providers: [
     SaveTeacherPaymentInfoUsecase,
@@ -59,7 +64,10 @@ import {GetTeacherInvoicesUserTypeOrmRepository} from "./getTeacherInvoices/getT
     CreateTeacherInvoiceDateTimeProviderImplementation,
     GetTeacherInvoicesUsecase,
     GetTeacherInvoicesTypeOrmRepository,
-    GetTeacherInvoicesUserTypeOrmRepository
+    GetTeacherInvoicesUserTypeOrmRepository,
+    GetTeacherInvoiceDetailUsecase,
+    GetTeacherInvoiceDetailTeacherInvoiceTypeOrmRepository,
+    GetTeacherInvoiceDetailUserTypeOrmRepository
   ],
 })
 export class TeacherInvoiceModule {}

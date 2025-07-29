@@ -52,7 +52,7 @@ frontend/src/features/{module}/{userStory}/
 ## Orientation Clean architecture : 
 
 Le use case est implémenté dans un hook React, qui est ensuite utilisé dans un composant. Le repository est injecté via le Context API pour permettre l'inversion de dépendance. Le composant n'a pas connaissance du repository.
-Les messages d'erreurs doivent thrown par le use case.
+Chaque ressource utilise un repository dédié, qui est injecté dans le use case via le provider. Le use case contient la logique métier et appelle le repository pour récupérer ou modifier les données.
 
 ## Orientation CQS : 
 
@@ -84,10 +84,7 @@ Pour les repositories qui effectuent des requêtes (GET), suivre ces conventions
 - Correspondance exacte avec l'endpoint défini dans le contrôleur backend
 
 ### 3. **Gestion d'erreur** :
-- Message d'erreur par défaut cohérent avec le domaine métier
-- Récupération du message d'erreur depuis la réponse serveur si disponible
-- Gestion des erreurs Axios et des erreurs génériques
-- Double fallback : message serveur → message par défaut
+- Quand l'errur est envoyée par le repo ou une lib (infra), le use case doit la catcher et la renvoyer avec un message explicite
 
 ### 4. **Typage TypeScript** :
 - Implémente l'interface du repository correspondant
@@ -220,11 +217,15 @@ Tous les fichiers liés aux tests (fichiers de test `.spec.tsx` et repositories 
 ## Orientation Clean architecture :
 
 Le use case est implémenté dans une classe dédiée. Le contrôleur appelle ce use case pour traiter les requêtes HTTP. Les repositories, libs etc sont injectés dans le use case via le constructeur, permettant l'inversion de dépendance. Dans les tests, les repostories fakes sont injectés manuellement. Dans le flow normal, la classe de repository est injecté via le décorateur de NestJS.
+Chaque ressource utilise un repository dédié, qui est injecté dans le use case via le constructeur. Le use case contient la logique métier et appelle le repository pour récupérer ou modifier les données.
 
 ## CQS :
 
 Pour les user stories commandes (update, delete, create), j’utilise l’ORM dans le repository et l’entité pour la logique métier (changement d’état, etc.).
 Pour les user stories requêtes (get, list), j’utilise directement des requêtes SQL dans le repository (pas d’ORM, pas d’entité, seulement le repository).
+
+## Erreurs :
+Les erreurs attendues dans les tests sont lancées par le use case ou l’entité (sauf certaines erreurs gérés par le controleur, comme la validation des données d'entrée) Les erreurs de l’infrastructure (par exemple, les erreurs de la base de données) sont toujours catchées et renvoyées de manière personnalisée dans le use case.
 
 
 ## Conventions de nommage :

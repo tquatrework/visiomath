@@ -1,8 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useGetTeacherInvoices } from './useGetTeacherInvoices.usecase';
 
 export const GetTeacherInvoicesComponent: React.FC = () => {
   const { loading, error, data } = useGetTeacherInvoices();
+  const navigate = useNavigate();
+
+  const handleViewInvoice = (invoiceId: number) => {
+    navigate(`/teacher-facturation/invoice/${invoiceId}`);
+  };
 
   if (loading) {
     return <div className="text-gray-500">Chargement...</div>;
@@ -51,7 +57,10 @@ export const GetTeacherInvoicesComponent: React.FC = () => {
                 </div>
               </div>
               <div className="ml-4">
-                <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button 
+                  onClick={() => handleViewInvoice(invoice.id)}
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                   Voir la facture
                 </button>
               </div>

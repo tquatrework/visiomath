@@ -1,0 +1,62 @@
+import {describe, expect, test} from "vitest";
+import {render, screen} from "@testing-library/react";
+import { GetTeacherInvoiceDetailProvider } from '../getTeacherInvoiceDetail.teacherInvoice.repository.provider';
+import { GetTeacherInvoiceDetailComponent } from '../GetTeacherInvoiceDetail.component';
+import { GetTeacherInvoiceDetailTeacherInvoiceSuccessInMemoryRepository } from './getTeacherInvoiceDetail.teacherInvoice.successInMemoryRepository';
+import { GetTeacherInvoiceDetailTeacherInvoiceFailureInMemoryRepository } from './getTeacherInvoiceDetail.teacherInvoice.failureInMemoryRepository';
+
+describe('US-8: Visualisation du détail d\'une facture', async () => {
+    
+
+    test('US-8-AC-1: Visualisation réussie', async () => {
+
+        // Etant donné que je suis connecté en tant que responsable financier et que le professeur David Robert a une facture de 600e avec un id de 1
+
+        // Quand je veux visualiser la facture 1, si tout se passe bien
+        render(<GetTeacherInvoiceDetailProvider
+            getTeacherInvoiceDetailRepository={new GetTeacherInvoiceDetailTeacherInvoiceSuccessInMemoryRepository()}>
+            <GetTeacherInvoiceDetailComponent invoiceId={1}/>
+        </GetTeacherInvoiceDetailProvider>);
+
+        // Alors je dois voir les détails de la facture id 1 à 600e de David Robert
+        expect(
+          await screen.findByTestId('invoice-id')
+        ).toHaveTextContent('1');
+        
+        expect(
+          await screen.findByTestId('invoice-teacher-name')
+        ).toHaveTextContent('David Robert');
+        
+        expect(
+          await screen.findByTestId('invoice-amount')
+        ).toHaveTextContent('600');
+        
+        expect(
+          await screen.findByTestId('invoice-creation-date')
+        ).toHaveTextContent('2024-01-15');
+        
+        expect(
+          await screen.findByTestId('invoice-pdf-download')
+        ).toHaveAttribute('href', 'facture-david-robert.pdf');
+        
+    })
+
+    test('US-8-AC-2: Visualisation échouée : erreur lors de la récupération', async () => {
+
+        // Etant donné que je suis connecté en tant que responsable financier et que le professeur David Robert a une facture de 600e avec un id de 1
+
+        // Quand je veux visualiser la facture 1, si la récupération échoue
+        render(<GetTeacherInvoiceDetailProvider
+            getTeacherInvoiceDetailRepository={new GetTeacherInvoiceDetailTeacherInvoiceFailureInMemoryRepository()}>
+            <GetTeacherInvoiceDetailComponent invoiceId={1}/>
+        </GetTeacherInvoiceDetailProvider>);
+
+        // Alors je dois recevoir une erreur "la récupération de la facture à échoué"
+        expect(
+          await screen.findByText('Erreur: la récupération de la facture à échoué')
+        ).toBeInTheDocument();
+
+    })
+
+
+})

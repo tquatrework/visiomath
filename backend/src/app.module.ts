@@ -24,6 +24,8 @@ import { MessagesModule } from './modules/messages/messages.module';
 import {TeacherInvoiceModule} from "./modules/teacherInvoice/teacherInvoice.module";
 import { LessonModule } from './modules/lesson/lesson.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 
 
@@ -49,6 +51,12 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 
     // Event emitter pour les événements
     EventEmitterModule.forRoot(),
+    
+    // Servir les fichiers statiques
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'uploads'),
+      serveRoot: '/uploads/',
+    }),
     
     // Modules de l'application
     //RouterModule.register(routes),

@@ -56,7 +56,7 @@ export class CreateTeacherInvoiceUsecase {
         }
         const fileName = this.generateInvoicePdfFileName(user, currentDate);
 
-        const pdfFilePath = await this.fileStorage.saveFile(
+        await this.fileStorage.saveFile(
             fileName,
             command.pdfFileContent
         );
@@ -64,7 +64,7 @@ export class CreateTeacherInvoiceUsecase {
         const teacherInvoice = new TeacherInvoice(
             user,
             command.amount,
-            pdfFilePath,
+            fileName,
             currentDate
         );
 
