@@ -1,5 +1,6 @@
 import {describe, expect, test} from "vitest";
 import {render, screen} from "@testing-library/react";
+import { MemoryRouter } from 'react-router-dom';
 import { GetTeacherInvoicesProvider } from '../getTeacherInvoices.repository.provider';
 import { GetTeacherInvoicesComponent } from '../GetTeacherInvoices.component';
 import { GetTeacherInvoicesSuccessInMemoryRepository } from './getTeacherInvoices.successInMemoryRepository';
@@ -12,10 +13,14 @@ describe('US-7: Visualisation de la facture', async () => {
         // Etant donné que je suis connecté en tant que responsable financier et que le professeur David Robert a une facture de 600e avec un id de 1
 
         // Quand je veux visualiser toutes les factures, si tout se passe bien
-        render(<GetTeacherInvoicesProvider
-            getTeacherInvoicesRepository={new GetTeacherInvoicesSuccessInMemoryRepository()}>
-            <GetTeacherInvoicesComponent/>
-        </GetTeacherInvoicesProvider>);
+        render(
+            <MemoryRouter>
+                <GetTeacherInvoicesProvider
+                    getTeacherInvoicesRepository={new GetTeacherInvoicesSuccessInMemoryRepository()}>
+                    <GetTeacherInvoicesComponent/>
+                </GetTeacherInvoicesProvider>
+            </MemoryRouter>
+        );
 
         // Alors je dois voir la facture id 1 à 600e de David Robert dans le tableau
         const invoiceRow = await screen.findByTestId('teacher-invoice-1');
