@@ -1,5 +1,5 @@
-import {beforeEach, describe, expect, MockInstance, test, vi} from "vitest";
-import {render, screen, waitFor} from "@testing-library/react";
+import {describe, expect, test} from "vitest";
+import {render, screen} from "@testing-library/react";
 import { GetTeacherPaymentInfoProvider } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.repository.provider";
 import { GetTeacherPaymentInfoSuccessInMemoryRepository } from "@src/features/teacherInvoice/getTeacherPaymentInfo/test/getTeacherPaymentInfo.successInMemoryRepository";
 import { GetTeacherPaymentInfoFailureInMemoryRepository } from "@src/features/teacherInvoice/getTeacherPaymentInfo/test/getTeacherPaymentInfo.failureInMemoryRepository";
@@ -7,13 +7,6 @@ import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/Teache
 import { GetTeacherPaymentInfoCompanyType } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.queryResult";
 
 describe('#US-2: Récupération des informations de paiement du professeur', async () => {
-
-    let alertSpy: MockInstance;
-
-    beforeEach(() => {
-        alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {})
-    })
-
 
     test('#US-2-AC-2: Récupération réussie', async () => {
 
@@ -78,9 +71,9 @@ describe('#US-2: Récupération des informations de paiement du professeur', asy
         );
 
         // Alors une erreur "Impossible de récupérer les informations de paiement" doit être affichée
-        await waitFor(() => {
-            expect(alertSpy).toHaveBeenCalledWith('Impossible de récupérer les informations de paiement')
-        })
+        expect(
+            await screen.findByText('Erreur: Impossible de récupérer les informations de paiement')
+        ).toBeInTheDocument();
 
     })
 
