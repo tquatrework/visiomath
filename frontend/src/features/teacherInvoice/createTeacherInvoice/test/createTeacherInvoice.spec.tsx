@@ -1,5 +1,5 @@
-import {beforeEach, describe, expect, MockInstance, test, vi} from "vitest";
-import {render, waitFor, screen, act} from "@testing-library/react";
+import {describe, expect, test} from "vitest";
+import {render, screen, act} from "@testing-library/react";
 import userEvent from '@testing-library/user-event'
 import CreateTeacherInvoiceComponent from "../CreateTeacherInvoice.component";
 import {
@@ -12,13 +12,7 @@ import {
     CreateTeacherInvoiceFailureInMemoryRepository
 } from "./createTeacherInvoice.failureInMemoryRepository";
 
-describe('US-6: Envoie d’une facture', async () => {
-
-    let alertSpy: MockInstance;
-
-    beforeEach(() => {
-        alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {})
-    })
+describe('US-6: Envoie d\'une facture', () => {
     test('US-6-AC-1: Envoie réussie', async () => {
 
         // Etant donné que je suis connecté en tant de professeur
@@ -41,10 +35,10 @@ describe('US-6: Envoie d’une facture', async () => {
             await userEvent.click(screen.getByRole('button', {name: /Envoyer/i}));
         });
 
-        // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status ‘en attente de validation’ doit être créée
-        await waitFor(() => {
-            expect(alertSpy).toHaveBeenCalledWith('Facture envoyée avec succès')
-        })
+        // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation' doit être créée
+        expect(
+          await screen.findByText('Facture envoyée avec succès')
+        ).toBeInTheDocument();
 
     })
 
@@ -74,10 +68,10 @@ describe('US-6: Envoie d’une facture', async () => {
             await userEvent.click(screen.getByRole('button', {name: /Envoyer/i}));
         });
 
-        // Alors une erreur “le montant de la facture doit être supérieur à 0” doit être envoyée
-        await waitFor(()=> {
-            expect(alertSpy).toHaveBeenCalledWith('Le montant de la facture doit être supérieur à 0');
-        });
+        // Alors une erreur "le montant de la facture doit être supérieur à 0" doit être envoyée
+        expect(
+          await screen.findByText('Erreur: Le montant de la facture doit être supérieur à 0')
+        ).toBeInTheDocument();
     });
 
 })

@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import GetTeacherAmountToInvoiceComponent
-    from "@src/features/teacherInvoice/getTeacherAmountToInvoice/GetTeacherAmountToInvoiceComponent";
+    from "@src/features/teacherInvoice/getTeacherAmountToInvoice/GetTeacherAmountToInvoice.component";
 import {
     GetTeacherAmountToInvoiceProvider
 } from "@src/features/teacherInvoice/getTeacherAmountToInvoice/getTeacherAmountToInvoice.repository.provider";

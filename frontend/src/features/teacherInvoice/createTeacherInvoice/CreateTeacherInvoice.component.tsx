@@ -5,22 +5,10 @@ const CreateTeacherInvoiceComponent = () => {
     const { createTeacherInvoiceCommandHandler, error: createTeacherInvoiceError, success: createTeacherInvoiceSuccess } = useCreateTeacherInvoiceUseCase();
 
     const [formData, setFormData] = useState({
-        amount: 0,
+        amount: '',
         pdfFile: null as File | null
     });
 
-    // afficher les alertes qu'une seule fois quand ces valeurs changent
-    useEffect(() => {
-        if (createTeacherInvoiceSuccess) {
-            alert('Facture envoyée avec succès')
-        }
-    }, [createTeacherInvoiceSuccess]);
-
-    useEffect(() => {
-        if (createTeacherInvoiceError) {
-            alert(createTeacherInvoiceError)
-        }
-    }, [createTeacherInvoiceError]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -31,7 +19,7 @@ const CreateTeacherInvoiceComponent = () => {
         }
 
         const createTeacherInvoiceCommand = {
-            amount: formData.amount,
+            amount: parseFloat(formData.amount),
             pdfFile: formData.pdfFile,
         };
 
@@ -42,7 +30,7 @@ const CreateTeacherInvoiceComponent = () => {
         e.preventDefault();
         setFormData(prev => ({
             ...prev,
-            amount: parseFloat(e.target.value)
+            amount: e.target.value
         }));
     };
 
@@ -53,6 +41,14 @@ const CreateTeacherInvoiceComponent = () => {
             pdfFile: file
         }));
     };
+
+    if (createTeacherInvoiceSuccess) {
+        return <div className="text-green-500">Facture envoyée avec succès</div>;
+    }
+
+    if (createTeacherInvoiceError) {
+        return <div className="text-red-500">Erreur: {createTeacherInvoiceError}</div>;
+    }
 
     return (
         <div>

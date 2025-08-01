@@ -1,6 +1,6 @@
-import {beforeEach, describe, expect, MockInstance, test, vi} from "vitest";
+import {describe, expect, test} from "vitest";
 import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoForm.component";
-import {render, waitFor, screen, act} from "@testing-library/react";
+import {render, screen, act} from "@testing-library/react";
 import userEvent from '@testing-library/user-event'
 import {
     SaveTeacherPaymentInfoRepositoryProvider
@@ -13,13 +13,7 @@ import {
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/test/saveTeacherPaymentInfo.failureInMemoryRepository";
 
 
-describe('#US-1: Enregistrement des informations personnelles / de paiement du professeur', async () => {
-
-    let alertSpy: MockInstance;
-
-    beforeEach(() => {
-        alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {})
-    })
+describe('#US-1: Enregistrement des informations personnelles / de paiement du professeur', () => {
 
 
         test('#US-1-AC-1: Enregistrement réussi avec BIC 6 + 2', async () => {
@@ -51,9 +45,9 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             });
 
             // Alors mon enregistrement doit être confirmé
-            await waitFor(() => {
-                expect(alertSpy).toHaveBeenCalledWith('Enregistrement Ok')
-            })
+            expect(
+              await screen.findByText('Enregistrement Ok')
+            ).toBeInTheDocument();
 
         })
 
@@ -88,9 +82,9 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             });
 
             // Alors mon enregistrement doit renvoyer une erreur "Le SIRET doit contenir 14 caractères"
-            await waitFor(() => {
-                expect(alertSpy).toHaveBeenCalledWith('Le SIRET doit contenir 14 caractères')
-            })
+            expect(
+              await screen.findByText('Erreur: Le SIRET doit contenir 14 caractères')
+            ).toBeInTheDocument();
 
         })
 

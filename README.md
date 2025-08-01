@@ -39,6 +39,7 @@ Pour arrêter et supprimer le stack, volumes, conteneurs orphelins :
 En prod, pour tester la bdd : `docker exec -it idDuContainer psql -U xxxxUser -d xxxxxDB -c '\dt`
 Pour se connecter en sh dans le conteneur : `docker exec -it idDuContainer sh`
 
+
 TODO avant de mettre en prod : 
 
 - supprimer le point d'api qui permet d'augmenter le solde d'un professeur

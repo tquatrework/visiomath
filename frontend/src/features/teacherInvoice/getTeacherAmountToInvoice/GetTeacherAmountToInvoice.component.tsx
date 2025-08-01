@@ -4,8 +4,13 @@ import { useGetTeacherAmountToInvoiceUsecase } from './useGetTeacherAmountToInvo
 const GetTeacherAmountToInvoiceComponent: React.FC = () => {
     const { amountToInvoice, loading, error } = useGetTeacherAmountToInvoiceUsecase();
 
-    if (loading) return <div>Chargement...</div>;
-    if (error) return <div>{error}</div>;
+    if (loading) {
+        return <div className="text-gray-500">Chargement...</div>;
+    }
+
+    if (error) {
+        return <div className="text-red-500">Erreur: {error}</div>;
+    }
 
     return (
         <div className="p-6 bg-white shadow-md rounded-lg">

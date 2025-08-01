@@ -35,15 +35,15 @@ const TeacherPaymentInfoFormComponent = () => {
 
 
     if (saveTeacherPaymentInfoSuccess) {
-        alert('Enregistrement Ok')
+        return <div className="text-green-500">Enregistrement Ok</div>;
     }
 
     if (saveTeacherPaymentInfoError) {
-        alert(saveTeacherPaymentInfoError)
+        return <div className="text-red-500">Erreur: {saveTeacherPaymentInfoError}</div>;
     }
 
     if (getTeacherPaymentInfoError) {
-        alert(getTeacherPaymentInfoError)
+        return <div className="text-red-500">Erreur: {getTeacherPaymentInfoError}</div>;
     }
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

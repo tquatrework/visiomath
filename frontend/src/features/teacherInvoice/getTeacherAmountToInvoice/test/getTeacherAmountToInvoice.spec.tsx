@@ -1,6 +1,6 @@
 import {render, waitFor, screen} from "@testing-library/react";
 import { GetTeacherAmountToInvoiceProvider } from "../getTeacherAmountToInvoice.repository.provider";
-import GetTeacherAmountToInvoiceComponent from "../GetTeacherAmountToInvoiceComponent";
+import GetTeacherAmountToInvoiceComponent from "../GetTeacherAmountToInvoice.component";
 import { GetTeacherAmountToInvoiceSuccessInMemoryRepository } from "./getTeacherAmountToInvoice.successInMemoryRepository";
 
 describe('#US-4: Affichage du solde à facturer du professeur', () => {
