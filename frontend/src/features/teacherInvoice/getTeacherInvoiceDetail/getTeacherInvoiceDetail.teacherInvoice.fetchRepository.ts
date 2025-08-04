@@ -13,7 +13,8 @@ export class GetTeacherInvoiceDetailTeacherInvoiceFetchRepository implements Get
                 teacherName: response.data.teacherName,
                 amount: response.data.amount,
                 creationDate: response.data.creationDate,
-                pdfFile: response.data.pdfFile
+                pdfFile: response.data.pdfFile,
+                status: response.data.status,
             };
         } catch (error) {
             if (error instanceof AxiosError) {

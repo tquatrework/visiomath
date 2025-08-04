@@ -13,6 +13,7 @@ export class GetTeacherInvoiceDetailController {
   async getTeacherInvoiceDetail(@CurrentUser() user: any, @Param('id', ParseIntPipe) id: number, @Res() res: Response) {
     try {
       const result = await this.getTeacherInvoiceDetailUsecase.execute(user.id, id);
+
       return res.status(200).json(result);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Une erreur est survenue';

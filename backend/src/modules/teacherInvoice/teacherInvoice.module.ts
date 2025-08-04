@@ -31,6 +31,10 @@ import { GetTeacherInvoiceDetailController } from './getTeacherInvoiceDetail/get
 import { GetTeacherInvoiceDetailUsecase } from './getTeacherInvoiceDetail/getTeacherInvoiceDetail.usecase';
 import { GetTeacherInvoiceDetailTeacherInvoiceTypeOrmRepository } from './getTeacherInvoiceDetail/getTeacherInvoiceDetail.teacherInvoice.typeOrmRepository';
 import { GetTeacherInvoiceDetailUserTypeOrmRepository } from './getTeacherInvoiceDetail/getTeacherInvoiceDetail.user.typeOrmRepository';
+import { ValidateTeacherInvoiceController } from './validateTeacherInvoice/validateTeacherInvoice.controller';
+import { ValidateTeacherInvoiceUsecase } from './validateTeacherInvoice/validateTeacherInvoice.usecase';
+import { ValidateTeacherInvoiceTeacherInvoiceTypeOrmRepository } from './validateTeacherInvoice/validateTeacherInvoice.teacherInvoice.typeOrmRepository';
+import { ValidateTeacherInvoiceUserTypeOrmRepository } from './validateTeacherInvoice/validateTeacherInvoice.user.typeOrmRepository';
 
 @Module({
   imports: [
@@ -44,7 +48,8 @@ import { GetTeacherInvoiceDetailUserTypeOrmRepository } from './getTeacherInvoic
     PayTeacherInvoiceController,
     CreateTeacherInvoiceController,
     GetTeacherInvoicesController,
-    GetTeacherInvoiceDetailController
+    GetTeacherInvoiceDetailController,
+    ValidateTeacherInvoiceController
   ],
   providers: [
     SaveTeacherPaymentInfoUsecase,
@@ -67,7 +72,10 @@ import { GetTeacherInvoiceDetailUserTypeOrmRepository } from './getTeacherInvoic
     GetTeacherInvoicesUserTypeOrmRepository,
     GetTeacherInvoiceDetailUsecase,
     GetTeacherInvoiceDetailTeacherInvoiceTypeOrmRepository,
-    GetTeacherInvoiceDetailUserTypeOrmRepository
+    GetTeacherInvoiceDetailUserTypeOrmRepository,
+    ValidateTeacherInvoiceUsecase,
+    ValidateTeacherInvoiceTeacherInvoiceTypeOrmRepository,
+    ValidateTeacherInvoiceUserTypeOrmRepository
   ],
 })
 export class TeacherInvoiceModule {}

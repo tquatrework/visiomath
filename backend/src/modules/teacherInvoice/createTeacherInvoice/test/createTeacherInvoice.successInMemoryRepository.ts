@@ -21,7 +21,7 @@ export class CreateTeacherInvoiceSuccessInMemoryRepository implements CreateTeac
 
     async save(teacherInvoice: TeacherInvoice): Promise<void> {
         teacherInvoice.id = this.invoices.length + 1;
-        this.createdInvoice = { ...teacherInvoice };
+        this.createdInvoice = teacherInvoice;
         this.invoices.push(this.createdInvoice);
     }
     

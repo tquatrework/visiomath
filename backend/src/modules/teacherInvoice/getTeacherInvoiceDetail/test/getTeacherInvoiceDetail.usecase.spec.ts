@@ -20,12 +20,13 @@ describe('US-8: Visualisation du détail d\'une facture', () => {
         // Quand je veux visualiser la facture 1, si tout se passe bien
         const result = await getTeacherInvoiceDetailUsecase.execute(validUserId, 1);
 
-        // Alors je dois voir les détails de la facture id 1 à 600e de David Robert
+        // Alors je dois voir les détails de la facture id 1 : id, nom du professeur, montant, date de création, status et un lien pour télécharger le PDF
         expect(result.id).toBe(1);
         expect(result.teacherName).toBe('David Robert');
         expect(result.amount).toBe(600);
         expect(result.creationDate).toBeDefined();
         expect(result.pdfFile).toBeDefined();
+        expect(result.status).toBe('en attente de validation');
         
     })
 

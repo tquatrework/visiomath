@@ -18,7 +18,7 @@ describe('US-8: Visualisation du détail d\'une facture', async () => {
             <GetTeacherInvoiceDetailComponent invoiceId={1}/>
         </GetTeacherInvoiceDetailProvider>);
 
-        // Alors je dois voir les détails de la facture id 1 à 600e de David Robert
+        // Alors je dois voir les détails de la facture id 1 : id, nom du professeur, montant, date de création, status et un lien pour télécharger le PDF
         expect(
           await screen.findByTestId('invoice-id')
         ).toHaveTextContent('1');
@@ -38,6 +38,10 @@ describe('US-8: Visualisation du détail d\'une facture', async () => {
         expect(
           await screen.findByTestId('invoice-pdf-download')
         ).toHaveAttribute('href', '/uploads/facture-david-robert.pdf');
+        
+        expect(
+          await screen.findByTestId('invoice-status')
+        ).toHaveTextContent('en attente de validation');
         
     })
 

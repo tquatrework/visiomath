@@ -15,7 +15,8 @@ export class GetTeacherInvoiceDetailTeacherInvoiceTypeOrmRepository implements G
           CONCAT(u."firstName", ' ', u."lastName") as "teacherName",
           ti.amount,
           ti."pdfFile",
-          ti."creationDate"
+          ti."creationDate",
+            ti.status
         FROM teacher_invoices ti
         INNER JOIN users u ON ti."teacherId" = u.id
         WHERE ti.id = $1`,
@@ -31,7 +32,8 @@ export class GetTeacherInvoiceDetailTeacherInvoiceTypeOrmRepository implements G
         teacherName: result[0].teacherName,
         amount: result[0].amount,
         pdfFile: result[0].pdfFile,
-        creationDate: result[0].creationDate
+        creationDate: result[0].creationDate,
+        status: result[0].status,
       };
     } catch (error) {
       throw new Error('Erreur BDD');

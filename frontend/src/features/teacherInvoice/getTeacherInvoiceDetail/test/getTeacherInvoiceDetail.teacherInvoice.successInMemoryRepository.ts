@@ -8,7 +8,8 @@ export class GetTeacherInvoiceDetailTeacherInvoiceSuccessInMemoryRepository impl
       teacherName: 'David Robert',
       amount: 600,
       creationDate: '2024-01-15',
-      pdfFile: 'facture-david-robert.pdf'
+      pdfFile: 'facture-david-robert.pdf',
+      status: 'en attente de validation'
     };
   }
 }

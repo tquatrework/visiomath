@@ -2,7 +2,8 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, Jo
 import { User } from '../../../shared/entities/user.entity';
 
 export enum TeacherInvoiceStatus {
-    EN_ATTENTE_DE_VALIDATION = 'en attente de validation'
+    EN_ATTENTE_DE_VALIDATION = 'en attente de validation',
+    VALIDE = 'validé'
 }
 
 @Entity('teacher_invoices')
@@ -29,6 +30,9 @@ export class TeacherInvoice {
         default: TeacherInvoiceStatus.EN_ATTENTE_DE_VALIDATION
     })
     status: TeacherInvoiceStatus;
+    
+    @Column({ type: "date", nullable: true })
+    validatedAt: Date | null;
 
     constructor(
         teacher: User,
@@ -45,5 +49,15 @@ export class TeacherInvoice {
         this.pdfFile = pdfFile;
         this.creationDate = creationDate;
         this.status = TeacherInvoiceStatus.EN_ATTENTE_DE_VALIDATION;
+        this.validatedAt = null;
+    }
+    
+    validate(): void {
+        if (this.amount > 2500) {
+            throw new Error("La facture a un montant supérieur à 2500e");
+        }
+        
+        this.status = TeacherInvoiceStatus.VALIDE;
+        this.validatedAt = new Date();
     }
 }

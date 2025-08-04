@@ -1,5 +1,15 @@
 import React, { useEffect } from 'react';
 import { useGetTeacherInvoiceDetail } from './useGetTeacherInvoiceDetail.usecase';
+import {
+  ValidateInvoiceSuccessInMemoryRepository
+} from "@src/features/teacherInvoice/validateInvoice/test/validateInvoice.invoice.successInMemoryRepository";
+import {ValidateInvoiceComponent} from "@src/features/teacherInvoice/validateInvoice/ValidateInvoice.component";
+import {
+  ValidateInvoiceRepositoryProvider
+} from "@src/features/teacherInvoice/validateInvoice/validateInvoice.invoice.repository.provider";
+import {
+  ValidateInvoiceFetchRepository
+} from "@src/features/teacherInvoice/validateInvoice/validateInvoice.invoice.fetchRepository";
 
 type GetTeacherInvoiceDetailComponentProps = {
   invoiceId: number;
@@ -23,6 +33,8 @@ export const GetTeacherInvoiceDetailComponent: React.FC<GetTeacherInvoiceDetailC
   if (!invoiceDetail) {
     return <div className="text-gray-500">Aucune facture trouvée</div>;
   }
+
+  console.log('Invoice Detail:', invoiceDetail);
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
@@ -49,20 +61,38 @@ export const GetTeacherInvoiceDetailComponent: React.FC<GetTeacherInvoiceDetailC
               <span className="text-sm text-gray-500 block">Date de création</span>
               <span className="font-medium" data-testid="invoice-creation-date">{invoiceDetail.creationDate}</span>
             </div>
+            <div>
+              <span className="text-sm text-gray-500 block">Status</span>
+              <span className="font-medium" data-testid="invoice-status">{invoiceDetail.status}</span>
+            </div>
+
+            <div >
+              <span className="text-sm text-gray-500 block mb-2">Fichier PDF</span>
+              <a
+                  href={`/uploads/${invoiceDetail.pdfFile}`}
+                  data-testid="invoice-pdf-download"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Télécharger PDF
+              </a>
+            </div>
+
+            <div>
+
+              <span className="text-sm text-gray-500 block">Actions</span>
+
+              <ValidateInvoiceRepositoryProvider
+                  validateInvoiceRepository={new ValidateInvoiceFetchRepository()}>
+                <ValidateInvoiceComponent invoiceId={invoiceId}/>
+              </ValidateInvoiceRepositoryProvider>
+            </div>
+
           </div>
-          <div className="mt-4">
-            <span className="text-sm text-gray-500 block mb-2">Fichier PDF</span>
-            <a 
-              href={`/uploads/${invoiceDetail.pdfFile}`}
-              data-testid="invoice-pdf-download"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              Télécharger PDF
-            </a>
-          </div>
+
         </div>
+
       </div>
     </div>
   );

@@ -4,4 +4,5 @@ export type GetTeacherInvoiceDetailQueryResult = {
   amount: number;
   creationDate: string;
   pdfFile: string;
+  status: string;
 };
