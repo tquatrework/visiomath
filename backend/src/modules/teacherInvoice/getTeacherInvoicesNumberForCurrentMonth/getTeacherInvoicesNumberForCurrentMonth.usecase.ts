@@ -1,10 +1,19 @@
 import { GetTeacherInvoicesNumberForCurrentMonthQueryResult } from './getTeacherInvoicesNumberForCurrentMonth.queryResult';
 import { GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceRepository } from './getTeacherInvoicesNumberForCurrentMonth.teacherInvoice.repository';
 import { GetTeacherInvoicesNumberForCurrentMonthUserRepository } from './getTeacherInvoicesNumberForCurrentMonth.user.repository';
+import {Inject} from "@nestjs/common";
+import {
+  GetTeacherInvoicesNumberForCurrentMonthUserTypeOrmRepository
+} from "./getTeacherInvoicesNumberForCurrentMonth.user.typeOrmRepository";
+import {
+  GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceTypeOrmRepository
+} from "./getTeacherInvoicesNumberForCurrentMonth.teacherInvoice.typeOrmRepository";
 
 export class GetTeacherInvoicesNumberForCurrentMonthUsecase {
   constructor(
+    @Inject(GetTeacherInvoicesNumberForCurrentMonthUserTypeOrmRepository)
     private readonly getTeacherInvoicesNumberForCurrentMonthUserRepository: GetTeacherInvoicesNumberForCurrentMonthUserRepository,
+    @Inject(GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceTypeOrmRepository)
     private readonly getTeacherInvoicesNumberForCurrentMonthTeacherInvoiceRepository: GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceRepository
   ) {}
 

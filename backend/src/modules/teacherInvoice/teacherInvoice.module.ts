@@ -36,6 +36,10 @@ import { ValidateTeacherInvoiceController } from './validateTeacherInvoice/valid
 import { ValidateTeacherInvoiceUsecase } from './validateTeacherInvoice/validateTeacherInvoice.usecase';
 import { ValidateTeacherInvoiceTeacherInvoiceTypeOrmRepository } from './validateTeacherInvoice/validateTeacherInvoice.teacherInvoice.typeOrmRepository';
 import { ValidateTeacherInvoiceUserTypeOrmRepository } from './validateTeacherInvoice/validateTeacherInvoice.user.typeOrmRepository';
+import { GetTeacherInvoicesNumberForCurrentMonthController } from './getTeacherInvoicesNumberForCurrentMonth/getTeacherInvoicesNumberForCurrentMonth.controller';
+import { GetTeacherInvoicesNumberForCurrentMonthUsecase } from './getTeacherInvoicesNumberForCurrentMonth/getTeacherInvoicesNumberForCurrentMonth.usecase';
+import { GetTeacherInvoicesNumberForCurrentMonthUserTypeOrmRepository } from './getTeacherInvoicesNumberForCurrentMonth/getTeacherInvoicesNumberForCurrentMonth.user.typeOrmRepository';
+import { GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceTypeOrmRepository } from './getTeacherInvoicesNumberForCurrentMonth/getTeacherInvoicesNumberForCurrentMonth.teacherInvoice.typeOrmRepository';
 
 @Module({
   imports: [
@@ -50,7 +54,8 @@ import { ValidateTeacherInvoiceUserTypeOrmRepository } from './validateTeacherIn
     CreateTeacherInvoiceController,
     GetTeacherInvoicesController,
     GetTeacherInvoiceDetailController,
-    ValidateTeacherInvoiceController
+    ValidateTeacherInvoiceController,
+    GetTeacherInvoicesNumberForCurrentMonthController
   ],
   providers: [
     SaveTeacherPaymentInfoUsecase,
@@ -77,7 +82,10 @@ import { ValidateTeacherInvoiceUserTypeOrmRepository } from './validateTeacherIn
     GetTeacherInvoiceDetailUserTypeOrmRepository,
     ValidateTeacherInvoiceUsecase,
     ValidateTeacherInvoiceTeacherInvoiceTypeOrmRepository,
-    ValidateTeacherInvoiceUserTypeOrmRepository
+    ValidateTeacherInvoiceUserTypeOrmRepository,
+    GetTeacherInvoicesNumberForCurrentMonthUsecase,
+    GetTeacherInvoicesNumberForCurrentMonthUserTypeOrmRepository,
+    GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceTypeOrmRepository
   ],
 })
 export class TeacherInvoiceModule {}

@@ -8,10 +8,6 @@ import {
     GetTeacherAmountToInvoiceFetchRepository
 } from "@src/features/teacherInvoice/getTeacherAmountToInvoice/getTeacherAmountToInvoice.fetchRepository";
 import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
-import AdministrativeProfile from "@src/features/profile/AdministrativeProfile";
-import PedagogicalProfile from "@src/features/profile/PedagogicalProfile";
-import FinancialProfile from "@src/features/profile/FinancialProfile";
-import TeacherProfile from "@src/features/profile/TeacherProfile";
 import {
     GetTeacherPaymentInfoProvider
 } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.repository.provider";
@@ -29,19 +25,11 @@ import {
     CreateTeacherInvoiceRepositoryProvider
 } from "@src/features/teacherInvoice/createTeacherInvoice/createTeacherInvoice.repository.provider";
 import CreateTeacherInvoiceComponent
-    from "@src/features/teacherInvoice/createTeacherInvoice/CreateTeacherInvoice.component";
-import {
-    CreateTeacherInvoiceFailureInMemoryRepository
-} from "@src/features/teacherInvoice/createTeacherInvoice/test/createTeacherInvoice.failureInMemoryRepository";
-import {
-    CreateTeacherInvoiceSuccessInMemoryRepository
-} from "@src/features/teacherInvoice/createTeacherInvoice/test/createTeacherInvoice.successInMemoryRepository";
+    from "@src/features/teacherInvoice/createTeacherInvoice/CreateTeacherInvoice.component";;
 import {
     CreateTeacherInvoiceFetchRepository
 } from "@src/features/teacherInvoice/createTeacherInvoice/createTeacherInvoice.fetchRepository";
-import {
-    GetTeacherInvoicesSuccessInMemoryRepository
-} from "@src/features/teacherInvoice/getTeacherInvoices/test/getTeacherInvoices.successInMemoryRepository";
+
 import {
     GetTeacherInvoicesProvider
 } from "@src/features/teacherInvoice/getTeacherInvoices/getTeacherInvoices.repository.provider";
@@ -52,14 +40,14 @@ import {
     GetTeacherInvoicesFetchRepository
 } from "@src/features/teacherInvoice/getTeacherInvoices/getTeacherInvoices.fetchRepository";
 import {
-    GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceSuccessInMemoryRepository
-} from "@src/features/teacherInvoice/getTeacherInvoicesNumberForCurrentMonth/test/getTeacherInvoicesNumberForCurrentMonth.teacherInvoice.successInMemoryRepository";
-import {
     GetTeacherInvoicesNumberForCurrentMonthComponent
 } from "@src/features/teacherInvoice/getTeacherInvoicesNumberForCurrentMonth/GetTeacherInvoicesNumberForCurrentMonth.component";
 import {
     GetTeacherInvoicesNumberForCurrentMonthProvider
 } from "@src/features/teacherInvoice/getTeacherInvoicesNumberForCurrentMonth/getTeacherInvoicesNumberForCurrentMonth.teacherInvoice.repository.provider";
+import {
+    GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceFetchRepository
+} from "@src/features/teacherInvoice/getTeacherInvoicesNumberForCurrentMonth/getTeacherInvoicesNumberForCurrentMonth.teacherInvoice.fetchRepository";
 
 
 const TeacherInvoicePage: React.FC = () => {
@@ -99,7 +87,7 @@ const TeacherInvoicePage: React.FC = () => {
                 <TabPanel className="p-4">
 
                     <GetTeacherInvoicesNumberForCurrentMonthProvider
-                        getTeacherInvoicesNumberForCurrentMonthTeacherInvoiceRepository={new GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceSuccessInMemoryRepository()}>
+                        getTeacherInvoicesNumberForCurrentMonthTeacherInvoiceRepository={new GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceFetchRepository()}>
                         <GetTeacherInvoicesNumberForCurrentMonthComponent/>
                     </GetTeacherInvoicesNumberForCurrentMonthProvider>
 
