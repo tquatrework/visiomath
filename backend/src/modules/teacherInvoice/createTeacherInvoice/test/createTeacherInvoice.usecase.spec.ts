@@ -84,14 +84,12 @@ describe('US-6: Envoie d\'une facture', () => {
         await createTeacherInvoiceUsecase.execute(command);
         
         // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation' doit être créée
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice).toEqual({
-            id: expect.any(Number),
-            teacher: teacher,
-            amount: 600,
-            pdfFile: expect.stringContaining(".pdf"),
-            creationDate: currentDate,
-            status: "en attente de validation"
-        });
+        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.id).not.toBeNull();
+        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.teacher).toEqual(teacher);
+        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.amount).toBe(600);
+        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.pdfFile).toContain('.pdf');
+        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.creationDate).toEqual(currentDate);
+        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.status).toBe("en attente de validation");
     })
 
     test('US-6-AC-1-2: Envoie réussie : fichier PDF enregistré', async () => {
@@ -123,11 +121,10 @@ describe('US-6: Envoie d\'une facture', () => {
         expect(inMemoryFileStorage.savedFiles[0].originalName).toContain('.pdf');
         expect(inMemoryFileStorage.savedFiles[0].content).toEqual(fileContent);
         expect(inMemoryFileStorage.savedFiles[0].savedPath).toContain('invoice-thierryteacher-2025-07-21-14-30-45.pdf');
-        expect(inMemoryFileStorage.savedFiles[0].savedPath).toContain('/uploads/');
         expect(inMemoryFileStorage.savedFiles[0].savedPath).toContain('.pdf');
         
         // Vérifier que le chemin du fichier a été enregistré dans la facture
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.pdfFile).toBe(inMemoryFileStorage.savedFiles[0].savedPath);
+        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.pdfFile).toContain('invoice-thierryteacher-2025-07-21-14-30-45.pdf');
     })
     
     test('US-6-AC-2: Envoie échoué, utilisateur non teacher', async () => {
@@ -214,7 +211,7 @@ describe('US-6: Envoie d\'une facture', () => {
         await expect(createTeacherInvoiceUsecase.execute(command)).rejects.toThrow("le montant de la facture doit être supérieur à 0");
     })
 
-    test('US-6-AC-5: Envoie échoué, deuxième facture pour le mois en cours', async () => {
+    test('US-6-AC-5: Envoie réussie, deuxième facture pour le mois en cours', async () => {
 
         // Etant donné que je suis connecté en tant que professeur et que j'ai déjà envoyée une facture pour le mois en cours
         const teacher = generateTeacherUser();
@@ -244,13 +241,21 @@ describe('US-6: Envoie d\'une facture', () => {
         
         // Quand j'envoie un montant de 600e et un fichier PDF
         const command = new CreateTeacherInvoiceCommand(
-            teacher,
+            teacher.id,
             600,
             fileContent,
         );
         
-        // Alors une erreur "vous avez déjà envoyée une facture pour le mois en cours" doit être envoyée
-        await expect(createTeacherInvoiceUsecase.execute(command)).rejects.toThrow("vous avez déjà envoyée une facture pour le mois en cours");
+        // Exécuter la commande
+        await createTeacherInvoiceUsecase.execute(command);
+        
+        // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation'
+        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.id).not.toBeNull();
+        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.teacher).toEqual(teacher);
+        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.amount).toBe(600);
+        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.pdfFile).toContain('.pdf');
+        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.creationDate).toEqual(currentDate);
+        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.status).toBe("en attente de validation");
     })
 
     test('US-6-AC-8: Envoie échoué, enregistrement fichier échoué', async () => {

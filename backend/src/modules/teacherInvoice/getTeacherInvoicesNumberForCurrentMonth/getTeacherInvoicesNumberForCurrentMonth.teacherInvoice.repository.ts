@@ -1,0 +1,5 @@
+import { GetTeacherInvoicesNumberForCurrentMonthQueryResult } from './getTeacherInvoicesNumberForCurrentMonth.queryResult';
+
+export interface GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceRepository {
+  getTeacherInvoicesNumberForCurrentMonth(teacherId: string): Promise<GetTeacherInvoicesNumberForCurrentMonthQueryResult>;
+}

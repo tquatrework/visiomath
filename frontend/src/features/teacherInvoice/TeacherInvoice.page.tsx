@@ -51,6 +51,15 @@ import {
 import {
     GetTeacherInvoicesFetchRepository
 } from "@src/features/teacherInvoice/getTeacherInvoices/getTeacherInvoices.fetchRepository";
+import {
+    GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceSuccessInMemoryRepository
+} from "@src/features/teacherInvoice/getTeacherInvoicesNumberForCurrentMonth/test/getTeacherInvoicesNumberForCurrentMonth.teacherInvoice.successInMemoryRepository";
+import {
+    GetTeacherInvoicesNumberForCurrentMonthComponent
+} from "@src/features/teacherInvoice/getTeacherInvoicesNumberForCurrentMonth/GetTeacherInvoicesNumberForCurrentMonth.component";
+import {
+    GetTeacherInvoicesNumberForCurrentMonthProvider
+} from "@src/features/teacherInvoice/getTeacherInvoicesNumberForCurrentMonth/getTeacherInvoicesNumberForCurrentMonth.teacherInvoice.repository.provider";
 
 
 const TeacherInvoicePage: React.FC = () => {
@@ -88,6 +97,12 @@ const TeacherInvoicePage: React.FC = () => {
                 </TabPanel>
 
                 <TabPanel className="p-4">
+
+                    <GetTeacherInvoicesNumberForCurrentMonthProvider
+                        getTeacherInvoicesNumberForCurrentMonthTeacherInvoiceRepository={new GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceSuccessInMemoryRepository()}>
+                        <GetTeacherInvoicesNumberForCurrentMonthComponent/>
+                    </GetTeacherInvoicesNumberForCurrentMonthProvider>
+
                     <GetTeacherAmountToInvoiceProvider
                         getTeacherAmountToInvoiceRepository={new GetTeacherAmountToInvoiceFetchRepository()}>
                         <GetTeacherAmountToInvoiceComponent/>

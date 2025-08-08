@@ -46,14 +46,6 @@ export class CreateTeacherInvoiceUsecase {
 
         const currentDate = this.dateTimeProvider.now();
 
-        const hasInvoiceForCurrentMonth = await this.createTeacherInvoiceRepository.hasInvoiceForCurrentMonth(
-            user.id,
-            currentDate
-        );
-        
-        if (hasInvoiceForCurrentMonth) {
-            throw new Error("vous avez déjà envoyée une facture pour le mois en cours");
-        }
         const fileName = this.generateInvoicePdfFileName(user, currentDate);
 
         await this.fileStorage.saveFile(

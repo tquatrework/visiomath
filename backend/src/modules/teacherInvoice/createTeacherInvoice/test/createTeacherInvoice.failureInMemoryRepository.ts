@@ -22,19 +22,5 @@ export class CreateTeacherInvoiceFailureInMemoryRepository implements CreateTeac
         throw new Error("database error");
     }
 
-    async hasInvoiceForCurrentMonth(teacherId: number, currentDate: Date): Promise<boolean> {
-        return this.invoices.some(invoice => {
-            // Check teacher ID
-            if (invoice.teacher && invoice.teacher.id !== teacherId) {
-                return false;
-            }
-            
-            const invoiceMonth = invoice.creationDate.getMonth();
-            const invoiceYear = invoice.creationDate.getFullYear();
-            const currentMonth = currentDate.getMonth();
-            const currentYear = currentDate.getFullYear();
-            
-            return invoiceMonth === currentMonth && invoiceYear === currentYear;
-        });
-    }
+
 }
