@@ -1,21 +1,24 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CreateTeacherInvoiceCommand } from './createTeacherInvoice.command';
-import { CreateTeacherInvoiceRepository } from './createTeacherInvoice.repository';
-import { CreateTeacherInvoiceTypeOrmRepository } from './createTeacherInvoice.typeOrmRepository';
+import { CreateTeacherInvoiceTeacherInvoiceRepository } from './createTeacherInvoice.teacherInvoice.repository';
+import { CreateTeacherInvoiceUserRepository } from './createTeacherInvoice.user.repository';
+import { CreateTeacherInvoiceTeacherInvoiceTypeOrmRepository } from './createTeacherInvoice.teacherInvoice.typeOrmRepository';
+import { CreateTeacherInvoiceUserTypeOrmRepository } from './createTeacherInvoice.user.typeOrmRepository';
 import { TeacherInvoice } from './teacherInvoice.entity';
 import { CreateTeacherInvoiceDateTimeProvider } from './createTeacherInvoice.dateTimeProvider';
 import { CreateTeacherInvoiceDateTimeProviderImplementation } from './createTeacherInvoice.dateTimeProviderImplementation';
 import { CreateTeacherInvoiceFileStorage } from "./createTeacherInvoice.fileStorage";
 import { CreateTeacherInvoiceFileStorageImplementation } from "./createTeacherInvoice.fileStorageImplementation";
-import { User } from "../../../shared/entities/user.entity";
 import { PdfValidator } from "./createTeacherInvoice.pdfValidator";
 
 
 @Injectable()
 export class CreateTeacherInvoiceUsecase {
     constructor(
-        @Inject(CreateTeacherInvoiceTypeOrmRepository)
-        private readonly createTeacherInvoiceRepository: CreateTeacherInvoiceRepository,
+        @Inject(CreateTeacherInvoiceUserTypeOrmRepository)
+        private readonly userRepository: CreateTeacherInvoiceUserRepository,
+        @Inject(CreateTeacherInvoiceTeacherInvoiceTypeOrmRepository)
+        private readonly teacherInvoiceRepository: CreateTeacherInvoiceTeacherInvoiceRepository,
         @Inject(CreateTeacherInvoiceDateTimeProviderImplementation)
         private readonly dateTimeProvider: CreateTeacherInvoiceDateTimeProvider,
         @Inject(CreateTeacherInvoiceFileStorageImplementation)
@@ -23,19 +26,13 @@ export class CreateTeacherInvoiceUsecase {
     ) {}
 
     async execute(command: CreateTeacherInvoiceCommand): Promise<void> {
-        let user: User | null;
-
-        if (command.teacherId instanceof User) {
-            user = command.teacherId;
-        } else {
-            user = await this.createTeacherInvoiceRepository.findUserById(command.teacherId as number);
-            
-            if (!user) {
-                throw new Error("Professeur non trouvé");
-            }
+        const user = await this.userRepository.findUserById(command.teacherId);
+        
+        if (!user) {
+            throw new Error("Professeur non trouvé");
         }
 
-        if (!user.isTeacher()) {
+        if (user.role !== 'teacher') {
             throw new Error("Vous ne pouvez pas créer de facture");
         }
         
@@ -48,26 +45,31 @@ export class CreateTeacherInvoiceUsecase {
 
         const fileName = this.generateInvoicePdfFileName(user, currentDate);
 
-        await this.fileStorage.saveFile(
-            fileName,
-            command.pdfFileContent
-        );
+        let savedFilePath: string;
+        try {
+            savedFilePath = await this.fileStorage.saveFile(
+                fileName,
+                command.pdfFileContent
+            );
+        } catch (error) {
+            throw new Error("La facture n'a pas pu être créée");
+        }
 
         const teacherInvoice = new TeacherInvoice(
             user,
             command.amount,
-            fileName,
+            savedFilePath,
             currentDate
         );
 
         try {
-            await this.createTeacherInvoiceRepository.save(teacherInvoice);
+            await this.teacherInvoiceRepository.save(teacherInvoice);
         } catch (error) {
             throw new Error("La facture n'a pas pu être créée");
         }
     }
 
-    private generateInvoicePdfFileName(user: User, currentDate: Date) {
+    private generateInvoicePdfFileName(user: { pseudo: string }, currentDate: Date) {
         const teacherName = user.pseudo
             .toLowerCase()
             .replace(/\s+/g, '')

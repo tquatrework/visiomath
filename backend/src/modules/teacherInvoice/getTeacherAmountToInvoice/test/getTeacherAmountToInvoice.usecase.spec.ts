@@ -1,7 +1,9 @@
 import {beforeEach, describe, expect, test} from "vitest";
 import { GetTeacherAmountToInvoiceUsecase } from "../getTeacherAmountToInvoice.usecase";
-import { GetTeacherAmountToInvoiceInMemoryRepository } from "./getTeacherAmountToInvoice.inMemoryRepository";
-import { GetTeacherAmountToInvoiceFailureInMemoryRepository } from "./getTeacherAmountToInvoice.failureInMemoryRepository";
+import {
+    GetTeacherAmountToInvoiceTeacherProfileSuccessInMemoryRepository,
+    GetTeacherAmountToInvoiceTeacherProfileFailureInMemoryRepository
+} from "./getTeacherAmountToInvoice.teacherProfile.inMemoryRepositories";
 
 describe('#US-4: Affichage du solde à facturer du professeur', () => {
 
@@ -11,7 +13,7 @@ describe('#US-4: Affichage du solde à facturer du professeur', () => {
         // Etant donné que je suis connecté en tant que professeur avec un montant à facturer de 50e
         const teacherId = 1;
         const expectedAmount = 50;
-        const getTeacherAmountToInvoiceInMemoryRepository = new GetTeacherAmountToInvoiceInMemoryRepository();
+        const getTeacherAmountToInvoiceInMemoryRepository = new GetTeacherAmountToInvoiceTeacherProfileSuccessInMemoryRepository();
         getTeacherAmountToInvoiceInMemoryRepository.seed(teacherId, expectedAmount);
         const getTeacherAmountToInvoiceUsecase = new GetTeacherAmountToInvoiceUsecase(getTeacherAmountToInvoiceInMemoryRepository);
         
@@ -28,7 +30,7 @@ describe('#US-4: Affichage du solde à facturer du professeur', () => {
         // Etant donné que je suis connecté en tant que professeur avec un montant à facturer de 50e
         const teacherId = 1;
         const expectedAmount = 50;
-        const getTeacherAmountToInvoiceInMemoryRepository = new GetTeacherAmountToInvoiceInMemoryRepository();
+        const getTeacherAmountToInvoiceInMemoryRepository = new GetTeacherAmountToInvoiceTeacherProfileSuccessInMemoryRepository();
         getTeacherAmountToInvoiceInMemoryRepository.seed(teacherId, expectedAmount);
         const getTeacherAmountToInvoiceUsecase = new GetTeacherAmountToInvoiceUsecase(getTeacherAmountToInvoiceInMemoryRepository);
         
@@ -46,7 +48,7 @@ describe('#US-4: Affichage du solde à facturer du professeur', () => {
 
         // Etant donné que je suis connecté en tant que professeur avec un montant à facturer de 50e
         const teacherId = 1;
-        const getTeacherAmountToInvoiceFailureInMemoryRepository = new GetTeacherAmountToInvoiceFailureInMemoryRepository();
+        const getTeacherAmountToInvoiceFailureInMemoryRepository = new GetTeacherAmountToInvoiceTeacherProfileFailureInMemoryRepository();
         const getTeacherAmountToInvoiceUsecase = new GetTeacherAmountToInvoiceUsecase(getTeacherAmountToInvoiceFailureInMemoryRepository);
         
         // Quand je consulte mon solde à facturer, si la récupération échoue pour des raisons inconnues

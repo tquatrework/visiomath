@@ -1,12 +1,12 @@
 import { Inject } from "@nestjs/common";
-import { GetTeacherAmountToInvoiceRepository } from "./getTeacherAmountToInvoice.repository";
-import { GetTeacherAmountToInvoiceTypeOrmRepository } from "./getTeacherAmountToInvoice.typeOrmRepository";
+import { GetTeacherAmountToInvoiceTeacherProfileTypeOrmRepository } from "./getTeacherAmountToInvoice.teacherProfile.typeOrmRepository";
 import { GetTeacherAmountToInvoiceQueryResult } from "./getTeacherAmountToInvoice.queryResult";
+import {GetTeacherAmountToInvoiceTeacherProfileRepository} from "./getTeacherAmountToInvoice.teacherProfile.repository";
 
 export class GetTeacherAmountToInvoiceUsecase {
     constructor(
-        @Inject(GetTeacherAmountToInvoiceTypeOrmRepository)
-        private getTeacherAmountToInvoiceRepository: GetTeacherAmountToInvoiceRepository
+        @Inject(GetTeacherAmountToInvoiceTeacherProfileTypeOrmRepository)
+        private getTeacherAmountToInvoiceRepository: GetTeacherAmountToInvoiceTeacherProfileRepository
     ) {}
     async execute(teacherId: number): Promise<GetTeacherAmountToInvoiceQueryResult> {
 

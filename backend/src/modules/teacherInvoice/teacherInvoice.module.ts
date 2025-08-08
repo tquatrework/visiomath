@@ -12,13 +12,14 @@ import {IncreaseTeacherAmountToInvoiceTypeOrmRepository} from "./increaseTeacher
 import {CouponRegisteredByTeacherListener} from "./increaseTeacherAmountToInvoice/couponRegisteredByTeacher.listener";
 import {GetTeacherAmountToInvoiceUsecase} from "./getTeacherAmountToInvoice/getTeacherAmountToInvoice.usecase";
 import {GetTeacherAmountToInvoiceController} from "./getTeacherAmountToInvoice/getTeacherAmountToInvoice.controller";
-import {GetTeacherAmountToInvoiceTypeOrmRepository} from "./getTeacherAmountToInvoice/getTeacherAmountToInvoice.typeOrmRepository";
+import {GetTeacherAmountToInvoiceTeacherProfileTypeOrmRepository} from "./getTeacherAmountToInvoice/getTeacherAmountToInvoice.teacherProfile.typeOrmRepository";
 import {PayTeacherInvoiceUsecase} from "./payTeacherInvoice/payTeacherInvoice.usecase";
 import {PayTeacherInvoiceController} from "./payTeacherInvoice/payTeacherInvoice.controller";
 import {PayTeacherInvoiceTypeOrmRepository} from "./payTeacherInvoice/payTeacherInvoice.typeOrmRepository";
 import {CreateTeacherInvoiceUsecase} from "./createTeacherInvoice/createTeacherInvoice.usecase";
 import {CreateTeacherInvoiceController} from "./createTeacherInvoice/createTeacherInvoice.controller";
-import {CreateTeacherInvoiceTypeOrmRepository} from "./createTeacherInvoice/createTeacherInvoice.typeOrmRepository";
+import {CreateTeacherInvoiceTeacherInvoiceTypeOrmRepository} from "./createTeacherInvoice/createTeacherInvoice.teacherInvoice.typeOrmRepository";
+import {CreateTeacherInvoiceUserTypeOrmRepository} from "./createTeacherInvoice/createTeacherInvoice.user.typeOrmRepository";
 import {CreateTeacherInvoiceFileStorageImplementation} from "./createTeacherInvoice/createTeacherInvoice.fileStorageImplementation";
 import {CreateTeacherInvoiceDateTimeProviderImplementation} from "./createTeacherInvoice/createTeacherInvoice.dateTimeProviderImplementation";
 import { TeacherInvoice } from "./createTeacherInvoice/teacherInvoice.entity";
@@ -60,11 +61,12 @@ import { ValidateTeacherInvoiceUserTypeOrmRepository } from './validateTeacherIn
     IncreaseTeacherAmountToInvoiceTypeOrmRepository,
     CouponRegisteredByTeacherListener,
     GetTeacherAmountToInvoiceUsecase,
-    GetTeacherAmountToInvoiceTypeOrmRepository,
+    GetTeacherAmountToInvoiceTeacherProfileTypeOrmRepository,
     PayTeacherInvoiceUsecase,
     PayTeacherInvoiceTypeOrmRepository,
     CreateTeacherInvoiceUsecase,
-    CreateTeacherInvoiceTypeOrmRepository,
+    CreateTeacherInvoiceTeacherInvoiceTypeOrmRepository,
+    CreateTeacherInvoiceUserTypeOrmRepository,
     CreateTeacherInvoiceFileStorageImplementation,
     CreateTeacherInvoiceDateTimeProviderImplementation,
     GetTeacherInvoicesUsecase,

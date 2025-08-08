@@ -38,15 +38,14 @@ Chaque fonctionnalité en vertical slice doit suivre la structure établie dans 
 ```
 frontend/src/features/{module}/{userStory}/
 ├── {userStory}.queryResult/command.ts      # Modèles de données TypeScript pour les résultats de la requête ou la commande
-├── {userStory}.user.repository.ts               # Interface du repository avec le nom de la ressource ajouté à la user story
-├── {userStory}.user.repository.provider.tsx     # Provider avec Context API pour injection de dépendance (avec le nom de la ressource)
-├── {userStory}.user.fetchRepository.ts          # Repository réel utilisant l'API (avec le nom de la ressource)
+├── {userStory}.{resource}.repository.ts               # Interface du repository avec le nom de la ressource ajouté à la user story
+├── {userStory}.{resource}.repository.provider.tsx     # Provider avec Context API pour injection de dépendance (avec le nom de la ressource)
+├── {userStory}.{resource}.fetchRepository.ts          # Repository réel utilisant l'API (avec le nom de la ressource)
 ├── use{UserStory}.usecase.ts              # Hook React contenant la logique métier
 ├── {UserStory}.component.tsx               # Composant React principal
 └── test/
     ├── {userStory}.spec.tsx                   # Tests de la fonctionnalité
-    ├── {userStory}.user.successInMemoryRepository.ts # Repository fake pour les tests (cas de succès)
-    └── {userStory}.user.failureInMemoryRepository.ts # Repository fake pour les tests (cas d'erreur)
+    └── {userStory}.{resource}.inMemoryRepositories.ts # Repository fakes pour les tests (success, failure, etc.)
 ```
 
 ## Orientation Clean architecture : 
@@ -200,19 +199,39 @@ Chaque fonctionnalité en vertical slice doit suivre la structure établie dans 
 backend/src/modules/{module}/{userStory}/
 ├── {userStory}.usecase.ts           # Use case contenant la logique métier
 ├── {userStory}.controller.ts        # Contrôleur REST
-├── {userStory}.user.repository.ts        # Interface du repository (pour les queries) avec le nom de la ressource
-├── {userStory}.user.typeOrmRepository.ts # Repository réel utilisant TypeORM avec le nom de la ressource
+├── {userStory}.{resource}.repository.ts        # Interface du repository (pour les queries) avec le nom de la ressource
+├── {userStory}.{resource}.typeOrmRepository.ts # Repository réel utilisant TypeORM avec le nom de la ressource
 ├── {userStory}.queryResult.ts       # Modèle de données pour les queries
 ├── {userStory}.command.ts           # Modèle de données pour les commandes
 └── test/
     ├── {userStory}.usecase.spec.ts      # Tests unitaires du use case
     ├── {userStory}.e2e-spec.ts         # Tests e2e avec testcontainers
-    ├── {userStory}.user.inMemoryRepository.ts # Repository fake pour les tests (succès) avec le nom de la ressource
-    └── {userStory}.user.failureInMemoryRepository.ts # Repository fake pour les tests (échec) avec le nom de la ressource
+    └── {userStory}.{resource}.inMemoryRepositories.ts # Repository fakes pour les tests (success, failure, notFound, etc.)
 ```
 
 **Note importante sur l'organisation des tests :**
 Tous les fichiers liés aux tests (fichiers de test `.spec.tsx` et repositories in-memory) doivent être organisés dans un dossier `test` séparé, similaire à la structure du backend. Cela permet une meilleure organisation et une séparation claire entre le code de production et le code de test.
+
+**Organisation des repositories in-memory :**
+Pour optimiser l'organisation et réduire le nombre de fichiers, les repositories in-memory pour les tests d'une même ressource doivent être regroupés dans un seul fichier :
+- Frontend : `{userStory}.{resource}.inMemoryRepositories.ts` contenant toutes les classes de repository (success, failure, etc.)
+- Backend : `{userStory}.{resource}.inMemoryRepositories.ts` contenant toutes les classes de repository (success, failure, notFound, etc.)
+
+Exemple pour le backend :
+```typescript
+// getTeacherInvoicesNumber.user.inMemoryRepositories.ts
+export class GetTeacherInvoicesNumberUserSuccessInMemoryRepository { ... }
+export class GetTeacherInvoicesNumberUserNotFoundInMemoryRepository { ... }
+export class GetTeacherInvoicesNumberUserWrongRoleInMemoryRepository { ... }
+```
+
+Les imports dans les tests utilisent alors des imports nommés :
+```typescript
+import {
+    GetTeacherInvoicesNumberUserSuccessInMemoryRepository,
+    GetTeacherInvoicesNumberUserNotFoundInMemoryRepository
+} from "./getTeacherInvoicesNumber.user.inMemoryRepositories";
+```
 
 ## Orientation Clean architecture :
 

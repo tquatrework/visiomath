@@ -1,10 +1,10 @@
 import {Injectable} from "@nestjs/common";
 import {DataSource} from "typeorm";
-import {GetTeacherAmountToInvoiceRepository} from "./getTeacherAmountToInvoice.repository";
 import {GetTeacherAmountToInvoiceQueryResult} from "./getTeacherAmountToInvoice.queryResult";
+import {GetTeacherAmountToInvoiceTeacherProfileRepository} from "./getTeacherAmountToInvoice.teacherProfile.repository";
 
 @Injectable()
-export class GetTeacherAmountToInvoiceTypeOrmRepository implements GetTeacherAmountToInvoiceRepository {
+export class GetTeacherAmountToInvoiceTeacherProfileTypeOrmRepository implements GetTeacherAmountToInvoiceTeacherProfileRepository {
 
     constructor(private dataSource: DataSource) {}
 

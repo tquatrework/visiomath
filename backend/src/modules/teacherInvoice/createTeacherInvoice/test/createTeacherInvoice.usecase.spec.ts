@@ -7,11 +7,19 @@ import { User } from "../../../../shared/entities/user.entity";
 import { UserProfile } from "../../../../shared/entities/userprofile.entity";
 import { TeacherProfile } from "../../../../shared/entities/teacherProfile.entity";
 import { TeacherInvoice } from "../teacherInvoice.entity";
-import { CreateTeacherInvoiceFailureInMemoryFileStorage } from "./createTeacherInvoice.failureInMemoryFileStorage";
 import { CreateTeacherInvoiceFileStorage } from "../createTeacherInvoice.fileStorage";
-import { CreateTeacherInvoiceSuccessInMemoryRepository } from "./createTeacherInvoice.successInMemoryRepository";
-import { CreateTeacherInvoiceFailureInMemoryRepository } from "./createTeacherInvoice.failureInMemoryRepository";
-import {CreateTeacherInvoiceSuccessInMemoryFileStorage} from "./createTeacherInvoice.successInMemoryFileStorage";
+import {
+    CreateTeacherInvoiceFileStorageSuccessInMemoryRepository,
+    CreateTeacherInvoiceFileStorageFailureInMemoryRepository
+} from "./createTeacherInvoice.fileStorage.inMemoryRepositories";
+import {
+    CreateTeacherInvoiceUserSuccessInMemoryRepository,
+    CreateTeacherInvoiceUserNotFoundInMemoryRepository
+} from "./createTeacherInvoice.user.inMemoryRepositories";
+import {
+    CreateTeacherInvoiceTeacherInvoiceSuccessInMemoryRepository,
+    CreateTeacherInvoiceTeacherInvoiceFailureInMemoryRepository
+} from "./createTeacherInvoice.teacherInvoice.inMemoryRepositories";
 
 function generateTeacherUser(): User {
     const teacher = new User();
@@ -62,34 +70,35 @@ describe('US-6: Envoie d\'une facture', () => {
         const currentDate = new Date('2025-07-21T14:30:45.000Z');
         const fileContent = Buffer.from('%PDF-1.5\nfake pdf content');
 
-        const createTeacherInvoiceInMemoryRepository = new CreateTeacherInvoiceSuccessInMemoryRepository();
-        createTeacherInvoiceInMemoryRepository.seed(teacher);
-        
-        const successFileStorage = new CreateTeacherInvoiceSuccessInMemoryFileStorage();
+        const userRepository = new CreateTeacherInvoiceUserSuccessInMemoryRepository();
+        userRepository.seed(teacher);
+
+        const teacherInvoiceRepository = new CreateTeacherInvoiceTeacherInvoiceSuccessInMemoryRepository();
+        const successFileStorage = new CreateTeacherInvoiceFileStorageSuccessInMemoryRepository();
         
         const createTeacherInvoiceUsecase = new CreateTeacherInvoiceUsecase(
-            createTeacherInvoiceInMemoryRepository,
+            userRepository,
+            teacherInvoiceRepository,
             deterministicDateTimeProvider,
             successFileStorage
         );
         
         // Quand j'envoie un montant de 600e et un fichier PDF
         const command = new CreateTeacherInvoiceCommand(
-            teacher,
+            teacher.id,
             600,
-            fileContent,
+            fileContent
         );
         
         // Exécuter la commande
         await createTeacherInvoiceUsecase.execute(command);
         
         // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation' doit être créée
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.id).not.toBeNull();
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.teacher).toEqual(teacher);
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.amount).toBe(600);
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.pdfFile).toContain('.pdf');
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.creationDate).toEqual(currentDate);
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.status).toBe("en attente de validation");
+        expect(teacherInvoiceRepository.createdInvoice?.id).not.toBeNull();
+        expect(teacherInvoiceRepository.createdInvoice?.amount).toBe(600);
+        expect(teacherInvoiceRepository.createdInvoice?.pdfFile).toContain('.pdf');
+        expect(teacherInvoiceRepository.createdInvoice?.creationDate).toEqual(currentDate);
+        expect(teacherInvoiceRepository.createdInvoice?.status).toBe("en attente de validation");
     })
 
     test('US-6-AC-1-2: Envoie réussie : fichier PDF enregistré', async () => {
@@ -97,13 +106,15 @@ describe('US-6: Envoie d\'une facture', () => {
         // Etant donné que je suis connecté en tant que professeur
         const teacher = generateTeacherUser();
         const fileContent = Buffer.from('%PDF-1.5\nfake pdf content');
-        const createTeacherInvoiceInMemoryRepository = new CreateTeacherInvoiceSuccessInMemoryRepository();
-        createTeacherInvoiceInMemoryRepository.seed(teacher);
+        const userRepository = new CreateTeacherInvoiceUserSuccessInMemoryRepository();
+        userRepository.seed(teacher);
         
-        const inMemoryFileStorage = new CreateTeacherInvoiceSuccessInMemoryFileStorage();
+        const teacherInvoiceRepository = new CreateTeacherInvoiceTeacherInvoiceSuccessInMemoryRepository();
+        const inMemoryFileStorage = new CreateTeacherInvoiceFileStorageSuccessInMemoryRepository();
         
         const createTeacherInvoiceUsecase = new CreateTeacherInvoiceUsecase(
-            createTeacherInvoiceInMemoryRepository,
+            userRepository,
+            teacherInvoiceRepository,
             deterministicDateTimeProvider,
             inMemoryFileStorage
         );
@@ -124,7 +135,7 @@ describe('US-6: Envoie d\'une facture', () => {
         expect(inMemoryFileStorage.savedFiles[0].savedPath).toContain('.pdf');
         
         // Vérifier que le chemin du fichier a été enregistré dans la facture
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.pdfFile).toContain('invoice-thierryteacher-2025-07-21-14-30-45.pdf');
+        expect(teacherInvoiceRepository.createdInvoice?.pdfFile).toContain('invoice-thierryteacher-2025-07-21-14-30-45.pdf');
     })
     
     test('US-6-AC-2: Envoie échoué, utilisateur non teacher', async () => {
@@ -133,13 +144,15 @@ describe('US-6: Envoie d\'une facture', () => {
         const financialManager = generateFinancialManagerUser();
         const fileContent = Buffer.from('%PDF-1.5\nfake pdf content');
 
-        const createTeacherInvoiceInMemoryRepository = new CreateTeacherInvoiceSuccessInMemoryRepository();
-        createTeacherInvoiceInMemoryRepository.seed(financialManager);
+        const userRepository = new CreateTeacherInvoiceUserSuccessInMemoryRepository();
+        userRepository.seed(financialManager);
         
-        const successFileStorage = new CreateTeacherInvoiceSuccessInMemoryFileStorage();
+        const teacherInvoiceRepository = new CreateTeacherInvoiceTeacherInvoiceSuccessInMemoryRepository();
+        const successFileStorage = new CreateTeacherInvoiceFileStorageSuccessInMemoryRepository();
         
         const createTeacherInvoiceUsecase = new CreateTeacherInvoiceUsecase(
-            createTeacherInvoiceInMemoryRepository,
+            userRepository,
+            teacherInvoiceRepository,
             deterministicDateTimeProvider,
             successFileStorage
         );
@@ -161,13 +174,15 @@ describe('US-6: Envoie d\'une facture', () => {
         const nonExistentTeacherId = 999; // ID d'un enseignant qui n'existe pas
         const fileContent = Buffer.from('%PDF-1.5\nfake pdf content');
 
-        const createTeacherInvoiceInMemoryRepository = new CreateTeacherInvoiceSuccessInMemoryRepository();
+        const userRepository = new CreateTeacherInvoiceUserNotFoundInMemoryRepository();
         // Aucun utilisateur n'est seedé dans le repository
         
-        const successFileStorage = new CreateTeacherInvoiceSuccessInMemoryFileStorage();
+        const teacherInvoiceRepository = new CreateTeacherInvoiceTeacherInvoiceSuccessInMemoryRepository();
+        const successFileStorage = new CreateTeacherInvoiceFileStorageSuccessInMemoryRepository();
         
         const createTeacherInvoiceUsecase = new CreateTeacherInvoiceUsecase(
-            createTeacherInvoiceInMemoryRepository,
+            userRepository,
+            teacherInvoiceRepository,
             deterministicDateTimeProvider,
             successFileStorage
         );
@@ -189,13 +204,15 @@ describe('US-6: Envoie d\'une facture', () => {
         const teacher = generateTeacherUser();
         const fileContent = Buffer.from('%PDF-1.5\nfake pdf content');
 
-        const createTeacherInvoiceInMemoryRepository = new CreateTeacherInvoiceSuccessInMemoryRepository();
-        createTeacherInvoiceInMemoryRepository.seed(teacher);
+        const userRepository = new CreateTeacherInvoiceUserSuccessInMemoryRepository();
+        userRepository.seed(teacher);
         
-        const successFileStorage = new CreateTeacherInvoiceSuccessInMemoryFileStorage();
+        const teacherInvoiceRepository = new CreateTeacherInvoiceTeacherInvoiceSuccessInMemoryRepository();
+        const successFileStorage = new CreateTeacherInvoiceFileStorageSuccessInMemoryRepository();
         
         const createTeacherInvoiceUsecase = new CreateTeacherInvoiceUsecase(
-            createTeacherInvoiceInMemoryRepository,
+            userRepository,
+            teacherInvoiceRepository,
             deterministicDateTimeProvider,
             successFileStorage
         );
@@ -218,8 +235,10 @@ describe('US-6: Envoie d\'une facture', () => {
         const currentDate = new Date('2025-07-21T14:30:45.000Z');
         const fileContent = Buffer.from('%PDF-1.5\nfake pdf content');
         
-        const createTeacherInvoiceInMemoryRepository = new CreateTeacherInvoiceSuccessInMemoryRepository();
-        createTeacherInvoiceInMemoryRepository.seed(teacher);
+        const userRepository = new CreateTeacherInvoiceUserSuccessInMemoryRepository();
+        userRepository.seed(teacher);
+        
+        const teacherInvoiceRepository = new CreateTeacherInvoiceTeacherInvoiceSuccessInMemoryRepository();
         
         // Créer une facture pour le mois en cours
         const existingInvoice = new TeacherInvoice(
@@ -229,12 +248,13 @@ describe('US-6: Envoie d\'une facture', () => {
             currentDate
         );
         existingInvoice.id = 1;
-        createTeacherInvoiceInMemoryRepository.seedInvoice(existingInvoice);
+        teacherInvoiceRepository.seedInvoice(existingInvoice);
         
-        const successFileStorage = new CreateTeacherInvoiceSuccessInMemoryFileStorage();
+        const successFileStorage = new CreateTeacherInvoiceFileStorageSuccessInMemoryRepository();
         
         const createTeacherInvoiceUsecase = new CreateTeacherInvoiceUsecase(
-            createTeacherInvoiceInMemoryRepository,
+            userRepository,
+            teacherInvoiceRepository,
             deterministicDateTimeProvider,
             successFileStorage
         );
@@ -250,12 +270,12 @@ describe('US-6: Envoie d\'une facture', () => {
         await createTeacherInvoiceUsecase.execute(command);
         
         // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation'
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.id).not.toBeNull();
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.teacher).toEqual(teacher);
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.amount).toBe(600);
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.pdfFile).toContain('.pdf');
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.creationDate).toEqual(currentDate);
-        expect(createTeacherInvoiceInMemoryRepository.createdInvoice?.status).toBe("en attente de validation");
+        expect(teacherInvoiceRepository.createdInvoice?.id).not.toBeNull();
+        expect(teacherInvoiceRepository.createdInvoice?.teacher).toEqual(teacher);
+        expect(teacherInvoiceRepository.createdInvoice?.amount).toBe(600);
+        expect(teacherInvoiceRepository.createdInvoice?.pdfFile).toContain('.pdf');
+        expect(teacherInvoiceRepository.createdInvoice?.creationDate).toEqual(currentDate);
+        expect(teacherInvoiceRepository.createdInvoice?.status).toBe("en attente de validation");
     })
 
     test('US-6-AC-8: Envoie échoué, enregistrement fichier échoué', async () => {
@@ -263,14 +283,17 @@ describe('US-6: Envoie d\'une facture', () => {
         // Etant donné que je suis connecté en tant que professeur
         const teacher = generateTeacherUser();
 
-        const createTeacherInvoiceInMemoryRepository = new CreateTeacherInvoiceSuccessInMemoryRepository();
-        createTeacherInvoiceInMemoryRepository.seed(teacher);
+        const userRepository = new CreateTeacherInvoiceUserSuccessInMemoryRepository();
+        userRepository.seed(teacher);
+        
+        const teacherInvoiceRepository = new CreateTeacherInvoiceTeacherInvoiceSuccessInMemoryRepository();
         
         // Utiliser un fileStorage qui échoue
-        const failureFileStorage = new CreateTeacherInvoiceFailureInMemoryFileStorage();
+        const failureFileStorage = new CreateTeacherInvoiceFileStorageFailureInMemoryRepository();
         
         const createTeacherInvoiceUsecase = new CreateTeacherInvoiceUsecase(
-            createTeacherInvoiceInMemoryRepository,
+            userRepository,
+            teacherInvoiceRepository,
             deterministicDateTimeProvider,
             failureFileStorage
         );
@@ -294,13 +317,15 @@ describe('US-6: Envoie d\'une facture', () => {
         // Créer un contenu qui n'est clairement pas un PDF (sans la signature %PDF-)
         const fileContent = Buffer.from('JFIF\x00\x01\x01\x00\x00\x01\x00\x01\x00\x00\xff\xdb\x00\x43\x00This is a JPEG file not a PDF');
         
-        const createTeacherInvoiceInMemoryRepository = new CreateTeacherInvoiceSuccessInMemoryRepository();
-        createTeacherInvoiceInMemoryRepository.seed(teacher);
+        const userRepository = new CreateTeacherInvoiceUserSuccessInMemoryRepository();
+        userRepository.seed(teacher);
         
-        const fileStorage = new CreateTeacherInvoiceSuccessInMemoryFileStorage();
+        const teacherInvoiceRepository = new CreateTeacherInvoiceTeacherInvoiceSuccessInMemoryRepository();
+        const fileStorage = new CreateTeacherInvoiceFileStorageSuccessInMemoryRepository();
         
         const createTeacherInvoiceUsecase = new CreateTeacherInvoiceUsecase(
-            createTeacherInvoiceInMemoryRepository,
+            userRepository,
+            teacherInvoiceRepository,
             deterministicDateTimeProvider,
             fileStorage
         );
@@ -322,14 +347,17 @@ describe('US-6: Envoie d\'une facture', () => {
         // Etant donné que je suis connecté en tant que professeur
         const teacher = generateTeacherUser();
 
-        const createTeacherInvoiceInMemoryRepository = new CreateTeacherInvoiceFailureInMemoryRepository();
-        createTeacherInvoiceInMemoryRepository.seed(teacher);
+        const userRepository = new CreateTeacherInvoiceUserSuccessInMemoryRepository();
+        userRepository.seed(teacher);
+
+        const teacherInvoiceFailureRepository = new CreateTeacherInvoiceTeacherInvoiceFailureInMemoryRepository();
 
         // Utiliser un fileStorage qui réussit (le problème est dans le repository cette fois)
-        const successFileStorage = new CreateTeacherInvoiceSuccessInMemoryFileStorage();
+        const successFileStorage = new CreateTeacherInvoiceFileStorageSuccessInMemoryRepository();
 
         const createTeacherInvoiceUsecase = new CreateTeacherInvoiceUsecase(
-            createTeacherInvoiceInMemoryRepository,
+            userRepository,
+            teacherInvoiceFailureRepository,
             deterministicDateTimeProvider,
             successFileStorage
         );
