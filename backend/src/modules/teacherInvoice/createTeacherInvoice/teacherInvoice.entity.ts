@@ -3,7 +3,9 @@ import { User } from '../../../shared/entities/user.entity';
 
 export enum TeacherInvoiceStatus {
     EN_ATTENTE_DE_VALIDATION = 'en attente de validation',
-    VALIDE = 'validé'
+    VALIDE = 'validé',
+    REFUSE = 'refusée',
+    PAYEE = 'payée'
 }
 
 @Entity('teacher_invoices')
@@ -33,6 +35,12 @@ export class TeacherInvoice {
     
     @Column({ type: "date", nullable: true })
     validatedAt: Date | null;
+    
+    @Column({ type: "date", nullable: true })
+    refusedAt: Date | null;
+    
+    @Column({ type: "text", nullable: true })
+    refusalReason: string | null;
 
     constructor(
         teacher: User,
@@ -50,6 +58,8 @@ export class TeacherInvoice {
         this.creationDate = creationDate;
         this.status = TeacherInvoiceStatus.EN_ATTENTE_DE_VALIDATION;
         this.validatedAt = null;
+        this.refusedAt = null;
+        this.refusalReason = null;
     }
     
     validate(): void {
@@ -59,5 +69,15 @@ export class TeacherInvoice {
         
         this.status = TeacherInvoiceStatus.VALIDE;
         this.validatedAt = new Date();
+    }
+    
+    refuse(reason: string): void {
+        if (this.status === TeacherInvoiceStatus.PAYEE) {
+            throw new Error('La facture a déjà été payée, elle ne peut plus être refusée');
+        }
+        
+        this.status = TeacherInvoiceStatus.REFUSE;
+        this.refusedAt = new Date();
+        this.refusalReason = reason;
     }
 }

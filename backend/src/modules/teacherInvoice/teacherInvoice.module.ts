@@ -40,6 +40,10 @@ import { GetTeacherInvoicesNumberForCurrentMonthController } from './getTeacherI
 import { GetTeacherInvoicesNumberForCurrentMonthUsecase } from './getTeacherInvoicesNumberForCurrentMonth/getTeacherInvoicesNumberForCurrentMonth.usecase';
 import { GetTeacherInvoicesNumberForCurrentMonthUserTypeOrmRepository } from './getTeacherInvoicesNumberForCurrentMonth/getTeacherInvoicesNumberForCurrentMonth.user.typeOrmRepository';
 import { GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceTypeOrmRepository } from './getTeacherInvoicesNumberForCurrentMonth/getTeacherInvoicesNumberForCurrentMonth.teacherInvoice.typeOrmRepository';
+import { RefuseTeacherInvoiceController } from './refuseTeacherInvoice/refuseTeacherInvoice.controller';
+import { RefuseTeacherInvoiceUsecase } from './refuseTeacherInvoice/refuseTeacherInvoice.usecase';
+import { RefuseTeacherInvoiceTeacherInvoiceTypeOrmRepository } from './refuseTeacherInvoice/refuseTeacherInvoice.teacherInvoice.typeOrmRepository';
+import { RefuseTeacherInvoiceUserTypeOrmRepository } from './refuseTeacherInvoice/refuseTeacherInvoice.user.typeOrmRepository';
 
 @Module({
   imports: [
@@ -55,7 +59,8 @@ import { GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceTypeOrmRepository 
     GetTeacherInvoicesController,
     GetTeacherInvoiceDetailController,
     ValidateTeacherInvoiceController,
-    GetTeacherInvoicesNumberForCurrentMonthController
+    GetTeacherInvoicesNumberForCurrentMonthController,
+    RefuseTeacherInvoiceController
   ],
   providers: [
     SaveTeacherPaymentInfoUsecase,
@@ -85,7 +90,10 @@ import { GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceTypeOrmRepository 
     ValidateTeacherInvoiceUserTypeOrmRepository,
     GetTeacherInvoicesNumberForCurrentMonthUsecase,
     GetTeacherInvoicesNumberForCurrentMonthUserTypeOrmRepository,
-    GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceTypeOrmRepository
+    GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceTypeOrmRepository,
+    RefuseTeacherInvoiceUsecase,
+    RefuseTeacherInvoiceTeacherInvoiceTypeOrmRepository,
+    RefuseTeacherInvoiceUserTypeOrmRepository
   ],
 })
 export class TeacherInvoiceModule {}

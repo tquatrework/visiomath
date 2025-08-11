@@ -17,6 +17,9 @@ import {RefuseInvoiceComponent} from "@src/features/teacherInvoice/refuseInvoice
 import {
   RefuseInvoiceProvider
 } from "@src/features/teacherInvoice/refuseInvoice/refuseInvoice.invoice.repository.provider";
+import {
+  RefuseInvoiceFetchRepository
+} from "@src/features/teacherInvoice/refuseInvoice/refuseInvoice.invoice.fetchRepository";
 
 type GetTeacherInvoiceDetailComponentProps = {
   invoiceId: number;
@@ -100,7 +103,7 @@ export const GetTeacherInvoiceDetailComponent: React.FC<GetTeacherInvoiceDetailC
                 
                 <div className="flex-1">
                   <RefuseInvoiceProvider
-                      refuseInvoiceRepository={new RefuseInvoiceSuccessInMemoryRepository()}>
+                      refuseInvoiceRepository={new RefuseInvoiceFetchRepository()}>
                     <RefuseInvoiceComponent invoiceId={invoiceId} />
                   </RefuseInvoiceProvider>
                 </div>
