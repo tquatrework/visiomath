@@ -10,6 +10,13 @@ import {
 import {
   ValidateInvoiceFetchRepository
 } from "@src/features/teacherInvoice/validateInvoice/validateInvoice.invoice.fetchRepository";
+import {
+  RefuseInvoiceSuccessInMemoryRepository
+} from "@src/features/teacherInvoice/refuseInvoice/test/refuseInvoice.invoice.inMemoryRepositories";
+import {RefuseInvoiceComponent} from "@src/features/teacherInvoice/refuseInvoice/RefuseInvoice.component";
+import {
+  RefuseInvoiceProvider
+} from "@src/features/teacherInvoice/refuseInvoice/refuseInvoice.invoice.repository.provider";
 
 type GetTeacherInvoiceDetailComponentProps = {
   invoiceId: number;
@@ -79,14 +86,25 @@ export const GetTeacherInvoiceDetailComponent: React.FC<GetTeacherInvoiceDetailC
               </a>
             </div>
 
-            <div>
-
-              <span className="text-sm text-gray-500 block">Actions</span>
-
-              <ValidateInvoiceRepositoryProvider
-                  validateInvoiceRepository={new ValidateInvoiceFetchRepository()}>
-                <ValidateInvoiceComponent invoiceId={invoiceId}/>
-              </ValidateInvoiceRepositoryProvider>
+            <div className="md:col-span-2">
+              <hr className="my-6 border-gray-300" />
+              <span className="text-sm text-gray-500 block mb-4">Actions</span>
+              
+              <div className="flex flex-col lg:flex-row gap-6">
+                <div className="flex-1">
+                  <ValidateInvoiceRepositoryProvider
+                      validateInvoiceRepository={new ValidateInvoiceFetchRepository()}>
+                    <ValidateInvoiceComponent invoiceId={invoiceId}/>
+                  </ValidateInvoiceRepositoryProvider>
+                </div>
+                
+                <div className="flex-1">
+                  <RefuseInvoiceProvider
+                      refuseInvoiceRepository={new RefuseInvoiceSuccessInMemoryRepository()}>
+                    <RefuseInvoiceComponent invoiceId={invoiceId} />
+                  </RefuseInvoiceProvider>
+                </div>
+              </div>
             </div>
 
           </div>
