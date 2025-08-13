@@ -20,6 +20,13 @@ import {
 import {
   RefuseInvoiceFetchRepository
 } from "@src/features/teacherInvoice/refuseInvoice/refuseInvoice.invoice.fetchRepository";
+import {
+  PayInvoiceInvoiceSuccessInMemoryRepository
+} from "@src/features/teacherInvoice/payInvoice/test/payInvoice.invoice.inMemoryRepositories";
+import {PayInvoiceComponent} from "@src/features/teacherInvoice/payInvoice/PayInvoice.component";
+import {
+  PayInvoiceInvoiceProvider
+} from "@src/features/teacherInvoice/payInvoice/payInvoice.invoice.repository.provider";
 
 type GetTeacherInvoiceDetailComponentProps = {
   invoiceId: number;
@@ -100,6 +107,13 @@ export const GetTeacherInvoiceDetailComponent: React.FC<GetTeacherInvoiceDetailC
                     <ValidateInvoiceComponent invoiceId={invoiceId}/>
                   </ValidateInvoiceRepositoryProvider>
                 </div>
+
+                <div className="flex-1">
+                  <PayInvoiceInvoiceProvider
+                      invoiceRepository={new PayInvoiceInvoiceSuccessInMemoryRepository()}>
+                    <PayInvoiceComponent invoiceId={invoiceId}/>
+                  </PayInvoiceInvoiceProvider>
+                </div>
                 
                 <div className="flex-1">
                   <RefuseInvoiceProvider
@@ -107,6 +121,7 @@ export const GetTeacherInvoiceDetailComponent: React.FC<GetTeacherInvoiceDetailC
                     <RefuseInvoiceComponent invoiceId={invoiceId} />
                   </RefuseInvoiceProvider>
                 </div>
+
               </div>
             </div>
 
