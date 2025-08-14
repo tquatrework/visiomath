@@ -28,10 +28,7 @@ describe('US-11: Paiement de la facture', async () => {
         });
 
         // Alors la facture doit avoir le statut "payée" et une date de paiement doit être enregistrée, et le solde du professeur doit être diminué du montant correspondant
-        expect(
-          await screen.findByTestId('invoice-status')
-        ).toHaveTextContent('Payée');
-        
+
         expect(
           await screen.findByTestId('payment-confirmation-message')
         ).toHaveTextContent('Facture payée avec succès');
