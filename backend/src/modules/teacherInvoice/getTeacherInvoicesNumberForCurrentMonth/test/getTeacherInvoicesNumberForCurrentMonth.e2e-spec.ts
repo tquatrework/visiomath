@@ -30,7 +30,7 @@ describe('#US-14: Connaître le nombre de factures créées pour le mois en cour
         
         await app.get(DataSource).query(
             'INSERT INTO teacher_invoices (id, amount, "teacherId", "pdfFile", "creationDate", status) VALUES ($1, $2, $3, $4, $5, $6)',
-            [2, 150, 1, 'invoice-2.pdf', secondDayOfMonth, TeacherInvoiceStatus.VALIDE]
+            [2, 150, 1, 'invoice-2.pdf', secondDayOfMonth, TeacherInvoiceStatus.VALIDEE]
         );
 
         // Quand j'affiche le nombre de factures pour le mois en cours

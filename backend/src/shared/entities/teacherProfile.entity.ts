@@ -113,12 +113,7 @@ export class TeacherProfile {
 
   payInvoice(amount: number): void {
 
-    console.log(amount);
-    if (amount <= 0) {
-      throw new Error("le montant de la facture doit être supérieur à 0");
-    }
-
-    const currentAmount = Number(this.amountToInvoice) || 0;
+    const currentAmount = this.amountToInvoice || 0;
 
     if (currentAmount < amount) {
       throw new Error("le solde à facturer doit être supérieur au montant de la facture");

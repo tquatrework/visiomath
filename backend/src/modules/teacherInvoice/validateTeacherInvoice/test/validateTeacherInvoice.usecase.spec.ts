@@ -25,9 +25,9 @@ describe('US-9: Validation de la facture', () => {
         // Quand je veux valider la facture 1, si tout se passe bien
         await validateTeacherInvoiceUsecase.execute(1, { invoiceId: 1 });
 
-        // Alors la facture doit avoir le status "validé" et une date de validation
+        // Alors la facture doit avoir le status "validée" et une date de validation
         const invoice = await validateTeacherInvoiceSuccessInMemoryRepository.findById(1);
-        expect(invoice!.status).toBe('validé');
+        expect(invoice!.status).toBe('validée');
         expect(invoice!.validatedAt).toBeDefined();
         
     })

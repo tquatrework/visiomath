@@ -1,4 +1,3 @@
 export type PayTeacherInvoiceCommand = {
-    teacherId: number;
-    amount: number;
+    teacherInvoiceId: number;
 };

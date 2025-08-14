@@ -3,8 +3,8 @@ import { User } from '../../../shared/entities/user.entity';
 
 export enum TeacherInvoiceStatus {
     EN_ATTENTE_DE_VALIDATION = 'en attente de validation',
-    VALIDE = 'validé',
-    REFUSE = 'refusée',
+    VALIDEE = 'validée',
+    REFUSEE = 'refusée',
     PAYEE = 'payée'
 }
 
@@ -41,6 +41,9 @@ export class TeacherInvoice {
     
     @Column({ type: "text", nullable: true })
     refusalReason: string | null;
+    
+    @Column({ type: "date", nullable: true })
+    paidAt: Date | null;
 
     constructor(
         teacher: User,
@@ -60,6 +63,7 @@ export class TeacherInvoice {
         this.validatedAt = null;
         this.refusedAt = null;
         this.refusalReason = null;
+        this.paidAt = null;
     }
     
     validate(): void {
@@ -67,7 +71,7 @@ export class TeacherInvoice {
             throw new Error("La facture a un montant supérieur à 2500e");
         }
         
-        this.status = TeacherInvoiceStatus.VALIDE;
+        this.status = TeacherInvoiceStatus.VALIDEE;
         this.validatedAt = new Date();
     }
     
@@ -76,8 +80,22 @@ export class TeacherInvoice {
             throw new Error('La facture a déjà été payée, elle ne peut plus être refusée');
         }
         
-        this.status = TeacherInvoiceStatus.REFUSE;
+        this.status = TeacherInvoiceStatus.REFUSEE;
         this.refusedAt = new Date();
         this.refusalReason = reason;
+    }
+    
+    pay(): void {
+        if (this.status === TeacherInvoiceStatus.PAYEE) {
+            throw new Error("La facture a déjà été payée");
+        }
+        
+        if (this.status === TeacherInvoiceStatus.REFUSEE) {
+            throw new Error("La facture est refusée et ne peut pas être payée");
+        }
+        
+        this.status = TeacherInvoiceStatus.PAYEE;
+        this.paidAt = new Date();
+        this.teacher.payTeacherInvoice(this.amount);
     }
 }

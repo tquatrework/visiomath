@@ -13,9 +13,6 @@ import {CouponRegisteredByTeacherListener} from "./increaseTeacherAmountToInvoic
 import {GetTeacherAmountToInvoiceUsecase} from "./getTeacherAmountToInvoice/getTeacherAmountToInvoice.usecase";
 import {GetTeacherAmountToInvoiceController} from "./getTeacherAmountToInvoice/getTeacherAmountToInvoice.controller";
 import {GetTeacherAmountToInvoiceTeacherProfileTypeOrmRepository} from "./getTeacherAmountToInvoice/getTeacherAmountToInvoice.teacherProfile.typeOrmRepository";
-import {PayTeacherInvoiceUsecase} from "./payTeacherInvoice/payTeacherInvoice.usecase";
-import {PayTeacherInvoiceController} from "./payTeacherInvoice/payTeacherInvoice.controller";
-import {PayTeacherInvoiceTypeOrmRepository} from "./payTeacherInvoice/payTeacherInvoice.typeOrmRepository";
 import {CreateTeacherInvoiceUsecase} from "./createTeacherInvoice/createTeacherInvoice.usecase";
 import {CreateTeacherInvoiceController} from "./createTeacherInvoice/createTeacherInvoice.controller";
 import {CreateTeacherInvoiceTeacherInvoiceTypeOrmRepository} from "./createTeacherInvoice/createTeacherInvoice.teacherInvoice.typeOrmRepository";
@@ -54,7 +51,6 @@ import { RefuseTeacherInvoiceUserTypeOrmRepository } from './refuseTeacherInvoic
     saveTeacherPaymentInfoController,
     GetTeacherPaymentInfoController,
     GetTeacherAmountToInvoiceController,
-    PayTeacherInvoiceController,
     CreateTeacherInvoiceController,
     GetTeacherInvoicesController,
     GetTeacherInvoiceDetailController,
@@ -72,8 +68,6 @@ import { RefuseTeacherInvoiceUserTypeOrmRepository } from './refuseTeacherInvoic
     CouponRegisteredByTeacherListener,
     GetTeacherAmountToInvoiceUsecase,
     GetTeacherAmountToInvoiceTeacherProfileTypeOrmRepository,
-    PayTeacherInvoiceUsecase,
-    PayTeacherInvoiceTypeOrmRepository,
     CreateTeacherInvoiceUsecase,
     CreateTeacherInvoiceTeacherInvoiceTypeOrmRepository,
     CreateTeacherInvoiceUserTypeOrmRepository,
