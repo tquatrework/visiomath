@@ -1,10 +1,16 @@
+import { Injectable, Inject } from '@nestjs/common';
 import { PayTeacherInvoiceUserRepository } from './payTeacherInvoice.user.repository';
 import { PayTeacherInvoiceTeacherInvoiceRepository } from './payTeacherInvoice.teacherInvoice.repository';
 import { PayTeacherInvoiceCommand } from './payTeacherInvoice.command';
+import { PayTeacherInvoiceUserTypeOrmRepository } from './payTeacherInvoice.user.typeOrmRepository';
+import { PayTeacherInvoiceTeacherInvoiceTypeOrmRepository } from './payTeacherInvoice.teacherInvoice.typeOrmRepository';
 
+@Injectable()
 export class PayTeacherInvoiceUsecase {
     constructor(
+        @Inject(PayTeacherInvoiceUserTypeOrmRepository)
         private payTeacherInvoiceUserRepository: PayTeacherInvoiceUserRepository,
+        @Inject(PayTeacherInvoiceTeacherInvoiceTypeOrmRepository)
         private payTeacherInvoiceTeacherInvoiceRepository: PayTeacherInvoiceTeacherInvoiceRepository
     ) {}
 

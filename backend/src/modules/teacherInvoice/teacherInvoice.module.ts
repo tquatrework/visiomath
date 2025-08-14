@@ -41,6 +41,10 @@ import { RefuseTeacherInvoiceController } from './refuseTeacherInvoice/refuseTea
 import { RefuseTeacherInvoiceUsecase } from './refuseTeacherInvoice/refuseTeacherInvoice.usecase';
 import { RefuseTeacherInvoiceTeacherInvoiceTypeOrmRepository } from './refuseTeacherInvoice/refuseTeacherInvoice.teacherInvoice.typeOrmRepository';
 import { RefuseTeacherInvoiceUserTypeOrmRepository } from './refuseTeacherInvoice/refuseTeacherInvoice.user.typeOrmRepository';
+import { PayTeacherInvoiceController } from './payTeacherInvoice/payTeacherInvoice.controller';
+import { PayTeacherInvoiceUsecase } from './payTeacherInvoice/payTeacherInvoice.usecase';
+import { PayTeacherInvoiceTeacherInvoiceTypeOrmRepository } from './payTeacherInvoice/payTeacherInvoice.teacherInvoice.typeOrmRepository';
+import { PayTeacherInvoiceUserTypeOrmRepository } from './payTeacherInvoice/payTeacherInvoice.user.typeOrmRepository';
 
 @Module({
   imports: [
@@ -56,7 +60,8 @@ import { RefuseTeacherInvoiceUserTypeOrmRepository } from './refuseTeacherInvoic
     GetTeacherInvoiceDetailController,
     ValidateTeacherInvoiceController,
     GetTeacherInvoicesNumberForCurrentMonthController,
-    RefuseTeacherInvoiceController
+    RefuseTeacherInvoiceController,
+    PayTeacherInvoiceController
   ],
   providers: [
     SaveTeacherPaymentInfoUsecase,
@@ -87,7 +92,10 @@ import { RefuseTeacherInvoiceUserTypeOrmRepository } from './refuseTeacherInvoic
     GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceTypeOrmRepository,
     RefuseTeacherInvoiceUsecase,
     RefuseTeacherInvoiceTeacherInvoiceTypeOrmRepository,
-    RefuseTeacherInvoiceUserTypeOrmRepository
+    RefuseTeacherInvoiceUserTypeOrmRepository,
+    PayTeacherInvoiceUsecase,
+    PayTeacherInvoiceTeacherInvoiceTypeOrmRepository,
+    PayTeacherInvoiceUserTypeOrmRepository
   ],
 })
 export class TeacherInvoiceModule {}

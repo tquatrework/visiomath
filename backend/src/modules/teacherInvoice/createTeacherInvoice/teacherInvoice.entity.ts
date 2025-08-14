@@ -3,7 +3,7 @@ import { User } from '../../../shared/entities/user.entity';
 
 export enum TeacherInvoiceStatus {
     EN_ATTENTE_DE_VALIDATION = 'en attente de validation',
-    VALIDEE = 'validée',
+    VALIDEE = 'validé',
     REFUSEE = 'refusée',
     PAYEE = 'payée'
 }
@@ -13,7 +13,7 @@ export class TeacherInvoice {
     @PrimaryGeneratedColumn()
     id: number | null = null;
     
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, { cascade: true })
     @JoinColumn({ name: 'teacherId' })
     teacher: User;
     

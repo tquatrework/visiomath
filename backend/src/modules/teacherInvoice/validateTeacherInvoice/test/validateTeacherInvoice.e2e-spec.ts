@@ -45,7 +45,7 @@ describe('US-9: Validation de la facture', () => {
             [1]
         );
         
-        expect(invoice[0].status).toBe('validée');
+        expect(invoice[0].status).toBe('validé');
         expect(invoice[0].validatedAt).toBeDefined();
 
     })

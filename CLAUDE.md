@@ -17,11 +17,17 @@ Le projet est un "monorepo" avec un dossier frontend (react) et un backend (nest
 
 ## Pièges TDD courants à éviter
 
-- Écrire du code de production avant d’avoir un test en échec 
+- Écrire du code de production avant d'avoir un test en échec 
 - Créer plusieurs tests avant de faire passer le premier 
 - Écrire plus de code que nécessaire pour satisfaire le test en cours 
-- Sauter l’étape de refactorisation lorsque le code pourrait être amélioré 
-- Ajouter des fonctionnalités « tant qu’à faire » sans d’abord écrire le test qui les pilote
+- Sauter l'étape de refactorisation lorsque le code pourrait être amélioré 
+- Ajouter des fonctionnalités « tant qu'à faire » sans d'abord écrire le test qui les pilote
+
+## Principe fondamental du développement
+
+**RÈGLE ABSOLUE : Ne fais pas de code défensif ni de spéculation de code si elle n'est pas justifiée par un test.**
+
+Cette règle doit être respectée à chaque fois que du code est généré. Le code doit être le minimum nécessaire pour faire passer le test en cours, sans anticipation de besoins futurs non exprimés par les tests.
 
 
 ## Conventions TypeScript

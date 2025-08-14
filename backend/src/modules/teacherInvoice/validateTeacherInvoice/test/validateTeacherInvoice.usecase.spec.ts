@@ -27,7 +27,7 @@ describe('US-9: Validation de la facture', () => {
 
         // Alors la facture doit avoir le status "validée" et une date de validation
         const invoice = await validateTeacherInvoiceSuccessInMemoryRepository.findById(1);
-        expect(invoice!.status).toBe('validée');
+        expect(invoice!.status).toBe('validé');
         expect(invoice!.validatedAt).toBeDefined();
         
     })

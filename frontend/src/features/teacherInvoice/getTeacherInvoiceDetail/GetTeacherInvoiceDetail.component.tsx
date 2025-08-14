@@ -27,6 +27,7 @@ import {PayInvoiceComponent} from "@src/features/teacherInvoice/payInvoice/PayIn
 import {
   PayInvoiceInvoiceProvider
 } from "@src/features/teacherInvoice/payInvoice/payInvoice.invoice.repository.provider";
+import {PayInvoiceFetchRepository} from "@src/features/teacherInvoice/payInvoice/payInvoice.invoice.fetchRepository";
 
 type GetTeacherInvoiceDetailComponentProps = {
   invoiceId: number;
@@ -110,7 +111,7 @@ export const GetTeacherInvoiceDetailComponent: React.FC<GetTeacherInvoiceDetailC
 
                 <div className="flex-1">
                   <PayInvoiceInvoiceProvider
-                      invoiceRepository={new PayInvoiceInvoiceSuccessInMemoryRepository()}>
+                      invoiceRepository={new PayInvoiceFetchRepository()}>
                     <PayInvoiceComponent invoiceId={invoiceId}/>
                   </PayInvoiceInvoiceProvider>
                 </div>

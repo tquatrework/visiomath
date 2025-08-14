@@ -2,29 +2,33 @@ import { Controller, Put, Param, ParseIntPipe, UseGuards, Res, Body } from '@nes
 import { Response } from 'express';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../../auth/currentUser.decorator';
-import { ValidateTeacherInvoiceUsecase } from './validateTeacherInvoice.usecase';
-@Controller()
-export class ValidateTeacherInvoiceController {
-  constructor(private readonly validateTeacherInvoiceUsecase: ValidateTeacherInvoiceUsecase) {}
+import { PayTeacherInvoiceUsecase } from './payTeacherInvoice.usecase';
+import { PayTeacherInvoiceCommand } from './payTeacherInvoice.command';
 
-  @Put('/validate-teacher-invoice/:id')
+@Controller()
+export class PayTeacherInvoiceController {
+  constructor(private readonly payTeacherInvoiceUsecase: PayTeacherInvoiceUsecase) {}
+
+  @Put('/pay-teacher-invoice/:id')
   @UseGuards(JwtAuthGuard)
-  async validateTeacherInvoice(
+  async payTeacherInvoice(
     @CurrentUser() user: any, 
     @Param('id', ParseIntPipe) id: number,
     @Body() body: unknown,
     @Res() res: Response
   ) {
+
     if (typeof body !== 'object' || body === null) {
-      return res.status(422).json({ message: "Les données de la facture sont obligatoires" });
+        return res.status(422).json({ message: "Les données de la facture sont obligatoires" });
     }
 
-    if (!('invoiceId' in body) || typeof (body as any).invoiceId !== 'number' || !(body as any).invoiceId) {
+    if (!('teacherInvoiceId' in body) || typeof (body as any).teacherInvoiceId !== 'number') {
       return res.status(422).json({ message: "L'identifiant de la facture est obligatoire" });
     }
 
+
     try {
-      await this.validateTeacherInvoiceUsecase.execute(user.id, { invoiceId: id });
+      await this.payTeacherInvoiceUsecase.execute(user.id, { teacherInvoiceId: id });
       return res.status(200).send();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Une erreur est survenue';
