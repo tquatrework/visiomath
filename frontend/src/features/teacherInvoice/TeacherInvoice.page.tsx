@@ -1,4 +1,5 @@
-import React, {useMemo, useState} from 'react';
+import React, {useMemo, useState, useEffect} from 'react';
+import { useLocation } from 'react-router-dom';
 import GetTeacherAmountToInvoiceComponent
     from "@src/features/teacherInvoice/getTeacherAmountToInvoice/GetTeacherAmountToInvoice.component";
 import {
@@ -51,8 +52,19 @@ import {
 
 
 const TeacherInvoicePage: React.FC = () => {
-
+    const location = useLocation();
     const [tabIndex, setTabIndex] = useState(0);
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const tabParam = searchParams.get('tab');
+        if (tabParam) {
+            const tabNumber = parseInt(tabParam);
+            if (!isNaN(tabNumber) && tabNumber >= 0 && tabNumber <= 2) {
+                setTabIndex(tabNumber);
+            }
+        }
+    }, [location.search]);
 
     const getTeacherPaymentInfoRepository = useMemo(() => new GetTeacherPaymentInfoFetchRepository(), []);
     const saveTeacherPaymentInfoRepository = useMemo(() => new SaveTeacherPaymentFetchRepository(), []);
