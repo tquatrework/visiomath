@@ -45,6 +45,7 @@ export class TeacherInvoice {
     @Column({ type: "date", nullable: true })
     paidAt: Date | null;
 
+
     constructor(
         teacher: User,
         amount: number,

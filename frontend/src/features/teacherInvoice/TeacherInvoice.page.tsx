@@ -49,6 +49,15 @@ import {
 import {
     GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceFetchRepository
 } from "@src/features/teacherInvoice/getTeacherInvoicesNumberForCurrentMonth/getTeacherInvoicesNumberForCurrentMonth.teacherInvoice.fetchRepository";
+import {
+    GetCurrentTeacherInvoicesSuccessInMemoryRepository
+} from "@src/features/teacherInvoice/getCurrentTeacherInvoices/test/getCurrentTeacherInvoices.teacherInvoice.inMemoryRepositories";
+import {
+    GetCurrentTeacherInvoicesComponent
+} from "@src/features/teacherInvoice/getCurrentTeacherInvoices/GetCurrentTeacherInvoices.component";
+import {
+    GetCurrentTeacherInvoicesProvider
+} from "@src/features/teacherInvoice/getCurrentTeacherInvoices/getCurrentTeacherInvoices.teacherInvoice.repository.provider";
 
 
 const TeacherInvoicePage: React.FC = () => {
@@ -76,7 +85,7 @@ const TeacherInvoicePage: React.FC = () => {
 
             <Tabs selectedIndex={tabIndex} onSelect={setTabIndex}>
                 <TabList className="flex border-b border-gray-200">
-                    {['Informations de facturation', 'Facturer', 'Liste des factures' ].map((label, idx) => (
+                    {['Informations de facturation', 'Facturer', 'Liste des factures', 'Mes factures' ].map((label, idx) => (
                         <Tab
                             key={label}
                             className={`cursor-pointer py-2 px-4 ${tabIndex === idx ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500 hover:text-blue-500'}`}
@@ -122,6 +131,13 @@ const TeacherInvoicePage: React.FC = () => {
                     </GetTeacherInvoicesProvider>
                 </TabPanel>
 
+
+                <TabPanel className="p-4">
+                    <GetCurrentTeacherInvoicesProvider
+                        getCurrentTeacherInvoicesRepository={new GetCurrentTeacherInvoicesSuccessInMemoryRepository()}>
+                        <GetCurrentTeacherInvoicesComponent/>
+                    </GetCurrentTeacherInvoicesProvider>
+                </TabPanel>
             </Tabs>
 
         </div>

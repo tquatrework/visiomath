@@ -30,6 +30,5 @@ export const useGetTeacherInvoices = () => {
     loading,
     error,
     data,
-    refetch: loadTeacherInvoices
   };
 };
