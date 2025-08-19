@@ -20,7 +20,7 @@ export const GetCurrentTeacherInvoicesComponent: React.FC = () => {
         <div className="space-y-4">
             {invoices.invoices.map((invoice) => (
                 <div key={invoice.id} className="bg-gray-50 border rounded-lg p-4">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
                         <div>
                             <span className="text-sm text-gray-500 block">ID Facture</span>
                             <span className="font-medium" data-testid={`invoice-id-${invoice.id}`}>{invoice.id}</span>
@@ -37,16 +37,16 @@ export const GetCurrentTeacherInvoicesComponent: React.FC = () => {
                             <span className="text-sm text-gray-500 block">Date de création</span>
                             <span className="font-medium" data-testid={`invoice-creation-date-${invoice.id}`}>{invoice.creationDate}</span>
                         </div>
-                    </div>
-                    <div className="mt-4 flex justify-end">
-                        <a 
-                            href={`/uploads/${invoice.pdfFile}`}
-                            data-testid={`invoice-pdf-download-${invoice.id}`}
-                            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
-                            download
-                        >
-                            Télécharger PDF
-                        </a>
+                        <div className="flex justify-end">
+                            <a 
+                                href={`/uploads/${invoice.pdfFile}`}
+                                data-testid={`invoice-pdf-download-${invoice.id}`}
+                                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
+                                download
+                            >
+                                Télécharger PDF
+                            </a>
+                        </div>
                     </div>
                 </div>
             ))}
