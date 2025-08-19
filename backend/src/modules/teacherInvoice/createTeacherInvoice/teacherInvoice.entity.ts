@@ -45,12 +45,16 @@ export class TeacherInvoice {
     @Column({ type: "date", nullable: true })
     paidAt: Date | null;
 
+    @Column({ nullable: true })
+    dueDate: string;
+
 
     constructor(
         teacher: User,
         amount: number,
         pdfFile: string,
-        creationDate: Date
+        creationDate: Date,
+        dueDate: string
     ) {
         if (amount <= 0) {
             throw new Error("le montant de la facture doit être supérieur à 0");
@@ -60,6 +64,7 @@ export class TeacherInvoice {
         this.amount = amount;
         this.pdfFile = pdfFile;
         this.creationDate = creationDate;
+        this.dueDate = dueDate;
         this.status = TeacherInvoiceStatus.EN_ATTENTE_DE_VALIDATION;
         this.validatedAt = null;
         this.refusedAt = null;

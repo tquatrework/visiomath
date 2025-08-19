@@ -1,7 +1,8 @@
 export class CreateTeacherInvoiceCommand {
     constructor(
-        public readonly teacherId: number,
+        public readonly userId: number,
         public readonly amount: number,
         public readonly pdfFileContent: Buffer,
+        public readonly dueDate: string,
     ) {}
 }

@@ -15,6 +15,7 @@ export class CreateTeacherInvoiceController {
     @UseInterceptors(FileInterceptor('pdfFile'))
     async createTeacherInvoice(
         @Body('amount') amount: string,
+        @Body('dueDate') dueDate: string,
         @UploadedFile() pdfFile: Express.Multer.File,
         @CurrentUser() user: { id: number },
         @Res() res: Response
@@ -30,9 +31,10 @@ export class CreateTeacherInvoiceController {
         try {
             const amountValue = parseInt(amount, 10);
             await this.createTeacherInvoiceUsecase.execute({
-                teacherId: user.id,
+                userId: user.id,
                 amount: amountValue,
-                pdfFileContent: pdfFile.buffer
+                pdfFileContent: pdfFile.buffer,
+                dueDate: dueDate
             });
             
             return res.status(201).send();

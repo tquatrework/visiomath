@@ -33,17 +33,18 @@ describe('US-6: Création d\'une facture', () => {
         await userBuilder.build();
         const teacherToken = await userBuilder.getToken();
         
-        // Quand j'envoie un montant de 600e et un fichier PDF
+        // Quand j'envoie un montant de 600e et un fichier PDF et une date d'écheance
         const res = await request(app.getHttpServer())
             .post('/create-teacher-invoice')
             .set('Authorization', `Bearer ${teacherToken}`)
             .field('amount', '600')
+            .field('dueDate', "22/22/2027")
             .attach('pdfFile', Buffer.from('%PDF-1.5\nfake pdf content'), {
                 filename: 'invoice_file.pdf',
                 contentType: 'application/pdf'
             });
         
-        // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation' doit être créée
+        // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation' et une date d'échéance doit être créée
         expect(res.status).toBe(201);
         
         // Vérifier que la facture a été créée en base de données
@@ -55,7 +56,9 @@ describe('US-6: Création d\'une facture', () => {
         expect(teacherInvoice[0].amount).toBe(600);
         expect(teacherInvoice[0].pdfFile).toContain("invoice-thierryteacher");
         expect(teacherInvoice[0].status).toBe("en attente de validation");
+        expect(teacherInvoice[0].dueDate).toBe("22/22/2027");
         expect(new Date(teacherInvoice[0].creationDate)).toBeInstanceOf(Date);
+
         
         createdPdfPath = teacherInvoice[0].pdfFile;
 
@@ -68,20 +71,20 @@ describe('US-6: Création d\'une facture', () => {
         await userBuilder.build();
         const teacherToken = await userBuilder.getToken();
 
-        // Quand j'envoie un montant de 600e et un fichier PDF
+        // Quand j'envoie un montant de 600e et un fichier PDF et une date d'échéance
         const res = await request(app.getHttpServer())
             .post('/create-teacher-invoice')
             .set('Authorization', `Bearer ${teacherToken}`)
             .field('amount', '600')
+            .field('dueDate', "22/22/2027")
             .attach('pdfFile', Buffer.from('%PDF-1.5\nfake pdf content'), {
                 filename: 'invoice_file.pdf',
                 contentType: 'application/pdf'
             });
 
-        // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation' doit être créée
+        // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation' et une date d'échéance doit être créée
         expect(res.status).toBe(201);
 
-        // Vérifier que la facture a été créée en base de données
         const teacherInvoice = await app
             .get(DataSource)
             .query('SELECT * FROM teacher_invoices WHERE "teacherId" = $1 ORDER BY id DESC LIMIT 1', [1]);
@@ -106,11 +109,12 @@ describe('US-6: Création d\'une facture', () => {
         await userBuilder.build();
         const financialAdminToken = await userBuilder.getToken();
         
-        // Quand j'envoie un montant de 600e et un fichier PDF
+        // Quand j'envoie un montant de 600e et un fichier PDF et une date d'échéance
         const res = await request(app.getHttpServer())
             .post('/create-teacher-invoice')
             .set('Authorization', `Bearer ${financialAdminToken}`)
             .field('amount', '600')
+            .field('dueDate', "22/22/2027")
             .attach('pdfFile', Buffer.from('%PDF-1.5\nfake pdf content'), {
                 filename: 'invoice_file.pdf',
                 contentType: 'application/pdf'
@@ -135,10 +139,11 @@ describe('US-6: Création d\'une facture', () => {
         await userBuilder.build();
         const teacherToken = await userBuilder.getToken();
         
-        // Quand j'envoie un fichier PDF sans montant
+        // Quand j'envoie un fichier PDF et une date d'échéance sans montant
         const res = await request(app.getHttpServer())
             .post('/create-teacher-invoice')
             .set('Authorization', `Bearer ${teacherToken}`)
+            .field('dueDate', "22/22/2027")
             .attach('pdfFile', Buffer.from('%PDF-1.5\nfake pdf content'), {
                 filename: 'invoice_file.pdf',
                 contentType: 'application/pdf'
@@ -156,11 +161,12 @@ describe('US-6: Création d\'une facture', () => {
         await userBuilder.build();
         const teacherToken = await userBuilder.getToken();
         
-        // Quand j'envoie un montant sans fichier PDF
+        // Quand j'envoie un montant et une date d'échéance sans fichier PDF
         const res = await request(app.getHttpServer())
             .post('/create-teacher-invoice')
             .set('Authorization', `Bearer ${teacherToken}`)
             .field('amount', '600')
+            .field('dueDate', "22/22/2027");
 
         // Alors une erreur "La facture PDF est obligatoire" doit être envoyée
         expect(res.status).toBe(422);

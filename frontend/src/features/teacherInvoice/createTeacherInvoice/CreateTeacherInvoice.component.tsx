@@ -6,6 +6,7 @@ const CreateTeacherInvoiceComponent = () => {
 
     const [formData, setFormData] = useState({
         amount: '',
+        dueDate: '',
         pdfFile: null as File | null
     });
 
@@ -20,6 +21,7 @@ const CreateTeacherInvoiceComponent = () => {
 
         const createTeacherInvoiceCommand = {
             amount: parseFloat(formData.amount),
+            dueDate: formData.dueDate,
             pdfFile: formData.pdfFile,
         };
 
@@ -31,6 +33,13 @@ const CreateTeacherInvoiceComponent = () => {
         setFormData(prev => ({
             ...prev,
             amount: e.target.value
+        }));
+    };
+
+    const handleDueDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData(prev => ({
+            ...prev,
+            dueDate: e.target.value
         }));
     };
 
@@ -83,6 +92,25 @@ const CreateTeacherInvoiceComponent = () => {
                                 e.stopPropagation();
                             }
                         }}
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label
+                        htmlFor="dueDate"
+                        className="block text-sm font-medium text-gray-700"
+                    >
+                        Date d'échéance
+                    </label>
+                    <input
+                        id="dueDate"
+                        name="dueDate"
+                        type="text"
+                        required
+                        className="w-full mt-1 p-2 border rounded-md"
+                        value={formData.dueDate}
+                        onChange={handleDueDateChange}
+                        placeholder="ex: 31/12/2024"
                     />
                 </div>
 

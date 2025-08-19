@@ -26,7 +26,8 @@ export class CreateTeacherInvoiceUsecase {
     ) {}
 
     async execute(command: CreateTeacherInvoiceCommand): Promise<void> {
-        const user = await this.userRepository.findUserById(command.teacherId);
+
+        const user = await this.userRepository.findUserById(command.userId);
         
         if (!user) {
             throw new Error("Professeur non trouvé");
@@ -59,7 +60,8 @@ export class CreateTeacherInvoiceUsecase {
             user,
             command.amount,
             savedFilePath,
-            currentDate
+            currentDate,
+            command.dueDate
         );
 
         try {

@@ -9,7 +9,8 @@ export class RefuseTeacherInvoiceSuccessInMemoryRepository implements RefuseTeac
             invoiceData.teacher || { id: 1, firstName: 'David', lastName: 'Robert' },
             invoiceData.amount,
             invoiceData.pdfFile || 'test.pdf',
-            invoiceData.creationDate || new Date()
+            invoiceData.creationDate || new Date(),
+            invoiceData.dueDate || '31/12/2024'
         );
         invoice.id = invoiceData.id;
         invoice.status = invoiceData.status;
@@ -48,7 +49,8 @@ export class RefuseTeacherInvoiceFailureInMemoryRepository implements RefuseTeac
             invoiceData.teacher || { id: 1, firstName: 'David', lastName: 'Robert' },
             invoiceData.amount,
             invoiceData.pdfFile || 'test.pdf',
-            invoiceData.creationDate || new Date()
+            invoiceData.creationDate || new Date(),
+            invoiceData.dueDate || '31/12/2024'
         );
         invoice.id = invoiceData.id;
         invoice.status = invoiceData.status;

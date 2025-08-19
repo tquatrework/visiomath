@@ -51,7 +51,7 @@ function generateFinancialManagerUser(): User {
     return financialManager;
 }
 
-describe('US-6: Envoie d\'une facture', () => {
+describe('US-6: Création d\'une facture', () => {
 
     let deterministicDateTimeProvider: CreateTeacherInvoiceDateTimeProvider;
     let currentDate: Date;
@@ -63,7 +63,7 @@ describe('US-6: Envoie d\'une facture', () => {
         deterministicDateTimeProvider = new DeterministicDateTimeProvider(currentDate);
     })
 
-    test('US-6-AC-1-1: Envoie réussie : facture créée', async () => {
+    test('US-6-AC-1-1: Envoie réussi : facture créée', async () => {
 
         // Etant donné que je suis connecté en tant que professeur 
         const teacher = generateTeacherUser();
@@ -83,22 +83,24 @@ describe('US-6: Envoie d\'une facture', () => {
             successFileStorage
         );
         
-        // Quand j'envoie un montant de 600e et un fichier PDF
+        // Quand j'envoie un montant de 600e et un fichier PDF et une date d'échéance
         const command = new CreateTeacherInvoiceCommand(
             teacher.id,
             600,
-            fileContent
+            fileContent,
+            "31/12/2024"
         );
         
         // Exécuter la commande
         await createTeacherInvoiceUsecase.execute(command);
         
-        // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation' doit être créée
+        // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation' et une date d'échéance
         expect(teacherInvoiceRepository.createdInvoice?.id).not.toBeNull();
         expect(teacherInvoiceRepository.createdInvoice?.amount).toBe(600);
         expect(teacherInvoiceRepository.createdInvoice?.pdfFile).toContain('.pdf');
         expect(teacherInvoiceRepository.createdInvoice?.creationDate).toEqual(currentDate);
         expect(teacherInvoiceRepository.createdInvoice?.status).toBe("en attente de validation");
+        expect(teacherInvoiceRepository.createdInvoice?.dueDate).toEqual("31/12/2024");
     })
 
     test('US-6-AC-1-2: Envoie réussie : fichier PDF enregistré', async () => {
@@ -119,11 +121,12 @@ describe('US-6: Envoie d\'une facture', () => {
             inMemoryFileStorage
         );
         
-        // Quand j'envoie un montant de 600e et un fichier PDF
+        // Quand j'envoie un montant de 600e et un fichier PDF et une date d'échéance
         const command = new CreateTeacherInvoiceCommand(
             teacher.id,
             600,
-            fileContent
+            fileContent,
+            "31/12/2024"
         );
         await createTeacherInvoiceUsecase.execute(command);
         
@@ -157,11 +160,12 @@ describe('US-6: Envoie d\'une facture', () => {
             successFileStorage
         );
         
-        // Quand j'envoie un montant de 600e et un fichier PDF
+        // Quand j'envoie un montant de 600e et un fichier PDF  et une date d'échéance
         const command = new CreateTeacherInvoiceCommand(
             financialManager.id,
             600,
             fileContent,
+            "31/12/2024"
         );
         
         // Alors une erreur "Vous ne pouvez pas créer de facture" doit être envoyée
@@ -187,11 +191,12 @@ describe('US-6: Envoie d\'une facture', () => {
             successFileStorage
         );
         
-        // Quand j'envoie un montant de 600e et un fichier PDF
+        // Quand j'envoie un montant de 600e et un fichier PDF et une date d'échéance
         const command = new CreateTeacherInvoiceCommand(
             nonExistentTeacherId,
             600,
             fileContent,
+            "31/12/2024"
         );
         
         // Alors une erreur "Professeur non trouvé" doit être envoyée
@@ -217,11 +222,12 @@ describe('US-6: Envoie d\'une facture', () => {
             successFileStorage
         );
         
-        // Quand j'envoie un montant de -200e et un fichier PDF
+        // Quand j'envoie un montant de -200e et un fichier PDF  et une date d'échéance
         const command = new CreateTeacherInvoiceCommand(
             teacher.id,
             -200,
             fileContent,
+            "31/12/2024"
         );
         
         // Alors une erreur "le montant de la facture doit être supérieur à 0" doit être envoyée
@@ -239,13 +245,13 @@ describe('US-6: Envoie d\'une facture', () => {
         userRepository.seed(teacher);
         
         const teacherInvoiceRepository = new CreateTeacherInvoiceTeacherInvoiceSuccessInMemoryRepository();
-        
-        // Créer une facture pour le mois en cours
+
         const existingInvoice = new TeacherInvoice(
             teacher,
             500,
             "/uploads/previous_invoice.pdf",
-            currentDate
+            currentDate,
+            "31/12/2024"
         );
         existingInvoice.id = 1;
         teacherInvoiceRepository.seedInvoice(existingInvoice);
@@ -259,17 +265,18 @@ describe('US-6: Envoie d\'une facture', () => {
             successFileStorage
         );
         
-        // Quand j'envoie un montant de 600e et un fichier PDF
+        // Quand j'envoie un montant de 600e et un fichier PDF  et une date d'échéance
         const command = new CreateTeacherInvoiceCommand(
             teacher.id,
             600,
             fileContent,
+            "31/12/2024"
         );
         
         // Exécuter la commande
         await createTeacherInvoiceUsecase.execute(command);
         
-        // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation'
+        // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation'  et une date d'échéance
         expect(teacherInvoiceRepository.createdInvoice?.id).not.toBeNull();
         expect(teacherInvoiceRepository.createdInvoice?.teacher).toEqual(teacher);
         expect(teacherInvoiceRepository.createdInvoice?.amount).toBe(600);
@@ -287,8 +294,6 @@ describe('US-6: Envoie d\'une facture', () => {
         userRepository.seed(teacher);
         
         const teacherInvoiceRepository = new CreateTeacherInvoiceTeacherInvoiceSuccessInMemoryRepository();
-        
-        // Utiliser un fileStorage qui échoue
         const failureFileStorage = new CreateTeacherInvoiceFileStorageFailureInMemoryRepository();
         
         const createTeacherInvoiceUsecase = new CreateTeacherInvoiceUsecase(
@@ -299,11 +304,12 @@ describe('US-6: Envoie d\'une facture', () => {
         );
         const fileContent = Buffer.from('%PDF-1.5\nfake pdf content');
 
-        // Quand j'envoie un montant et un fichier PDF, si l'enregistrement ne fonctionne pas pour une raison inconnue
+        // Quand j'envoie un montant et un fichier PDF et une date d'échéance, si l'enregistrement ne fonctionne pas pour une raison inconnue
         const command = new CreateTeacherInvoiceCommand(
             teacher.id,
             600,
             fileContent,
+            "31/12/2024"
         );
         
         // Alors une erreur "La facture n'a pas pu être créée" doit être envoyée
@@ -330,11 +336,12 @@ describe('US-6: Envoie d\'une facture', () => {
             fileStorage
         );
         
-        // Quand j'envoie un montant de 600e et un fichier qui n'est pas un PDF
+        // Quand j'envoie un montant de 600e  et une date d'échéance et un fichier qui n'est pas un PDF
         const command = new CreateTeacherInvoiceCommand(
             teacher.id,
             600,
-            fileContent, // Buffer sans l'en-tête PDF
+            fileContent,
+            "31/12/2024"
         );
         
         // Alors une erreur "Le fichier doit être un PDF" doit être renvoyé
@@ -351,8 +358,6 @@ describe('US-6: Envoie d\'une facture', () => {
         userRepository.seed(teacher);
 
         const teacherInvoiceFailureRepository = new CreateTeacherInvoiceTeacherInvoiceFailureInMemoryRepository();
-
-        // Utiliser un fileStorage qui réussit (le problème est dans le repository cette fois)
         const successFileStorage = new CreateTeacherInvoiceFileStorageSuccessInMemoryRepository();
 
         const createTeacherInvoiceUsecase = new CreateTeacherInvoiceUsecase(
@@ -363,11 +368,12 @@ describe('US-6: Envoie d\'une facture', () => {
         );
         const fileContent = Buffer.from('%PDF-1.5\nfake pdf content');
 
-        // Quand j'envoie un montant et un fichier PDF, si l'enregistrement de la facture échoue
+        // Quand j'envoie un montant et un fichier PDF  et une date d'échéance, si l'enregistrement de la facture échoue
         const command = new CreateTeacherInvoiceCommand(
             teacher.id,
             600,
             fileContent,
+            "31/12/2024"
         );
 
         // Alors une erreur "La facture n'a pas pu être créée" doit être envoyée

@@ -12,10 +12,10 @@ import {
     CreateTeacherInvoiceFailureInMemoryRepository
 } from "./createTeacherInvoice.failureInMemoryRepository";
 
-describe('US-6: Envoie d\'une facture', () => {
-    test('US-6-AC-1: Envoie réussie', async () => {
+describe('US-6: Création d\'une facture', () => {
+    test('US-6-AC-1-1: Envoie réussi : facture créée', async () => {
 
-        // Etant donné que je suis connecté en tant de professeur
+        // Etant donné que je suis connecté en tant que professeur
         const mockRepository = new CreateTeacherInvoiceSuccessInMemoryRepository();
 
         act(() => {
@@ -25,8 +25,9 @@ describe('US-6: Envoie d\'une facture', () => {
             </CreateTeacherInvoiceRepositoryProvider>);
         });
 
-        // Quand j'envoie un montant de 600e et un fichier PDF
+        // Quand j'envoie un montant de 600e et un fichier PDF et une date d'échéance
         await userEvent.type(screen.getByLabelText(/Montant/i), '600')
+        await userEvent.type(screen.getByLabelText(/Date d'échéance/i), '31/12/2024')
         const fileInput = screen.getByLabelText(/Facture PDF/i);
         const file = new File(['test'], 'facture.pdf', { type: 'application/pdf' });
         await userEvent.upload(fileInput, file);
@@ -35,7 +36,7 @@ describe('US-6: Envoie d\'une facture', () => {
             await userEvent.click(screen.getByRole('button', {name: /Envoyer/i}));
         });
 
-        // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation' doit être créée
+        // Alors une facture contenant : montant, fichier pdf, date de création, professeur (moi) et status 'en attente de validation' et une date d'échéance
         expect(
           await screen.findByText('Facture envoyée avec succès')
         ).toBeInTheDocument();
@@ -44,9 +45,9 @@ describe('US-6: Envoie d\'une facture', () => {
 
 
 
-    test('US-6-AC-2: Envoi échoué, montant inférieur à 0', async () => {
+    test('US-6-AC-4: Envoie échoué, montant inférieur à 0', async () => {
 
-        // Etant donné que je suis connecté en tant que professeur ...
+        // Etant donné que je suis connecté en tant que professeur
         const mockRepository = new CreateTeacherInvoiceFailureInMemoryRepository();
 
         act(() => {
@@ -57,9 +58,10 @@ describe('US-6: Envoie d\'une facture', () => {
                 </CreateTeacherInvoiceRepositoryProvider>);
         });
 
-        // Quand j’envoie un montant de -200e et un fichier PDF…
+        // Quand j'envoie un montant de -200e et un fichier PDF et une date d'échéance
         await userEvent.clear(screen.getByLabelText('Montant'))
         await userEvent.type(screen.getByLabelText('Montant'), '-200');
+        await userEvent.type(screen.getByLabelText(/Date d'échéance/i), '31/12/2024')
         const fileInput = screen.getByLabelText(/Facture PDF/i);
         const file = new File(['test'], 'facture.pdf', { type: 'application/pdf' });
         await userEvent.upload(fileInput, file);
