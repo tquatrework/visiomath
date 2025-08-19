@@ -10,7 +10,7 @@ describe('US-8: Visualisation du détail d\'une facture', async () => {
 
     test('US-8-AC-1: Visualisation réussie', async () => {
 
-        // Etant donné que je suis connecté en tant que responsable financier et que le professeur David Robert a une facture de 600e avec un id de 1
+        // Etant donné que je suis connecté en tant que responsable financier et que le professeur David Robert a une facture de 600e avec un id de 1 et une date d’échéance le 25/12/2027
 
         // Quand je veux visualiser la facture 1, si tout se passe bien
         render(<GetTeacherInvoiceDetailProvider
@@ -18,7 +18,7 @@ describe('US-8: Visualisation du détail d\'une facture', async () => {
             <GetTeacherInvoiceDetailComponent invoiceId={1}/>
         </GetTeacherInvoiceDetailProvider>);
 
-        // Alors je dois voir les détails de la facture id 1 : id, nom du professeur, montant, date de création, status et un lien pour télécharger le PDF
+        // Alors je dois voir les détails de la facture id 1 : id, nom du professeur, montant, date de création, status et une date d’échéance le 25/12/2027 et un lien pour télécharger le PDF
         expect(
           await screen.findByTestId('invoice-id')
         ).toHaveTextContent('1');
@@ -43,11 +43,15 @@ describe('US-8: Visualisation du détail d\'une facture', async () => {
           await screen.findByTestId('invoice-status')
         ).toHaveTextContent('en attente de validation');
         
+        expect(
+          await screen.findByTestId('invoice-due-date')
+        ).toHaveTextContent('25/12/2027');
+        
     })
 
     test('US-8-AC-2: Visualisation échouée : erreur lors de la récupération', async () => {
 
-        // Etant donné que je suis connecté en tant que responsable financier et que le professeur David Robert a une facture de 600e avec un id de 1
+        // Etant donné que je suis connecté en tant que responsable financier et que le professeur David Robert a une facture de 600e avec un id de 1 et une date d’échéance le 25/12/2027
 
         // Quand je veux visualiser la facture 1, si la récupération échoue
         render(<GetTeacherInvoiceDetailProvider

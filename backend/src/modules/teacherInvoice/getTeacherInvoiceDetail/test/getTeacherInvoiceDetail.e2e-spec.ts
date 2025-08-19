@@ -18,7 +18,7 @@ describe('US-8: Visualisation du détail d\'une facture', () => {
         await financialManagerBuilder.build();
         const token = await financialManagerBuilder.getToken();
 
-        // et que le professeur David Robert a une facture de 600e avec un id de 1
+        // et que le professeur David Robert a une facture de 600e avec un id de 1 et une date de validation de 2024-01-15
         const teacherBuilder = new UserBuilder(app)
             .withId(2)
             .withRole("teacher")
@@ -28,8 +28,8 @@ describe('US-8: Visualisation du détail d\'une facture', () => {
         await teacherBuilder.build();
 
         await app.get(DataSource).query(
-            'INSERT INTO teacher_invoices (id, amount, "teacherId", "pdfFile", "creationDate", status) VALUES ($1, $2, $3, $4, $5, $6)',
-            [1, 600, 2, 'facture-david-robert.pdf', new Date('2024-01-15'), TeacherInvoiceStatus.EN_ATTENTE_DE_VALIDATION]
+            'INSERT INTO teacher_invoices (id, amount, "teacherId", "pdfFile", "creationDate", status, "dueDate") VALUES ($1, $2, $3, $4, $5, $6, $7)',
+            [1, 600, 2, 'facture-david-robert.pdf', new Date('2024-01-15'), TeacherInvoiceStatus.EN_ATTENTE_DE_VALIDATION, "2024-01-15"]
         );
 
         // Quand je veux visualiser la facture 1, si tout se passe bien
@@ -45,14 +45,15 @@ describe('US-8: Visualisation du détail d\'une facture', () => {
             amount: 600,
             pdfFile: 'facture-david-robert.pdf',
             creationDate: '2024-01-15T00:00:00.000Z',
-            status: 'en attente de validation'
+            status: 'en attente de validation',
+            dueDate: "2024-01-15"
         });
 
     })
 
     test('US-8-AC-4: Visualisation échouée : utilisateur pas responsable financier', async () => {
 
-        // Etant donné que je suis connecté en tant que professeur et que le professeur David Robert et que le professeur a une facture de 600e avec un id de 1
+        // Etant donné que je suis connecté en tant que professeur et que le professeur David Robert et que le professeur a une facture de 600e avec un id de 1 et une date d'échéance de 2024-01-15
         const teacherBuilder = new UserBuilder(app)
             .withId(3)
             .withRole("teacher")
@@ -63,8 +64,8 @@ describe('US-8: Visualisation du détail d\'une facture', () => {
         const teacherToken = await teacherBuilder.getToken();
 
         await app.get(DataSource).query(
-            'INSERT INTO teacher_invoices (id, amount, "teacherId", "pdfFile", "creationDate", status) VALUES ($1, $2, $3, $4, $5, $6)',
-            [2, 600, 3, 'facture-david-robert.pdf', new Date('2024-01-15'), TeacherInvoiceStatus.EN_ATTENTE_DE_VALIDATION]
+            'INSERT INTO teacher_invoices (id, amount, "teacherId", "pdfFile", "creationDate", status, "dueDate") VALUES ($1, $2, $3, $4, $5, $6, $7)',
+            [1, 600, 3, 'facture-david-robert.pdf', new Date('2024-01-15'), TeacherInvoiceStatus.EN_ATTENTE_DE_VALIDATION, "2024-01-15"]
         );
 
         // Quand je veux visualiser la facture 1

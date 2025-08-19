@@ -15,6 +15,7 @@ export class GetTeacherInvoiceDetailTeacherInvoiceFetchRepository implements Get
                 creationDate: response.data.creationDate,
                 pdfFile: response.data.pdfFile,
                 status: response.data.status,
+                dueDate: response.data.dueDate,
             };
         } catch (error) {
             if (error instanceof AxiosError) {

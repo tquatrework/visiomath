@@ -24,6 +24,11 @@ export class CreateTeacherInvoiceController {
             return res.status(422).json({ message: 'Le montant est obligatoire' });
         }
 
+        if (typeof dueDate !== 'string' || !dueDate) {
+            return res.status(422).json({ message: 'La date d\'échéance est obligatoire' });
+        }
+
+
         if (!pdfFile) {
             return res.status(422).json({ message: 'La facture PDF est obligatoire' });
         }

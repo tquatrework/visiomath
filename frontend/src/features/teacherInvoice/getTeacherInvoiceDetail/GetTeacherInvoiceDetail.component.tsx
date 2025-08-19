@@ -52,8 +52,6 @@ export const GetTeacherInvoiceDetailComponent: React.FC<GetTeacherInvoiceDetailC
     return <div className="text-gray-500">Aucune facture trouvée</div>;
   }
 
-  console.log('Invoice Detail:', invoiceDetail);
-
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
       <h2 className="text-xl font-semibold mb-4 text-gray-800">
@@ -82,6 +80,10 @@ export const GetTeacherInvoiceDetailComponent: React.FC<GetTeacherInvoiceDetailC
             <div>
               <span className="text-sm text-gray-500 block">Status</span>
               <span className="font-medium" data-testid="invoice-status">{invoiceDetail.status}</span>
+            </div>
+            <div>
+              <span className="text-sm text-gray-500 block">Date d'échéance</span>
+              <span className="font-medium" data-testid="invoice-due-date">{invoiceDetail.dueDate || 'Non définie'}</span>
             </div>
 
             <div >

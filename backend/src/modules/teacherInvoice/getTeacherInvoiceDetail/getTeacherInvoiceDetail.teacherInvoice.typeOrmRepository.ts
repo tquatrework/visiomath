@@ -16,7 +16,8 @@ export class GetTeacherInvoiceDetailTeacherInvoiceTypeOrmRepository implements G
           ti.amount,
           ti."pdfFile",
           ti."creationDate",
-            ti.status
+          ti.status,
+          ti."dueDate"
         FROM teacher_invoices ti
         INNER JOIN users u ON ti."teacherId" = u.id
         WHERE ti.id = $1`,
@@ -34,6 +35,7 @@ export class GetTeacherInvoiceDetailTeacherInvoiceTypeOrmRepository implements G
         pdfFile: result[0].pdfFile,
         creationDate: result[0].creationDate,
         status: result[0].status,
+        dueDate: result[0].dueDate
       };
     } catch (error) {
       throw new Error('Erreur BDD');

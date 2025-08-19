@@ -5,4 +5,5 @@ export type GetTeacherInvoiceDetailQueryResult = {
   creationDate: string;
   pdfFile: string;
   status: string;
+  dueDate: string | null;
 };
