@@ -11,14 +11,20 @@ declare global {
 }
 
 beforeEach(async () => {
-    globalThis.pgContainer = await new PostgreSqlContainer("postgres:14").start();
+    // Utiliser un nom de DB unique par processus/worker
+    const workerId = process.env.VITEST_WORKER_ID || Date.now().toString()
+    const dbName = `test_db_${workerId}_${Math.random().toString(36).substr(2, 9)}`
+    
+    globalThis.pgContainer = await new PostgreSqlContainer("postgres:14")
+        .withDatabase(dbName)
+        .start();
     const url = new URL(globalThis.pgContainer.getConnectionUri())
 
     process.env.DB_HOST = url.hostname
     process.env.DB_PORT = url.port
     process.env.DB_USERNAME = url.username
     process.env.DB_PASSWORD = url.password
-    process.env.DB_NAME = url.pathname.slice(1)
+    process.env.DB_NAME = dbName
     process.env.JWT_SECRET = 'test'
     process.env.JWT_EXPIRATION = '1d'
     process.env.JWT_REFRESH_EXPIRES_IN = '30d'

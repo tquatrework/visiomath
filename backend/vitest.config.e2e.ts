@@ -9,6 +9,15 @@ export default defineConfig(({ mode }) => ({
         include: ['src/**/*.e2e-spec.ts'],
         setupFiles: ['./e2e-setup.ts'],
         nodeArgs: ['--loader', 'ts-node/esm'],
+        pool: 'forks',
+        poolOptions: {
+            forks: {
+                isolate: true,
+            },
+        },
+        testTimeout: 30000,
+        hookTimeout: 30000,
+        fileParallelism: true,
     },
     plugins: [swc.vite()],
 }));

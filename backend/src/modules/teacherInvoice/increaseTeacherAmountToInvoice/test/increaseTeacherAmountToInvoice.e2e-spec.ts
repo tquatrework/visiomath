@@ -13,17 +13,20 @@ describe('#US-3: Augmentation du solde à facturer du professeur', () => {
     test('#US-3-AC-1: Augmentation réussie de 30e', async () => {
 
         // Etant donné que je suis connecté en tant que professeur avec un solde à facturer de 30 euros
-        const userBuilder = new UserBuilder(app).withRole("teacher").withTeacherAmountToInvoice(30);
+        const userBuilder = new UserBuilder(app).withRole("teacher").withId(1).withTeacherAmountToInvoice(30);
         await userBuilder.build();
         const teacherToken = await userBuilder.getToken();
 
         // Quand un coupon est enregistré avec un montant de 30e
         const res = await request(app.getHttpServer())
-            .get('/teacher-fake-add-coupon')
+            .get('/teacher-fake-add-coupon/1')
             .set('Authorization', `Bearer ${teacherToken}`);
 
         // Alors je dois voir mon solde à facturer augmenter à 60e
         expect(res.status).toBe(200);
+        
+        // Attendre que l'événement asynchrone soit traité
+        await new Promise(resolve => setTimeout(resolve, 100));
         
         const teacherProfile = await app
             .get(DataSource)
