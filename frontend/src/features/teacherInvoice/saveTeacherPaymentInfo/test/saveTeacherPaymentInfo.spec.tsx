@@ -1,7 +1,8 @@
-import {describe, expect, test} from "vitest";
+import {describe, expect, test, afterEach} from "vitest";
 import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoForm.component";
 import {render, screen, act} from "@testing-library/react";
 import userEvent from '@testing-library/user-event'
+import {MemoryRouter} from 'react-router-dom'
 import {
     SaveTeacherPaymentInfoRepositoryProvider
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/saveTeacherPaymentInfo.repository.provider";
@@ -11,10 +12,15 @@ import {
 import {
     SaveTeacherPaymentInfoFailureInMemoryRepository
 } from "@src/features/teacherInvoice/saveTeacherPaymentInfo/test/saveTeacherPaymentInfo.failureInMemoryRepository";
+import TeacherInvoicePage from "@src/features/teacherInvoice/TeacherInvoice.page";
+import {UserProvider} from "@src/providers/UserContext";
 
 
 describe('#US-1: Enregistrement des informations personnelles / de paiement du professeur', () => {
 
+    afterEach(() => {
+        localStorage.clear();
+    });
 
         test('#US-1-AC-1: Enregistrement réussi avec BIC 6 + 2', async () => {
 
@@ -87,6 +93,34 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             ).toBeInTheDocument();
 
         })
+
+
+    test('#US-1-AC-8 : Enregistrement échoué – utilisateur pas professeur', async () => {
+
+        // Étant donné que je ne suis identifié en tant que responsable financier
+        localStorage.setItem('access_token', 'fake-token');
+        localStorage.setItem('user_info', JSON.stringify({ 
+            id: 1, 
+            role: ['financial_admin']
+        }));
+
+        // Quand je veux enregistrer mes infos
+        act(() => {
+            render(
+                <MemoryRouter>
+                    <UserProvider>
+                        <TeacherInvoicePage />
+                    </UserProvider>
+                </MemoryRouter>
+            );
+        });
+
+        //Alors je ne peux pas enregistrer mes infos
+        expect(
+          screen.queryByRole('tab', {name: /Informations de facturation/i})
+        ).not.toBeInTheDocument();
+
+    })
 
 
 })

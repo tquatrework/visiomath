@@ -49,9 +49,7 @@ import {
 import {
     GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceFetchRepository
 } from "@src/features/teacherInvoice/getTeacherInvoicesNumberForCurrentMonth/getTeacherInvoicesNumberForCurrentMonth.teacherInvoice.fetchRepository";
-import {
-    GetCurrentTeacherInvoicesSuccessInMemoryRepository
-} from "@src/features/teacherInvoice/getCurrentTeacherInvoices/test/getCurrentTeacherInvoices.teacherInvoice.inMemoryRepositories";
+
 import {
     GetCurrentTeacherInvoicesComponent
 } from "@src/features/teacherInvoice/getCurrentTeacherInvoices/GetCurrentTeacherInvoices.component";
@@ -61,11 +59,25 @@ import {
 import {
     GetCurrentTeacherInvoicesTeacherInvoiceFetchRepository
 } from "@src/features/teacherInvoice/getCurrentTeacherInvoices/getCurrentTeacherInvoices.teacherInvoice.fetchRepository";
+import {useUser} from "@src/providers/UserContext";
 
 
 const TeacherInvoicePage: React.FC = () => {
     const location = useLocation();
     const [tabIndex, setTabIndex] = useState(0);
+
+    const { userInfo } = useUser();
+
+    const isFinancialManager = userInfo?.role.includes('financial_admin');
+
+    let userInvoiceTabs = [];
+
+    if (isFinancialManager) {
+        userInvoiceTabs = ['Liste des factures' ];
+    } else {
+        userInvoiceTabs = ['Informations de facturation', 'Facturer', 'Mes factures'];
+    }
+
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -88,7 +100,7 @@ const TeacherInvoicePage: React.FC = () => {
 
             <Tabs selectedIndex={tabIndex} onSelect={setTabIndex}>
                 <TabList className="flex border-b border-gray-200">
-                    {['Informations de facturation', 'Facturer', 'Liste des factures', 'Mes factures' ].map((label, idx) => (
+                    {userInvoiceTabs.map((label, idx) => (
                         <Tab
                             key={label}
                             className={`cursor-pointer py-2 px-4 ${tabIndex === idx ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500 hover:text-blue-500'}`}

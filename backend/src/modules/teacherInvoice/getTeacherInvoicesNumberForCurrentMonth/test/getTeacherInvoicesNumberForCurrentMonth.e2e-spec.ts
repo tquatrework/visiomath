@@ -38,7 +38,6 @@ describe('#US-14: Connaître le nombre de factures créées pour le mois en cour
             .get('/teacher-invoices/current-month/count')
             .set('Authorization', `Bearer ${teacherToken}`);
 
-        console.log(response.body);
         // Alors je dois recevoir "2"
         expect(response.status).toBe(200);
         expect(response.body.count).toBe(2);
