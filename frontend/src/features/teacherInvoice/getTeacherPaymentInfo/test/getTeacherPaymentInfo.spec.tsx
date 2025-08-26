@@ -1,12 +1,19 @@
-import {describe, expect, test} from "vitest";
-import {render, screen} from "@testing-library/react";
+import {describe, expect, test, afterEach} from "vitest";
+import {render, screen, act} from "@testing-library/react";
 import { GetTeacherPaymentInfoProvider } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.repository.provider";
 import { GetTeacherPaymentInfoSuccessInMemoryRepository } from "@src/features/teacherInvoice/getTeacherPaymentInfo/test/getTeacherPaymentInfo.successInMemoryRepository";
 import { GetTeacherPaymentInfoFailureInMemoryRepository } from "@src/features/teacherInvoice/getTeacherPaymentInfo/test/getTeacherPaymentInfo.failureInMemoryRepository";
 import TeacherPaymentInfoFormComponent from "@src/features/teacherInvoice/TeacherPaymentInfoForm.component";
 import { GetTeacherPaymentInfoCompanyType } from "@src/features/teacherInvoice/getTeacherPaymentInfo/getTeacherPaymentInfo.queryResult";
+import {MemoryRouter} from 'react-router-dom';
+import {UserProvider} from "@src/providers/UserContext";
+import TeacherInvoicePage from "@src/features/teacherInvoice/TeacherInvoice.page";
 
 describe('#US-2: Récupération des informations de paiement du professeur', async () => {
+
+    afterEach(() => {
+        localStorage.clear();
+    });
 
     test('#US-2-AC-2: Récupération réussie', async () => {
 
@@ -74,6 +81,33 @@ describe('#US-2: Récupération des informations de paiement du professeur', asy
         expect(
             await screen.findByText('Erreur: Impossible de récupérer les informations de paiement')
         ).toBeInTheDocument();
+
+    })
+
+    test('#US-2-AC-4 : Récupération échoué – utilisateur pas professeur', async () => {
+
+        // Étant donné que je suis identifié en tant que responsable financier
+        localStorage.setItem('access_token', 'fake-token');
+        localStorage.setItem('user_info', JSON.stringify({ 
+            id: 1, 
+            role: ['financial_admin']
+        }));
+
+        // Quand je veux récupérer mes informations bancaires
+        act(() => {
+            render(
+                <MemoryRouter>
+                    <UserProvider>
+                        <TeacherInvoicePage />
+                    </UserProvider>
+                </MemoryRouter>
+            );
+        });
+
+        //Alors je ne peux pas les récupérer
+        expect(
+          screen.queryByRole('tab', {name: /Informations de facturation/i})
+        ).not.toBeInTheDocument();
 
     })
 

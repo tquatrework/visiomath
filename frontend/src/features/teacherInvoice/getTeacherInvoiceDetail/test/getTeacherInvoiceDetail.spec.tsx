@@ -1,12 +1,18 @@
-import {describe, expect, test} from "vitest";
-import {render, screen} from "@testing-library/react";
+import {describe, expect, test, afterEach} from "vitest";
+import {render, screen, act, waitFor} from "@testing-library/react";
 import { GetTeacherInvoiceDetailProvider } from '../getTeacherInvoiceDetail.teacherInvoice.repository.provider';
 import { GetTeacherInvoiceDetailComponent } from '../GetTeacherInvoiceDetail.component';
 import { GetTeacherInvoiceDetailTeacherInvoiceSuccessInMemoryRepository } from './getTeacherInvoiceDetail.teacherInvoice.successInMemoryRepository';
 import { GetTeacherInvoiceDetailTeacherInvoiceFailureInMemoryRepository } from './getTeacherInvoiceDetail.teacherInvoice.failureInMemoryRepository';
+import {MemoryRouter, Route, Routes} from 'react-router-dom';
+import {UserProvider} from "@src/providers/UserContext";
+import TeacherInvoiceDetailPage from "@src/features/teacherInvoice/TeacherInvoiceDetail.page";
 
 describe('US-8: Visualisation du détail d\'une facture', async () => {
     
+    afterEach(() => {
+        localStorage.clear();
+    });
 
     test('US-8-AC-1: Visualisation réussie', async () => {
 
@@ -63,6 +69,36 @@ describe('US-8: Visualisation du détail d\'une facture', async () => {
         expect(
           await screen.findByText('Erreur: la récupération de la facture à échoué')
         ).toBeInTheDocument();
+
+    })
+
+    test('#US-8-AC-4: Visualisation échouée : utilisateur pas responsable financier', async () => {
+
+        // Etant donné que je suis connecté en tant que professeur et que le professeur David Robert a une facture de 600e avec un id de 1
+        localStorage.setItem('access_token', 'fake-token');
+        localStorage.setItem('user_info', JSON.stringify({
+            id: 1,
+            role: ['teacher']
+        }));
+
+
+
+        // Quand je veux visualiser la facture 1
+        act(() => {
+            render(
+                <MemoryRouter  initialEntries={['/teacher-facturation/invoice/1']}>
+                    <UserProvider>
+                        <Routes>
+                            <Route path="/teacher-facturation/invoice/:id" element={<TeacherInvoiceDetailPage />} />
+                        </Routes>
+                    </UserProvider>
+                </MemoryRouter>
+            );
+        });
+
+        //Alors je ne peux pas voir la facture
+        expect(screen.queryByTestId('teacher-invoice-details-title')).not.toBeInTheDocument();
+
 
     })
 

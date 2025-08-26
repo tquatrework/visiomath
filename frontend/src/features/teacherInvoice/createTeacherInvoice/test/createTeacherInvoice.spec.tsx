@@ -1,4 +1,4 @@
-import {describe, expect, test} from "vitest";
+import {describe, expect, test, afterEach} from "vitest";
 import {render, screen, act} from "@testing-library/react";
 import userEvent from '@testing-library/user-event'
 import CreateTeacherInvoiceComponent from "../CreateTeacherInvoice.component";
@@ -11,8 +11,16 @@ import {
 import {
     CreateTeacherInvoiceFailureInMemoryRepository
 } from "./createTeacherInvoice.failureInMemoryRepository";
+import {MemoryRouter} from 'react-router-dom';
+import {UserProvider} from "@src/providers/UserContext";
+import TeacherInvoicePage from "@src/features/teacherInvoice/TeacherInvoice.page";
 
 describe('US-6: Création d\'une facture', () => {
+    
+    afterEach(() => {
+        localStorage.clear();
+    });
+
     test('US-6-AC-1-1: Envoie réussi : facture créée', async () => {
 
         // Etant donné que je suis connecté en tant que professeur
@@ -75,6 +83,33 @@ describe('US-6: Création d\'une facture', () => {
           await screen.findByText('Erreur: Le montant de la facture doit être supérieur à 0')
         ).toBeInTheDocument();
     });
+
+    test('#US-6-AC-2: Envoie échoué, utilisateur non teacher', async () => {
+
+        // Etant donné que je suis connecté en tant que responsable financier
+        localStorage.setItem('access_token', 'fake-token');
+        localStorage.setItem('user_info', JSON.stringify({ 
+            id: 1, 
+            role: ['financial_admin']
+        }));
+
+        // Quand je veux créer une facture
+        act(() => {
+            render(
+                <MemoryRouter>
+                    <UserProvider>
+                        <TeacherInvoicePage />
+                    </UserProvider>
+                </MemoryRouter>
+            );
+        });
+
+        //Alors je ne peux pas créer de facture
+        expect(
+          screen.queryByRole('tab', {name: /Facturer/i})
+        ).not.toBeInTheDocument();
+
+    })
 
 })
 

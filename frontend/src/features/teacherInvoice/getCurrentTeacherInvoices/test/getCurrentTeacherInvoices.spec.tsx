@@ -1,11 +1,18 @@
-import {describe, expect, test} from "vitest";
-import {render, screen} from "@testing-library/react";
+import {describe, expect, test, afterEach} from "vitest";
+import {render, screen, act} from "@testing-library/react";
 import { GetCurrentTeacherInvoicesProvider } from "../getCurrentTeacherInvoices.teacherInvoice.repository.provider";
 import { GetCurrentTeacherInvoicesComponent } from "../GetCurrentTeacherInvoices.component";
 import { GetCurrentTeacherInvoicesSuccessInMemoryRepository, GetCurrentTeacherInvoicesUnauthorizedInMemoryRepository } from "./getCurrentTeacherInvoices.teacherInvoice.inMemoryRepositories";
+import {MemoryRouter} from 'react-router-dom';
+import {UserProvider} from "@src/providers/UserContext";
+import TeacherInvoicePage from "@src/features/teacherInvoice/TeacherInvoice.page";
 
 
 describe('#US-12: Visualisation historique de factures pour le professeur', async () => {
+
+    afterEach(() => {
+        localStorage.clear();
+    });
   
     test('#US-12-AC-1: Visualisation réussie', async () => {
 
@@ -54,6 +61,33 @@ describe('#US-12: Visualisation historique de factures pour le professeur', asyn
         expect(
           await screen.findByText('Erreur: Vous ne pouvez pas effectuer cette opération')
         ).toBeInTheDocument();
+
+    })
+
+    test('#US-12-AC-4: Visualisation échouée : utilisateur pas professeur', async () => {
+
+        // Etant donné que je suis connecté en tant que Responsable financier
+        localStorage.setItem('access_token', 'fake-token');
+        localStorage.setItem('user_info', JSON.stringify({
+            id: 1,
+            role: ['financial_admin']
+        }));
+
+        // Quand je veux visualiser toutes mes factures
+        act(() => {
+            render(
+                <MemoryRouter>
+                    <UserProvider>
+                        <TeacherInvoicePage />
+                    </UserProvider>
+                </MemoryRouter>
+            );
+        });
+
+        //Alors je ne peux pas visualiser mes factures
+        expect(
+          screen.queryByRole('tab', {name: /Mes factures/i})
+        ).not.toBeInTheDocument();
 
     })
 

@@ -110,49 +110,49 @@ const TeacherInvoicePage: React.FC = () => {
                     ))}
                 </TabList>
 
-                <TabPanel className="p-4">
-                    <GetTeacherPaymentInfoProvider
-                        getTeacherPaymentInfoRepository={getTeacherPaymentInfoRepository}>
-                        <SaveTeacherPaymentInfoRepositoryProvider
-                            saveTeacherPaymentInfoRepository={saveTeacherPaymentInfoRepository}>
-                            <TeacherPaymentInfoFormComponent/>
-                        </SaveTeacherPaymentInfoRepositoryProvider>
-                    </GetTeacherPaymentInfoProvider>
-                </TabPanel>
+                {isFinancialManager ? (
+                    <TabPanel className="p-4">
+                        <GetTeacherInvoicesProvider getTeacherInvoicesRepository={new GetTeacherInvoicesFetchRepository()}>
+                            <GetTeacherInvoicesComponent />
+                        </GetTeacherInvoicesProvider>
+                    </TabPanel>
+                ) : (
+                    <>
+                        <TabPanel className="p-4">
+                            <GetTeacherPaymentInfoProvider
+                                getTeacherPaymentInfoRepository={getTeacherPaymentInfoRepository}>
+                                <SaveTeacherPaymentInfoRepositoryProvider
+                                    saveTeacherPaymentInfoRepository={saveTeacherPaymentInfoRepository}>
+                                    <TeacherPaymentInfoFormComponent/>
+                                </SaveTeacherPaymentInfoRepositoryProvider>
+                            </GetTeacherPaymentInfoProvider>
+                        </TabPanel>
 
-                <TabPanel className="p-4">
+                        <TabPanel className="p-4">
+                            <GetTeacherInvoicesNumberForCurrentMonthProvider
+                                getTeacherInvoicesNumberForCurrentMonthTeacherInvoiceRepository={new GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceFetchRepository()}>
+                                <GetTeacherInvoicesNumberForCurrentMonthComponent/>
+                            </GetTeacherInvoicesNumberForCurrentMonthProvider>
 
-                    <GetTeacherInvoicesNumberForCurrentMonthProvider
-                        getTeacherInvoicesNumberForCurrentMonthTeacherInvoiceRepository={new GetTeacherInvoicesNumberForCurrentMonthTeacherInvoiceFetchRepository()}>
-                        <GetTeacherInvoicesNumberForCurrentMonthComponent/>
-                    </GetTeacherInvoicesNumberForCurrentMonthProvider>
+                            <GetTeacherAmountToInvoiceProvider
+                                getTeacherAmountToInvoiceRepository={new GetTeacherAmountToInvoiceFetchRepository()}>
+                                <GetTeacherAmountToInvoiceComponent/>
+                            </GetTeacherAmountToInvoiceProvider>
 
-                    <GetTeacherAmountToInvoiceProvider
-                        getTeacherAmountToInvoiceRepository={new GetTeacherAmountToInvoiceFetchRepository()}>
-                        <GetTeacherAmountToInvoiceComponent/>
-                    </GetTeacherAmountToInvoiceProvider>
+                            <CreateTeacherInvoiceRepositoryProvider
+                                createTeacherInvoiceRepository={new CreateTeacherInvoiceFetchRepository()}>
+                                <CreateTeacherInvoiceComponent/>
+                            </CreateTeacherInvoiceRepositoryProvider>
+                        </TabPanel>
 
-
-                    <CreateTeacherInvoiceRepositoryProvider
-                        createTeacherInvoiceRepository={new CreateTeacherInvoiceFetchRepository()}>
-                        <CreateTeacherInvoiceComponent/>
-                    </CreateTeacherInvoiceRepositoryProvider>
-                </TabPanel>
-
-                <TabPanel className="p-4">
-                    <GetTeacherInvoicesProvider
-                        getTeacherInvoicesRepository={new GetTeacherInvoicesFetchRepository()}>
-                        <GetTeacherInvoicesComponent/>
-                    </GetTeacherInvoicesProvider>
-                </TabPanel>
-
-
-                <TabPanel className="p-4">
-                    <GetCurrentTeacherInvoicesProvider
-                        getCurrentTeacherInvoicesRepository={new GetCurrentTeacherInvoicesTeacherInvoiceFetchRepository()}>
-                        <GetCurrentTeacherInvoicesComponent/>
-                    </GetCurrentTeacherInvoicesProvider>
-                </TabPanel>
+                        <TabPanel className="p-4">
+                            <GetTeacherInvoicesProvider
+                                getTeacherInvoicesRepository={new GetTeacherInvoicesFetchRepository()}>
+                                <GetTeacherInvoicesComponent/>
+                            </GetTeacherInvoicesProvider>
+                        </TabPanel>
+                    </>
+                )}
             </Tabs>
 
         </div>

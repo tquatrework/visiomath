@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { useGetTeacherInvoiceDetail } from './useGetTeacherInvoiceDetail.usecase';
-import {
-  ValidateInvoiceSuccessInMemoryRepository
-} from "@src/features/teacherInvoice/validateInvoice/test/validateInvoice.invoice.successInMemoryRepository";
+
 import {ValidateInvoiceComponent} from "@src/features/teacherInvoice/validateInvoice/ValidateInvoice.component";
 import {
   ValidateInvoiceRepositoryProvider
@@ -10,9 +8,7 @@ import {
 import {
   ValidateInvoiceFetchRepository
 } from "@src/features/teacherInvoice/validateInvoice/validateInvoice.invoice.fetchRepository";
-import {
-  RefuseInvoiceSuccessInMemoryRepository
-} from "@src/features/teacherInvoice/refuseInvoice/test/refuseInvoice.invoice.inMemoryRepositories";
+
 import {RefuseInvoiceComponent} from "@src/features/teacherInvoice/refuseInvoice/RefuseInvoice.component";
 import {
   RefuseInvoiceProvider
@@ -20,9 +16,7 @@ import {
 import {
   RefuseInvoiceFetchRepository
 } from "@src/features/teacherInvoice/refuseInvoice/refuseInvoice.invoice.fetchRepository";
-import {
-  PayInvoiceInvoiceSuccessInMemoryRepository
-} from "@src/features/teacherInvoice/payInvoice/test/payInvoice.invoice.inMemoryRepositories";
+
 import {PayInvoiceComponent} from "@src/features/teacherInvoice/payInvoice/PayInvoice.component";
 import {
   PayInvoiceInvoiceProvider
@@ -36,9 +30,12 @@ type GetTeacherInvoiceDetailComponentProps = {
 export const GetTeacherInvoiceDetailComponent: React.FC<GetTeacherInvoiceDetailComponentProps> = ({ invoiceId }) => {
   const { invoiceDetail, loading, error, getInvoiceDetail } = useGetTeacherInvoiceDetail();
 
+
   useEffect(() => {
     getInvoiceDetail(invoiceId);
   }, [invoiceId]);
+
+
 
   if (loading) {
     return <div className="text-gray-500">Chargement...</div>;

@@ -26,9 +26,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loadUserInfo = () => {
     const user_info = localStorage.getItem("user_info");
+
     if (user_info) {
       try {
         const parsedUserInfo = JSON.parse(user_info);
+
         if (parsedUserInfo?.id) {
           setConnectedUserId(parsedUserInfo.id);
           setUserInfo(parsedUserInfo);

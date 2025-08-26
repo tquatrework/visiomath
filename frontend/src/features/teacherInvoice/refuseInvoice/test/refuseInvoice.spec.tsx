@@ -5,6 +5,9 @@ import userEvent from "@testing-library/user-event";
 import { RefuseInvoiceProvider } from '../refuseInvoice.invoice.repository.provider';
 import { RefuseInvoiceComponent } from '../RefuseInvoice.component';
 import { RefuseInvoiceSuccessInMemoryRepository, RefuseInvoiceUnauthorizedInMemoryRepository } from './refuseInvoice.invoice.inMemoryRepositories';
+import {MemoryRouter, Route, Routes} from "react-router-dom";
+import {UserProvider} from "@src/providers/UserContext";
+import TeacherInvoiceDetailPage from "@src/features/teacherInvoice/TeacherInvoiceDetail.page";
 
 
 describe('US-10: Refus de la facture', async () => {
@@ -54,6 +57,34 @@ describe('US-10: Refus de la facture', async () => {
         expect(
           await screen.findByTestId('refusal-error-message')
         ).toHaveTextContent('Vous ne pouvez pas effectuer cette opération');
+
+    })
+
+    test('#US-10-AC-5: Refus échoué : utilisateur pas responsable financier', async () => {
+
+        // Etant donné que je suis connecté en tant que professeur et que le professeur David Robert et que le professeur a une facture avec un id de 1
+        localStorage.setItem('access_token', 'fake-token');
+        localStorage.setItem('user_info', JSON.stringify({
+            id: 1,
+            role: ['teacher']
+        }));
+
+        // Quand je veux valider la facture 1
+        act(() => {
+            render(
+                <MemoryRouter initialEntries={['/teacher-facturation/invoice/1']}>
+                    <UserProvider>
+                        <Routes>
+                            <Route path="/teacher-facturation/invoice/:id" element={<TeacherInvoiceDetailPage />} />
+                        </Routes>
+                    </UserProvider>
+                </MemoryRouter>
+            );
+        });
+
+        //Alors je ne peux pas valider la facture
+        expect(screen.queryByTestId('teacher-invoice-details-title')).not.toBeInTheDocument();
+
 
     })
 
