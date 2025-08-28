@@ -3,10 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
 import {SaveTeacherPaymentInfoUsecase} from "./saveTeacherPaymentInfo/saveTeacherPaymentInfo.usecase";
 import {saveTeacherPaymentInfoController} from "./saveTeacherPaymentInfo/saveTeacherPaymentInfo.controller";
-import {SaveTeacherPaymentInfoTypeOrmRepository} from "./saveTeacherPaymentInfo/saveTeacherPaymentInfo.typeOrmRepository";
+import {SaveTeacherPaymentInfoUserTypeOrmRepository} from "./saveTeacherPaymentInfo/saveTeacherPaymentInfo.user.typeOrmRepository";
+import {SaveTeacherPaymentInfoTeacherPaymentInfoTypeOrmRepository} from "./saveTeacherPaymentInfo/saveTeacherPaymentInfo.teacherPaymentInfo.typeOrmRepository";
 import {GetTeacherPaymentInfoUsecase} from "./getTeacherPaymentInfo/getTeacherPaymentInfo.usecase";
 import {GetTeacherPaymentInfoController} from "./getTeacherPaymentInfo/getTeacherPaymentInfo.controller";
-import {GetTeacherPaymentInfoTypeOrmRepository} from "./getTeacherPaymentInfo/getTeacherPaymentInfo.typeOrmRepository";
+import {GetTeacherPaymentInfoUserTypeOrmRepository} from "./getTeacherPaymentInfo/getTeacherPaymentInfo.user.typeOrmRepository";
+import {GetTeacherPaymentInfoTeacherPaymentInfoTypeOrmRepository} from "./getTeacherPaymentInfo/getTeacherPaymentInfo.teacherPaymentInfo.typeOrmRepository";
 import {IncreaseTeacherAmountToInvoiceUsecase} from "./increaseTeacherAmountToInvoice/increaseTeacherAmountToInvoice.usecase";
 import {IncreaseTeacherAmountToInvoiceTypeOrmRepository} from "./increaseTeacherAmountToInvoice/increaseTeacherAmountToInvoice.typeOrmRepository";
 import {CouponRegisteredByTeacherListener} from "./increaseTeacherAmountToInvoice/couponRegisteredByTeacher.listener";
@@ -70,9 +72,11 @@ import { GetCurrentTeacherInvoicesTeacherInvoiceTypeOrmRepository } from './getC
   ],
   providers: [
     SaveTeacherPaymentInfoUsecase,
-    SaveTeacherPaymentInfoTypeOrmRepository,
+    SaveTeacherPaymentInfoUserTypeOrmRepository,
+    SaveTeacherPaymentInfoTeacherPaymentInfoTypeOrmRepository,
     GetTeacherPaymentInfoUsecase,
-    GetTeacherPaymentInfoTypeOrmRepository,
+    GetTeacherPaymentInfoUserTypeOrmRepository,
+    GetTeacherPaymentInfoTeacherPaymentInfoTypeOrmRepository,
     IncreaseTeacherAmountToInvoiceUsecase,
     IncreaseTeacherAmountToInvoiceTypeOrmRepository,
     CouponRegisteredByTeacherListener,

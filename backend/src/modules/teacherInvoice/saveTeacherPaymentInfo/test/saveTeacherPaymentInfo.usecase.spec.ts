@@ -1,36 +1,42 @@
-import {beforeEach, expect} from "vitest";
-import {TeacherProfile} from "../../../../shared/entities/teacherProfile.entity";
-import {UserProfile} from "../../../../shared/entities/userprofile.entity";
-import {User} from "../../../../shared/entities/user.entity";
+import {beforeEach, describe, expect, test} from "vitest";
 import {SaveTeacherPaymentInfoUsecase} from "../saveTeacherPaymentInfo.usecase";
-import {SaveTeacherPaymentInfoInMemoryRepository} from "./saveTeacherPaymentInfo.inMemoryRepository";
+import {
+    SaveTeacherPaymentInfoUserSuccessInMemoryRepository,
+    SaveTeacherPaymentInfoUserNotFoundInMemoryRepository,
+    SaveTeacherPaymentInfoUserNotTeacherInMemoryRepository
+} from "./saveTeacherPaymentInfo.user.inMemoryRepositories";
+import {
+    SaveTeacherPaymentInfoTeacherPaymentInfoSuccessInMemoryRepository,
+    SaveTeacherPaymentInfoTeacherPaymentInfoNotFoundInMemoryRepository,
+    SaveTeacherPaymentInfoTeacherPaymentInfoFailureInMemoryRepository
+} from "./saveTeacherPaymentInfo.teacherPaymentInfo.inMemoryRepositories";
+import {User} from "../../../../shared/entities/user.entity";
+import {UserProfile} from "../../../../shared/entities/userprofile.entity";
+import {TeacherProfile} from "../../../../shared/entities/teacherProfile.entity";
+import {RoleList} from "../../../../common/utils/lists.utils";
 
 
-
-const generateUserWithTeacherProfile = (userId: number) => {
+function generateUserWithTeacherProfile(id: number, role: RoleList = 'teacher'): User {
     const user = new User();
-    user.id = userId;
-
-    const userProfile = new UserProfile();
-    userProfile.id = 1;
-    user.userProfile = userProfile;
-
-    const teacherProfile = new TeacherProfile();
-    teacherProfile.id = 1;
-    userProfile.teacherProfile = teacherProfile;
-
+    user.id = id;
+    user.role = role;
+    user.userProfile = new UserProfile();
+    user.userProfile.teacherProfile = new TeacherProfile();
     return user;
 }
+
 
 describe('#US-1: Enregistrement des informations personnelles / de paiement du professeur', () => {
 
     test('#US-1-AC-1: Enregistrement réussi', async () => {
-            //Etant donné que je suis connecté en tant que professeur
 
+        //Etant donné que je suis connecté en tant que professeur
         const user = generateUserWithTeacherProfile(1);
-
-        const saveTeacherPaymentInfoInMemoryRepository = new SaveTeacherPaymentInfoInMemoryRepository();
-        saveTeacherPaymentInfoInMemoryRepository.seed(user)
+        
+        const saveTeacherPaymentInfoUserRepository = new SaveTeacherPaymentInfoUserSuccessInMemoryRepository();
+        const saveTeacherPaymentInfoTeacherPaymentInfoRepository = new SaveTeacherPaymentInfoTeacherPaymentInfoSuccessInMemoryRepository();
+        
+        saveTeacherPaymentInfoTeacherPaymentInfoRepository.seed(user);
 
         /**Quand j’enregistre :
          nom de l’entreprise : “ProfCompany”
@@ -49,7 +55,10 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             bic: "azerty33"
         }
 
-        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(saveTeacherPaymentInfoInMemoryRepository);
+        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(
+            saveTeacherPaymentInfoUserRepository,
+            saveTeacherPaymentInfoTeacherPaymentInfoRepository
+        );
 
         await expect(
             saveTeacherPaymentInfoUseCase.execute(1, saveTeacherPaymentInfoCommand)
@@ -63,8 +72,10 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         //Etant donné que je suis connecté en tant que professeur
         const user = generateUserWithTeacherProfile(1);
 
-        const saveTeacherPaymentInfoInMemoryRepository = new SaveTeacherPaymentInfoInMemoryRepository();
-        saveTeacherPaymentInfoInMemoryRepository.seed(user)
+        const saveTeacherPaymentInfoUserRepository = new SaveTeacherPaymentInfoUserSuccessInMemoryRepository();
+        const saveTeacherPaymentInfoTeacherPaymentInfoRepository = new SaveTeacherPaymentInfoTeacherPaymentInfoSuccessInMemoryRepository();
+        
+        saveTeacherPaymentInfoTeacherPaymentInfoRepository.seed(user);
 
 
         /**Quand j’enregistre :
@@ -85,7 +96,10 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             bic: "azertyaz"
         };
 
-        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(saveTeacherPaymentInfoInMemoryRepository);
+        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(
+            saveTeacherPaymentInfoUserRepository,
+            saveTeacherPaymentInfoTeacherPaymentInfoRepository
+        );
 
         await expect(
             saveTeacherPaymentInfoUseCase.execute(1, saveTeacherPaymentInfoCommand)
@@ -95,13 +109,15 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
     });
 
 
-    test('#US-1-AC-3: Enregistrement échoué avec type d’entreprise non autorisé', async () => {
+    test('#US-1-AC-3: Enregistrement échoué avec type d\'entreprise non autorisé', async () => {
 
         //Etant donné que je suis connecté en tant que professeur
         const user = generateUserWithTeacherProfile(1);
 
-        const saveTeacherPaymentInfoInMemoryRepository = new SaveTeacherPaymentInfoInMemoryRepository();
-        saveTeacherPaymentInfoInMemoryRepository.seed(user)
+        const saveTeacherPaymentInfoUserRepository = new SaveTeacherPaymentInfoUserSuccessInMemoryRepository();
+        const saveTeacherPaymentInfoTeacherPaymentInfoRepository = new SaveTeacherPaymentInfoTeacherPaymentInfoSuccessInMemoryRepository();
+        
+        saveTeacherPaymentInfoTeacherPaymentInfoRepository.seed(user);
 
         /**Quand j’enregistre :
          nom de l’entreprise : “ProfCompany”
@@ -120,21 +136,27 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             bic: "azertyaz"
         };
 
-        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(saveTeacherPaymentInfoInMemoryRepository);
+        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(
+            saveTeacherPaymentInfoUserRepository,
+            saveTeacherPaymentInfoTeacherPaymentInfoRepository
+        );
 
         await expect(
             saveTeacherPaymentInfoUseCase.execute(1, saveTeacherPaymentInfoCommand)
 
-            //Alors mon enregistrement doit renvoyer une erreur “Ce type d’entreprise n’existe pas”
-        ).rejects.toThrow("Le type d’entreprise n’est pas valide");
+            //Alors mon enregistrement doit renvoyer une erreur "Ce type d'entreprise n'existe pas"
+        ).rejects.toThrow("Le type d’entreprise n’est pas valide.");
     });
 
     test('#US-1-AC-4: Enregistrement échoué – professeur non trouvé', async () => {
         //Etant donné que je suis connecté en tant que professeur
         const user = generateUserWithTeacherProfile(1);
 
-        const saveTeacherPaymentInfoInMemoryRepository = new SaveTeacherPaymentInfoInMemoryRepository();
-        saveTeacherPaymentInfoInMemoryRepository.seed(user)
+        const saveTeacherPaymentInfoUserRepository = new SaveTeacherPaymentInfoUserSuccessInMemoryRepository();
+        const saveTeacherPaymentInfoTeacherPaymentInfoRepository = new SaveTeacherPaymentInfoTeacherPaymentInfoSuccessInMemoryRepository();
+
+        saveTeacherPaymentInfoTeacherPaymentInfoRepository.seed(user);
+
         /**Quand j’enregistre :
          nom de l’entreprise : “ProfCompany”
          siret : “12345678912345
@@ -152,7 +174,10 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             bic: "azertyaz"
         };
 
-        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(saveTeacherPaymentInfoInMemoryRepository);
+        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(
+            saveTeacherPaymentInfoUserRepository,
+            saveTeacherPaymentInfoTeacherPaymentInfoRepository
+        );
 
         await expect(
             saveTeacherPaymentInfoUseCase.execute(999, saveTeacherPaymentInfoCommand)
@@ -165,8 +190,11 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         //Etant donné que je suis connecté en tant que professeur
         const user = generateUserWithTeacherProfile(1);
 
-        const saveTeacherPaymentInfoInMemoryRepository = new SaveTeacherPaymentInfoInMemoryRepository();
-        saveTeacherPaymentInfoInMemoryRepository.seed(user)
+        const saveTeacherPaymentInfoUserRepository = new SaveTeacherPaymentInfoUserSuccessInMemoryRepository();
+        const saveTeacherPaymentInfoTeacherPaymentInfoRepository = new SaveTeacherPaymentInfoTeacherPaymentInfoSuccessInMemoryRepository();
+
+        saveTeacherPaymentInfoTeacherPaymentInfoRepository.seed(user);
+
 
         //  Quand j’enregistre:
         //    nom de l’entreprise : « ProfCompany »
@@ -184,8 +212,10 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             bic: "azertyaz"
         };
 
-        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(saveTeacherPaymentInfoInMemoryRepository);
-
+        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(
+            saveTeacherPaymentInfoUserRepository,
+            saveTeacherPaymentInfoTeacherPaymentInfoRepository
+        );
         await expect(
             saveTeacherPaymentInfoUseCase.execute(1, saveTeacherPaymentInfoCommand)
         ).rejects.toThrow("L’IBAN doit commencer par 2 lettres suivies de 12 chiffres suivies de 13 caractères alphanumériques.");
@@ -196,8 +226,10 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
         //Etant donné que je suis connecté en tant que professeur
         const user = generateUserWithTeacherProfile(1);
 
-        const saveTeacherPaymentInfoInMemoryRepository = new SaveTeacherPaymentInfoInMemoryRepository();
-        saveTeacherPaymentInfoInMemoryRepository.seed(user)
+        const saveTeacherPaymentInfoUserRepository = new SaveTeacherPaymentInfoUserSuccessInMemoryRepository();
+        const saveTeacherPaymentInfoTeacherPaymentInfoRepository = new SaveTeacherPaymentInfoTeacherPaymentInfoSuccessInMemoryRepository();
+
+        saveTeacherPaymentInfoTeacherPaymentInfoRepository.seed(user);
 
         //  Quand j’enregistre:
         //    nom de l’entreprise : « ProfCompany »
@@ -215,12 +247,44 @@ describe('#US-1: Enregistrement des informations personnelles / de paiement du p
             bic: "abc12" // BIC invalide
         };
 
-        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(saveTeacherPaymentInfoInMemoryRepository);
-
+        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(
+            saveTeacherPaymentInfoUserRepository,
+            saveTeacherPaymentInfoTeacherPaymentInfoRepository
+        );
         await expect(
             saveTeacherPaymentInfoUseCase.execute(1, saveTeacherPaymentInfoCommand)
             //Alors mon enregistrement doit renvoyer une erreur “Le BIC doit contenir 6 lettres suivies de 2 ou 5 caractères alphanumériques.”
         ).rejects.toThrow("Le BIC doit contenir 6 lettres suivies de 2 ou 5 caractères alphanumériques.");
+    });
+
+    test('#US-1-AC-8: Enregistrement échoué – utilisateur pas professeur', async () => {
+        //Etant donné que je suis identifié en tant que responsable financier
+        const user = generateUserWithTeacherProfile(1, 'financial_admin');
+
+        const saveTeacherPaymentInfoUserRepository = new SaveTeacherPaymentInfoUserNotTeacherInMemoryRepository();
+        const saveTeacherPaymentInfoTeacherPaymentInfoRepository = new SaveTeacherPaymentInfoTeacherPaymentInfoSuccessInMemoryRepository();
+        
+        saveTeacherPaymentInfoTeacherPaymentInfoRepository.seed(user);
+
+        const saveTeacherPaymentInfoCommand = {
+            companyName: "ProfCompany",
+            siret: "12345678912345",
+            companyType: "Autoentrepreneur",
+            subjectToVat: true,
+            iban: "FR123456789012AZ67891234567",
+            bic: "azertyaz"
+        };
+
+        const saveTeacherPaymentInfoUseCase = new SaveTeacherPaymentInfoUsecase(
+            saveTeacherPaymentInfoUserRepository,
+            saveTeacherPaymentInfoTeacherPaymentInfoRepository
+        );
+
+        //Quand je veux enregistrer mes infos
+        //Alors je ne peux pas enregistrer mes infos
+        await expect(
+            saveTeacherPaymentInfoUseCase.execute(1, saveTeacherPaymentInfoCommand)
+        ).rejects.toThrow("Vous ne pouvez pas effectuer cette opération");
     });
 
 });

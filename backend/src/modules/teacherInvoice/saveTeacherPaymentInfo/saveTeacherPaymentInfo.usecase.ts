@@ -1,18 +1,33 @@
-import {Inject} from "@nestjs/common";
-import {SaveTeacherPaymentInfoRepository} from "./saveTeacherPaymentInfo.repository";
-import {SaveTeacherPaymentInfoTypeOrmRepository} from "./saveTeacherPaymentInfo.typeOrmRepository";
+import {Injectable, Inject} from "@nestjs/common";
+import {SaveTeacherPaymentInfoTeacherPaymentInfoRepository} from "./saveTeacherPaymentInfo.teacherPaymentInfo.repository";
+import {SaveTeacherPaymentInfoUserRepository} from "./saveTeacherPaymentInfo.user.repository";
+import {SaveTeacherPaymentInfoUserTypeOrmRepository} from "./saveTeacherPaymentInfo.user.typeOrmRepository";
+import {SaveTeacherPaymentInfoTeacherPaymentInfoTypeOrmRepository} from "./saveTeacherPaymentInfo.teacherPaymentInfo.typeOrmRepository";
 import {AddTeacherPaymentInfoCommand} from "../../../shared/entities/teacherProfile.entity";
 
+@Injectable()
 export class SaveTeacherPaymentInfoUsecase {
 
     constructor(
-        @Inject(SaveTeacherPaymentInfoTypeOrmRepository)
-        private saveTeacherPaymentInfoRepository: SaveTeacherPaymentInfoRepository
+        @Inject(SaveTeacherPaymentInfoUserTypeOrmRepository)
+        private saveTeacherPaymentInfoUserRepository: SaveTeacherPaymentInfoUserRepository,
+        @Inject(SaveTeacherPaymentInfoTeacherPaymentInfoTypeOrmRepository)
+        private saveTeacherPaymentInfoTeacherPaymentInfoRepository: SaveTeacherPaymentInfoTeacherPaymentInfoRepository
     ) {}
 
     async execute(teacherId: number, saveTeacherPaymentInfoCommand: AddTeacherPaymentInfoCommand) {
 
-        const teacher = await this.saveTeacherPaymentInfoRepository.findUserByIdWithTeacherProfil(teacherId);
+        const user = await this.saveTeacherPaymentInfoUserRepository.findUserById(teacherId);
+
+        if (!user) {
+            throw new Error("Professeur introuvable.");
+        }
+
+        if (user.role !== 'teacher') {
+            throw new Error("Vous ne pouvez pas effectuer cette opération");
+        }
+
+        const teacher = await this.saveTeacherPaymentInfoTeacherPaymentInfoRepository.findUserByIdWithTeacherProfil(teacherId);
 
         if (!teacher) {
             throw new Error("Professeur introuvable.");
@@ -21,7 +36,7 @@ export class SaveTeacherPaymentInfoUsecase {
         teacher.addTeacherProfilPaymentInfo(saveTeacherPaymentInfoCommand);
 
         try {
-            await this.saveTeacherPaymentInfoRepository.save(teacher);
+            await this.saveTeacherPaymentInfoTeacherPaymentInfoRepository.save(teacher);
             return;
         } catch (error) {
             if (error instanceof Error) {
