@@ -123,6 +123,8 @@ describe('US-9: Validation de la facture', () => {
         // Alors je dois recevoir une erreur "Vous ne pouvez pas effectuer cette opération"
         await expect(validateTeacherInvoiceUsecase.execute(1, { invoiceId: 1 })).rejects.toThrow("Vous ne pouvez pas effectuer cette opération");
 
+
+
     })
 
 })
