@@ -3,6 +3,7 @@ import {DataSource, Repository} from "typeorm";
 import {GetTeacherPaymentInfoTeacherPaymentInfoRepository} from "./getTeacherPaymentInfo.teacherPaymentInfo.repository";
 import {GetTeacherPaymentInfoQueryResult} from "./getTeacherPaymentInfo.queryResult";
 import {User} from "../../../shared/entities/user.entity";
+import {CompanyType} from "../../../shared/entities/teacherProfile.entity";
 
 @Injectable()
 export class GetTeacherPaymentInfoTeacherPaymentInfoTypeOrmRepository implements GetTeacherPaymentInfoTeacherPaymentInfoRepository {
@@ -27,7 +28,7 @@ export class GetTeacherPaymentInfoTeacherPaymentInfoTypeOrmRepository implements
         return {
             companyName: teacherProfile.companyName,
             siret: teacherProfile.siret,
-            companyType: teacherProfile.companyType,
+            companyType: teacherProfile.companyType as CompanyType,
             subjectToVat: teacherProfile.subjectToVat,
             iban: teacherProfile.iban,
             bic: teacherProfile.bic
