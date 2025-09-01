@@ -146,10 +146,10 @@ const TeacherInvoicePage: React.FC = () => {
                         </TabPanel>
 
                         <TabPanel className="p-4">
-                            <GetTeacherInvoicesProvider
-                                getTeacherInvoicesRepository={new GetTeacherInvoicesFetchRepository()}>
-                                <GetTeacherInvoicesComponent/>
-                            </GetTeacherInvoicesProvider>
+                            <GetCurrentTeacherInvoicesProvider
+                                getCurrentTeacherInvoicesRepository={new GetCurrentTeacherInvoicesTeacherInvoiceFetchRepository()}>
+                                <GetCurrentTeacherInvoicesComponent/>
+                            </GetCurrentTeacherInvoicesProvider>
                         </TabPanel>
                     </>
                 )}
