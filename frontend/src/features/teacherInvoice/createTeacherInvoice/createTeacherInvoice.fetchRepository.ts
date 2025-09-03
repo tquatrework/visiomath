@@ -13,6 +13,7 @@ export class CreateTeacherInvoiceFetchRepository implements CreateTeacherInvoice
             const formData = new FormData();
             formData.append('amount', createTeacherInvoiceCommand.amount.toString());
             formData.append('pdfFile', createTeacherInvoiceCommand.pdfFile);
+            formData.append('dueDate', createTeacherInvoiceCommand.dueDate);
             
             await apiSec.post('/create-teacher-invoice', formData);
             

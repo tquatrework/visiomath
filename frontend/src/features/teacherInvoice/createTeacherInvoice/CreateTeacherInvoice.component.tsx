@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCreateTeacherInvoiceUseCase } from '@src/features/teacherInvoice/createTeacherInvoice/useCreateTeacherInvoice.usecase';
 
 const CreateTeacherInvoiceComponent = () => {
